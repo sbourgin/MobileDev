@@ -7,16 +7,18 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private TextView coucou = null;
+	private TextView locWelcomeText = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		coucou = new TextView(this);
-	    coucou.setText("Hi Jacob");
-	    setContentView(coucou);
+		setContentView(R.layout.activity_main);
 		
+		locWelcomeText = (TextView)findViewById(R.id.textWelcome);
+		
+		locWelcomeText.setText("Hi Sylvain !! !!");    
+	    
 		
 	}
 
