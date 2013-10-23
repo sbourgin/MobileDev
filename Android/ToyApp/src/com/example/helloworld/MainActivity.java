@@ -1,5 +1,8 @@
 package com.example.helloworld;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,19 +10,18 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity{
 
 	private RelativeLayout _layout = null;
-	private Button _buttonBold = null;
-	private Button _buttonItalic = null;
-	private Button _buttonUnderline = null;
-	private EditText _editingTextFromUser = null;
-	private TextView _rendering = null;
+	private ListView _liste = null;
 	
 	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
@@ -38,31 +40,7 @@ public class MainActivity extends Activity{
 		}
 	};
 	
-	private TextWatcher _textWatcher = new TextWatcher() {
 
-		@Override
-		public void afterTextChanged(Editable arg0) {
-			// TODO Auto-generated method stub
-			_rendering.setText(arg0);
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-				int arg3) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		
-		
-	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,30 +50,22 @@ public class MainActivity extends Activity{
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
 	    
+		 _liste = (ListView) _layout.findViewById(R.id.listView1);
+		 if(_liste == null) {
+			 Toast plouf = Toast.makeText(this,"Raté",0);
+			 plouf.show();
+		 } else {
+		 List<String> exemple = new ArrayList<String>();
+		 
+		 for(int i=0; i<50;i++) {
+			 exemple.add("Item" + i);
+		 }
 		
-		// Button Bold
-	    _buttonBold = (Button) _layout.findViewById(R.id.buttonBold);
-	    _buttonBold.setOnClickListener(_clickListener);
-	    
-		// Button Italic
-	    _buttonItalic = (Button) _layout.findViewById(R.id.buttonItalic);
-	    _buttonItalic.setOnClickListener(_clickListener);	    
-	    
-		// Button Underline
-	    _buttonUnderline = (Button) _layout.findViewById(R.id.buttonUnderline);
-	    _buttonUnderline.setText(R.string.underline);
-	    _buttonUnderline.setOnClickListener(_clickListener);	    
-	    
-	    // Edit text from user
-	    _editingTextFromUser = (EditText) _layout.findViewById(R.id.editTextFromUser);
-	    _editingTextFromUser.addTextChangedListener(_textWatcher);
-	    
-	    //Rendering 
-	    _rendering = (TextView) _layout.findViewById(R.id.rendering);
-	    _rendering.setText("PLOUF");
-	    
-	    
-	    
+		         
+		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exemple);
+		    _liste.setAdapter(adapter);
+		
+		 }
 	    setContentView(_layout);
 		
 	}
