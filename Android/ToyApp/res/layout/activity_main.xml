@@ -8,22 +8,75 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textWelcome"
+    <Button
+        android:id="@+id/buttonBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="@string/hello_world" />
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="36dp" 
+        android:text="@string/bold"/>
 
     <Button
-        android:id="@+id/buttonChangeTextWelcome"
+        android:id="@+id/buttonItalic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textWelcome"
-        android:layout_alignRight="@+id/textWelcome"
-        android:layout_below="@+id/textWelcome"
-        android:layout_marginTop="131dp" />
+        android:layout_alignBaseline="@+id/buttonBold"
+        android:layout_alignBottom="@+id/buttonBold"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/buttonBold"
+        android:text="@string/italic"/>
+
+    <Button
+        android:id="@+id/buttonUnderline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonItalic"
+        android:layout_alignBottom="@+id/buttonItalic"
+        android:layout_marginLeft="38dp"
+        android:layout_toRightOf="@+id/buttonItalic"
+        android:text="@string/underline"/>
+
+    <TextView
+        android:id="@+id/textViewEditing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonBold"
+        android:layout_below="@+id/buttonBold"
+        android:layout_marginTop="83dp"
+        android:text="@string/editing" />
+    
+    
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextFromUser"
+        android:layout_below="@+id/editTextFromUser"
+        android:layout_marginTop="111dp"/>
+
+
+
+    <EditText
+        android:id="@+id/editTextFromUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewEditing"
+        android:layout_below="@+id/textViewEditing"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/rendering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignTop="@+id/textView1"/>
 
 </RelativeLayout>

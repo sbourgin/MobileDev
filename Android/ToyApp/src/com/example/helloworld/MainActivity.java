@@ -2,30 +2,66 @@ package com.example.helloworld;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity{
 
-	private RelativeLayout locLayout = null;
-	private TextView locWelcomeText = null;
-	private Button locButtonChangeWelcomeText = null;
+	private RelativeLayout _layout = null;
+	private Button _buttonBold = null;
+	private Button _buttonItalic = null;
+	private Button _buttonUnderline = null;
+	private EditText _editingTextFromUser = null;
+	private TextView _rendering = null;
 	
-	private OnClickListener locClickListener = new OnClickListener() {
+	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
 		public void onClick(View parView) {
-			
+			/*			
 			switch(parView.getId()) {
 	
-			case R.id.buttonChangeTextWelcome:
-				locWelcomeText.setText("I'm fine and you ??");
+			case R.id.buttonBold: 							//TODO TODO
 				break;			
-			}
+			case R.id.buttonItalic:
+				break;	
+			case R.id.buttonUnderline:
+				break;		
+			} */
+			
 		}
+	};
+	
+	private TextWatcher _textWatcher = new TextWatcher() {
+
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			// TODO Auto-generated method stub
+			_rendering.setText(arg0);
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+				int arg3) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+				int arg3) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+		
 	};
 	
 	@Override
@@ -34,21 +70,33 @@ public class MainActivity extends Activity{
    	
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
-		locLayout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
+		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
 	    
 		
-		// Text view :  puis on récupère TextView grâce à son identifiant
-	    locWelcomeText = (TextView) locLayout.findViewById(R.id.textWelcome);
-	    locWelcomeText.setText("Hi Sylvain !! !! !!");
+		// Button Bold
+	    _buttonBold = (Button) _layout.findViewById(R.id.buttonBold);
+	    _buttonBold.setOnClickListener(_clickListener);
+	    
+		// Button Italic
+	    _buttonItalic = (Button) _layout.findViewById(R.id.buttonItalic);
+	    _buttonItalic.setOnClickListener(_clickListener);	    
+	    
+		// Button Underline
+	    _buttonUnderline = (Button) _layout.findViewById(R.id.buttonUnderline);
+	    _buttonUnderline.setText(R.string.underline);
+	    _buttonUnderline.setOnClickListener(_clickListener);	    
+	    
+	    // Edit text from user
+	    _editingTextFromUser = (EditText) _layout.findViewById(R.id.editTextFromUser);
+	    _editingTextFromUser.addTextChangedListener(_textWatcher);
+	    
+	    //Rendering 
+	    _rendering = (TextView) _layout.findViewById(R.id.rendering);
+	    _rendering.setText("PLOUF");
 	    
 	    
-	    //Button
-	    locButtonChangeWelcomeText = (Button) locLayout.findViewById(R.id.buttonChangeTextWelcome);
-	    locButtonChangeWelcomeText.setText("How are you ?");
-	    locButtonChangeWelcomeText.setOnClickListener(locClickListener);
 	    
-	    
-	    setContentView(locLayout);
+	    setContentView(_layout);
 		
 	}
 
