@@ -50,22 +50,26 @@ public class MainActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-   	
-		context = this;
+   	    context = this;
 		
+   	    
+   	    
+   	    
+   	    
+   	    
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
-	    
-		 _liste = (ListView) _layout.findViewById(R.id.listView1);
+	    _liste = (ListView) _layout.findViewById(R.id.listView1);
 		_liste.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		 
+		//Population de la liste
 		 final List<String> locItemsList = new ArrayList<String>();
-		 
 		 for(int i=0; i<50;i++) {
 			 locItemsList.add("Item" + i);
 		 }
 		
+		 //OnTimeClickListener
 		 _liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			  @Override
 			  public void onItemClick(AdapterView<?> adapterView,
@@ -82,11 +86,12 @@ public class MainActivity extends Activity{
 			  }
 			});
 		 
+		 //On set l'adaptateur
 		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, locItemsList);
 		    _liste.setAdapter(adapter);
-		    _liste.setItemChecked(5, true);
+		    	
 		    
-		
+		    
 	    setContentView(_layout);
 		
 	}
