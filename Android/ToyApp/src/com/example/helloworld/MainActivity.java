@@ -1,25 +1,29 @@
 package com.example.helloworld;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity{
@@ -53,9 +57,11 @@ public class MainActivity extends Activity{
    	    context = this;
 		
    	    
+   	     ArrayList<String> plouf = fetchTwitterPublicTimeline();
    	    
-   	    
-   	    
+   	  Toast plaf = Toast.makeText(context,(CharSequence) plouf.toString(),Toast.LENGTH_LONG);
+   	     plaf.show();
+   	     
    	    
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
@@ -81,8 +87,8 @@ public class MainActivity extends Activity{
 				  
 				  String item = "L'item sélectionné est : " + index;
 				  
-					 Toast plouf = Toast.makeText(context,(CharSequence) item,Toast.LENGTH_LONG);
-					 plouf.show();
+			//		 Toast plouf = Toast.makeText(context,(CharSequence) item,Toast.LENGTH_LONG);
+			//		 plouf.show();
 			  }
 			});
 		 
@@ -103,5 +109,35 @@ public class MainActivity extends Activity{
 		return true;
 	}
 
-
+	//A BOUGER  http://stackoverflow.com/questions/6611663/how-to-get-json-content-from-a-restful-server-to-a-android-client
+	 public ArrayList<String> fetchTwitterPublicTimeline()
+	    {
+	        ArrayList<String> listItems = new ArrayList<String>();
+	        try {
+	            URL twitter = new URL(
+	                    "http://twitter.com/statuses/public_timeline.json");
+	            URLConnection tc = twitter.openConnection();
+	            BufferedReader in = new BufferedReader(new InputStreamReader(
+	                    tc.getInputStream()));
+	            String line;
+	            while ((line = in.readLine()) != null) {
+	                JSONArray ja = new JSONArray(line);
+	                for (int i = 0; i < ja.length(); i++) {
+	                    JSONObject jo = (JSONObject) ja.get(i);
+	                    listItems.add(jo.getString("text"));
+	                }
+	            }
+	        } catch (MalformedURLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        } catch (JSONException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	        return listItems;
+	    }
+	
 }
