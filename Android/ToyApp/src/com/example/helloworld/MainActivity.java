@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,14 +58,12 @@ public class MainActivity extends Activity{
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
 	    
 		 _liste = (ListView) _layout.findViewById(R.id.listView1);
-		 if(_liste == null) {
-			 Toast plouf = Toast.makeText(this,"Raté",0);
-			 plouf.show();
-		 } else {
-		 final List<String> exemple = new ArrayList<String>();
+		_liste.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+		 
+		 final List<String> locItemsList = new ArrayList<String>();
 		 
 		 for(int i=0; i<50;i++) {
-			 exemple.add("Item" + i);
+			 locItemsList.add("Item" + i);
 		 }
 		
 		 _liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,11 +82,11 @@ public class MainActivity extends Activity{
 			  }
 			});
 		 
-		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, exemple);
+		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, locItemsList);
 		    _liste.setAdapter(adapter);
 		    _liste.setItemChecked(5, true);
 		    
-		 }
+		
 	    setContentView(_layout);
 		
 	}
