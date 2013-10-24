@@ -1,15 +1,18 @@
 package com.example.helloworld;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +25,7 @@ public class MainActivity extends Activity{
 
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
+	private Context context = null;
 	
 	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
@@ -46,6 +50,8 @@ public class MainActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
    	
+		context = this;
+		
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
@@ -55,16 +61,32 @@ public class MainActivity extends Activity{
 			 Toast plouf = Toast.makeText(this,"Raté",0);
 			 plouf.show();
 		 } else {
-		 List<String> exemple = new ArrayList<String>();
+		 final List<String> exemple = new ArrayList<String>();
 		 
 		 for(int i=0; i<50;i++) {
 			 exemple.add("Item" + i);
 		 }
 		
-		         
-		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exemple);
+		 _liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			  @Override
+			  public void onItemClick(AdapterView<?> adapterView,
+			    View view,
+			    int position,
+			    long id) {
+				  
+				  int index =  _liste.getCheckedItemPosition();
+				  
+				  String item = "L'item sélectionné est : " + index;
+				  
+					 Toast plouf = Toast.makeText(context,(CharSequence) item,Toast.LENGTH_LONG);
+					 plouf.show();
+			  }
+			});
+		 
+		    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, exemple);
 		    _liste.setAdapter(adapter);
-		
+		    _liste.setItemChecked(5, true);
+		    
 		 }
 	    setContentView(_layout);
 		
