@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -56,17 +57,19 @@ public class MainActivity extends Activity{
 		super.onCreate(savedInstanceState);
    	    context = this;
 		
-   	    
-   	     ArrayList<String> plouf = fetchTwitterPublicTimeline();
-   	    
-   	  Toast plaf = Toast.makeText(context,(CharSequence) plouf.toString(),Toast.LENGTH_LONG);
-   	     plaf.show();
    	     
+   	 Integer plouf = Integer.valueOf(30);
+   	 
+   	   new ATtest().execute(plouf,null,null);
    	    
+//   	  Toast plaf = Toast.makeText(context,plif.toString(),Toast.LENGTH_LONG);
+//   	     plaf.show();
+   	     
+  	    
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
-	    _liste = (ListView) _layout.findViewById(R.id.listView1);
+		/* 	    _liste = (ListView) _layout.findViewById(R.id.listView1);
 		_liste.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		 
 		//Population de la liste
@@ -97,7 +100,7 @@ public class MainActivity extends Activity{
 		    _liste.setAdapter(adapter);
 		    	
 		    
-		    
+	*/	    
 	    setContentView(_layout);
 		
 	}
@@ -139,5 +142,28 @@ public class MainActivity extends Activity{
 	        }
 	        return listItems;
 	    }
-	
+
+private class ATtest extends AsyncTask<Integer,Void,Integer>{
+
+			private Integer _number;
+			
+			@Override
+			protected Integer doInBackground(Integer... parIntegers) {
+				//Integer locMyNumber = parIntegers[0];
+				
+				_number = parIntegers[0] + 5;
+				return _number;
+			}
+
+			@Override
+			protected void onPostExecute(Integer parInteger) {
+				  Toast plaf = Toast.makeText(context,_number.toString(),Toast.LENGTH_LONG);
+		   	     plaf.show();
+			}
+			
+		}	 
+	 
+	 
 }
+
+
