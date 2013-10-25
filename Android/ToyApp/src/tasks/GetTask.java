@@ -13,11 +13,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class GetTask extends AsyncTask<String, String, String> {
 
@@ -64,15 +65,28 @@ public class GetTask extends AsyncTask<String, String, String> {
 
 		
 		/*Use simple Json
-		 * 				JSONArray ja = new JSONArray(line);
+		  				JSONArray ja = new JSONArray(line);
 				for (int i = 0; i < ja.length(); i++) {
 					JSONObject jo = (JSONObject) ja.get(i);
 					listItems.add(jo.getString("text"));
 		 */
+		JSONParser locParser = new JSONParser();
+		JSONArray locCitiesJSONArray = null;
+		try {			
+			JSONObject locAnswerJSON = (JSONObject) locParser.parse(_responseString);
+		//TODO ICI récupérer les villes, les mettres dans une liste et la file à la listview	
+	//		locCitiesJSONArray = (JSONArray) locAnswerJSON.get("result");
+			
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+	//	JSONObject locJsonObject = ;
 		
-		
-		_listener.onTaskCompleted(_responseString);
+		_listener.onTaskCompleted(locCitiesJSONArray.toString());
 		
 //		String tmp  =locResponseString.toString();
 //		tmp.toString();
