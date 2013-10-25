@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
 
   <Identity
-    Name="e7b998ca-4784-4f75-a3ba-0d732efed92e"
+    Name="fc677c77-4e04-4ddf-b5dc-5febb2c9abb5"
     Version="1.0.0.0"
     Publisher="CN=Vincent" />
 
