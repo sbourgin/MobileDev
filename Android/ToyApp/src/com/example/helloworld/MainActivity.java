@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity{
@@ -32,6 +33,7 @@ public class MainActivity extends Activity{
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
 	private Context context = null;
+	private TextView _resultRequest = null;
 	
 	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
@@ -58,17 +60,19 @@ public class MainActivity extends Activity{
    	    context = this;
 		
    	     
-   	 Integer plouf = Integer.valueOf(30);
    	 
-   	   new ATtest().execute(plouf,null,null);
-   	    
-//   	  Toast plaf = Toast.makeText(context,plif.toString(),Toast.LENGTH_LONG);
-//   	     plaf.show();
+   	   new ATtest().execute(null,null,null);
    	     
   	    
 		// On récupère notre layout par désérialisation. La méthode inflate retourne un View
 	    // C'est pourquoi on caste (on convertit) le retour de la méthode avec le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this, R.layout.activity_main, null);
+
+		
+		_resultRequest = (TextView) _layout.findViewById(R.id.resultRequest);
+		
+		
+		//A remettre en remettant la listView dans la vue
 		/* 	    _liste = (ListView) _layout.findViewById(R.id.listView1);
 		_liste.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 		 
@@ -143,23 +147,27 @@ public class MainActivity extends Activity{
 	        return listItems;
 	    }
 
-private class ATtest extends AsyncTask<Integer,Void,Integer>{
+private class ATtest extends AsyncTask<Void,Void,Void>{
 
 			private Integer _number;
-			
-			@Override
-			protected Integer doInBackground(Integer... parIntegers) {
-				//Integer locMyNumber = parIntegers[0];
-				
-				_number = parIntegers[0] + 5;
-				return _number;
-			}
 
 			@Override
-			protected void onPostExecute(Integer parInteger) {
-				  Toast plaf = Toast.makeText(context,_number.toString(),Toast.LENGTH_LONG);
+			protected Void doInBackground(Void... arg0) {
+				
+				return null;
+			}
+			
+			
+			@Override
+			protected void onPostExecute(Void parVoid) {
+				
+				_resultRequest.setText("Hi");
+				
+				Toast plaf = Toast.makeText(context,"hello",Toast.LENGTH_LONG);
 		   	     plaf.show();
 			}
+
+
 			
 		}	 
 	 
