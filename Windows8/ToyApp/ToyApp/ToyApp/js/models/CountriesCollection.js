@@ -8,42 +8,39 @@
         CountriesCollection: WinJS.Class.define(
 
             //constructor
-            function () {
+            function (data) {
+                if (data) {
+                    this._collection = data.collection ? data.collection : [];
+                }
             },
 
             //properties of the class
             {
-                collection: [],
+                _collection: [],
 
-                fetchAsync: function () {
+                collection: {
+                    get: function(){
+                        return this._collection;
+                    }
+                },
+
+                fetchAsync: function (onSuccess) {
                     var self = this;
 
-                    return new WinJS.Promise(function (onSuccess) {
-
-                        AJAX.Request.fetchAsync("countries", {}).then(
-                            function complete(countries) {
-                                for (var i = 0 ; i < countries.length ; i++) {
-                                    self.collection.push({
-                                        key: countries[i],
-                                        name: CityAPI.CountriesCollection.countriesName[countries[i]]
-                                    });
-                                }
-
-                                onSuccess(self.collection);
+                    AJAX.Request.fetchAsync("countries", {},
+                        function(countries) {
+                            for (var i = 0, length = countries.length ; i < length ; i++) {                                
+                                self._collection.push(new CityAPI.Country({
+                                    key: countries[i]
+                                }));
                             }
-                        );
-                    });
+                        }
+                    );
                 },
             },
 
             //static methods
             {
-                countriesName: {
-                    'US': 'United States',
-                    'GB': 'Great Britain',
-                    'IE': 'Ireland',
-                    'NZ': 'New Zealand',
-                },
             }
         ),
     });

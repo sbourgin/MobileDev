@@ -8,33 +8,49 @@
 
     ui.Pages.define("/pages/split/split.html", {
 
-        _group: null,
-        /// <field type="WinJS.Binding.List" />
-        _items: null,
         _itemSelectionIndex: -1,
         _wasSingleColumn: false,
+
+        _countrySelected: null,
+        _citiesCollection: null,
+
+        _citiesArray: null,
 
         // This function is called to initialize the page.
         init: function (element, options) {
             // Store information about the group and selection that this page will
             // display.
-            this._group = Data.resolveGroupReference(options.groupKey);
-            this._items = Data.getItemsFromGroup(this._group);
+
+            this._countrySelected = options.country;
             this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
-            this.itemDataSource = this._items.dataSource;
+
+            this._citiesArray = new WinJS.Binding.List();
+            this._citiesCollection = new CityAPI.CitiesCollection({
+                country: this._countrySelected.key,
+                collection: this._citiesArray,
+            });
+
             this.selectionChanged = ui.eventHandler(this._selectionChanged.bind(this));
         },
 
         // This function is called whenever a user navigates to this page.
         ready: function (element, options) {
-            element.querySelector("header[role=banner] .pagetitle").textContent = this._group.title;
+            //bind listView HTML element to our list
+            var citiesList = document.getElementById("citiesList");
+            citiesList.winControl.itemDataSource = this._citiesArray.dataSource;
+
+            for (var i = 0 ; i < 3 ; i++) {
+                this._citiesCollection.fetchAsync();
+            }
+
+            element.querySelector("header[role=banner] .pagetitle").textContent = this._countrySelected.key;
 
             this._updateVisibility(element);
             if (this._isSingleColumn()) {
                 this._wasSingleColumn = true;
                 if (this._itemSelectionIndex >= 0) {
                     // For single-column detail view, load the article.
-                    binding.processAll(element.querySelector(".articlesection"), this._items.getAt(this._itemSelectionIndex));
+                    binding.processAll(element.querySelector(".articlesection"), this._citiesArray.getAt(this._itemSelectionIndex));
                 }
             } else {
                 // If this page has a selectionIndex, make that selection
@@ -45,7 +61,8 @@
         },
 
         unload: function () {
-            this._items.dispose();
+            //this._items.dispose();
+            //if(this._citiesArray) this._citiesArray.dispose();
         },
 
         updateLayout: function (element) {
@@ -69,12 +86,12 @@
                     // If the app has snapped into a single-column detail view,
                     // add the single-column list view to the backstack.
                     nav.history.current.state = {
-                        groupKey: this._group.key,
+                        country: this._countrySelected,
                         selectedIndex: this._itemSelectionIndex
                     };
                     nav.history.backStack.push({
                         location: "/pages/split/split.html",
-                        state: { groupKey: this._group.key }
+                        state: { country: this._countrySelected }
                     });
                     element.querySelector(".articlesection").focus();
                 } else {
@@ -119,7 +136,7 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/split.html", { groupKey: this._group.key, selectedIndex: this._itemSelectionIndex });
+                            nav.navigate("/pages/split/split.html", { country: this._countrySelected, selectedIndex: this._itemSelectionIndex });
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.

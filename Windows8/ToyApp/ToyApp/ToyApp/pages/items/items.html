@@ -11,17 +11,16 @@
 
     <link href="/css/default.css" rel="stylesheet" />
     <link href="/pages/items/items.css" rel="stylesheet" />
-    <script src="/js/data.js"></script>
     <script src="/pages/items/items.js"></script>
 </head>
 <body>
     <!-- This template is used to display each item in the ListView declared below. -->
     <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
         <div class="item">
-            <img class="item-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
+            <img class="item-image" src="#" data-win-bind="src: picture; alt: key" />
             <div class="item-overlay">
-                <h4 class="item-title" data-win-bind="textContent: title"></h4>
-                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: subtitle"></h6>
+                <h4 class="item-title" data-win-bind="textContent: key"></h4>
+                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: name"></h6>
             </div>
         </div>
     </div>
