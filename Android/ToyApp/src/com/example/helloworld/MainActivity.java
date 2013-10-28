@@ -99,7 +99,8 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 				locMagicNumer.toString(), Toast.LENGTH_SHORT);
 		locToast.show();	
 		
-		
+		_citiesAdaptater.add(locMagicNumer.toString());
+		_citiesAdaptater.notifyDataSetChanged();
 		
 		
 /*		

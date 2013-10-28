@@ -38,11 +38,13 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 //				displayString, Toast.LENGTH_SHORT);
 		//locToast.show();
 		
+		Integer locCount = Integer.valueOf(parListView.getCount());
 		
-		if(false == _isUpdating) {
+		
+	//	if(false == _isUpdating) {
 			_isUpdating = true;
-			new CitiesListManager(_contextParent).execute((Void)null);
-		}
+			new CitiesListManager(_contextParent, locCount).execute((Void)null);
+	//	}
 		
 		
 		 
