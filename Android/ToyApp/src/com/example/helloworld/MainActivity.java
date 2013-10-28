@@ -93,6 +93,16 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
+		Integer locMagicNumer = (Integer) parObject;
+		
+		Toast locToast = Toast.makeText(_context,
+				locMagicNumer.toString(), Toast.LENGTH_SHORT);
+		locToast.show();	
+		
+		
+		
+		
+/*		
 		if (parObject == null) {
 			Toast locToast = Toast.makeText(_context,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
@@ -105,10 +115,10 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 				_citiesAdaptater.notifyDataSetChanged();
 				
 			}
-			
+*/			
 
 		}
 
-	}
+	
 
 }

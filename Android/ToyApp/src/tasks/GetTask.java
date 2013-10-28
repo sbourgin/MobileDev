@@ -65,7 +65,7 @@ public class GetTask extends AsyncTask<String, String, String> {
 
 	@Override
 	protected void onPostExecute(String parVoid) {
-
+/*
 		boolean isCitiesListSucess = true;
 		JSONParser locParser = new JSONParser();
 		JSONArray locCitiesJSONArray = null;
@@ -95,7 +95,7 @@ public class GetTask extends AsyncTask<String, String, String> {
 		} else {
 			_listener.onTaskCompleted(null);
 		}
-
+*/
 	}
 
 }
