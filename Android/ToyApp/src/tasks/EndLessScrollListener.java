@@ -9,7 +9,7 @@ import android.widget.AbsListView.OnScrollListener;
 public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted {
 
 	private Context _contextParent = null;
-	private boolean _isUpdating = false;
+	private Boolean _isUpdating = Boolean.valueOf(false);
 	
 	
 	public EndLessScrollListener(Context parContextParent) {
@@ -38,13 +38,17 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 //				displayString, Toast.LENGTH_SHORT);
 		//locToast.show();
 		
-		Integer locCount = Integer.valueOf(parListView.getCount());
 		
 		
-	//	if(false == _isUpdating) {
-			_isUpdating = true;
-			new CitiesListManager(_contextParent, locCount).execute((Void)null);
-	//	}
+		synchronized (this) {
+			if(false == _isUpdating) {
+				_isUpdating = Boolean.valueOf(true);
+				Integer locCount = Integer.valueOf(parListView.getCount());
+				new CitiesListManager(_contextParent, this, "ie", locCount).execute((Void)null); //TODO ne pas mettre le code pays en dur
+			
+			}
+		
+		}
 		
 		
 		 
@@ -60,6 +64,8 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
+		_isUpdating = Boolean.valueOf(false);
+		
 	}
 	
 	
