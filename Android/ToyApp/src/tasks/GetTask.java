@@ -91,7 +91,7 @@ public class GetTask extends AsyncTask<String, String, String> {
 		}
 
 		if (isCitiesListSucess) {
-			_listener.onTaskCompleted(locCitiesList.toString());
+			_listener.onTaskCompleted(locCitiesList);
 		} else {
 			_listener.onTaskCompleted(null);
 		}
