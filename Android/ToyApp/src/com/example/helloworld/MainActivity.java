@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.OnTaskCompleted;
+import tasks.EndLessScrollListener;
 import tasks.GetTask;
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +23,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
-	private Context context = null;
+	private Context _context = null;
 	private TextView _resultRequest = null;
 	private ArrayAdapter<String> _citiesAdaptater = null;  //TODO Improve : mettre un objet city et afficher plus d'informations dessus
 
@@ -42,7 +43,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = this;
+		_context = this;
 
 		new GetTask(this).execute();
 
@@ -50,7 +51,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		// retourne un View
 		// C'est pourquoi on caste (on convertit) le retour de la méthode avec
 		// le vrai type de notre layout, c'est-à-dire RelativeLayout
-		_layout = (RelativeLayout) RelativeLayout.inflate(this,
+		_layout = (RelativeLayout) RelativeLayout.inflate(_context,
 				R.layout.activity_main, null);
 
 //		_resultRequest = (TextView) _layout.findViewById(R.id.resultRequest);
@@ -72,7 +73,9 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		         
 		    _citiesAdaptater = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exemple);
 		    _liste.setAdapter(_citiesAdaptater);
-		
+		    _liste.setOnScrollListener(new EndLessScrollListener(_context));
+		    
+		    
 		 }
 
 		 
@@ -91,7 +94,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	public void onTaskCompleted(Object parObject) {
 
 		if (parObject == null) {
-			Toast locToast = Toast.makeText(context,
+			Toast locToast = Toast.makeText(_context,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
 			locToast.show();
 		} else {
@@ -99,9 +102,11 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			
 			for(String locCity:locCitiesList) {
 				_citiesAdaptater.add(locCity);
+				_citiesAdaptater.notifyDataSetChanged();
+				
 			}
 			
-			
+
 		}
 
 	}
