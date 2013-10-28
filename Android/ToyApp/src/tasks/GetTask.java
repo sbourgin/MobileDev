@@ -4,6 +4,8 @@ import interfaces.OnTaskCompleted;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -12,7 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -72,12 +74,24 @@ public class GetTask extends AsyncTask<String, String, String> {
 		 */
 		JSONParser locParser = new JSONParser();
 		JSONArray locCitiesJSONArray = null;
+		List<String> locCitiesList = new ArrayList<String>();
+		
 		try {			
 			JSONObject locAnswerJSON = (JSONObject) locParser.parse(_responseString);
-		//TODO ICI récupérer les villes, les mettres dans une liste et la file à la listview	
-	//		locCitiesJSONArray = (JSONArray) locAnswerJSON.get("result");
+				
+			locCitiesJSONArray = (JSONArray) locAnswerJSON.get("result");
+			
+			for(int i=0; i<locCitiesJSONArray.size(); i++) {
+				
+				JSONObject locCityJSON = (JSONObject) locCitiesJSONArray.get(i);
+				String locCityName = (String) locCityJSON.get("city");
+				locCitiesList.add(locCityName);
+				
+			}
 			
 			
+			
+			System.out.println("plouf");
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -86,7 +100,9 @@ public class GetTask extends AsyncTask<String, String, String> {
 		
 	//	JSONObject locJsonObject = ;
 		
-		_listener.onTaskCompleted(locCitiesJSONArray.toString());
+		
+		
+		_listener.onTaskCompleted(locCitiesList.toString());
 		
 //		String tmp  =locResponseString.toString();
 //		tmp.toString();
