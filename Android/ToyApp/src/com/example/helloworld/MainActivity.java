@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTaskCompleted {
 
@@ -18,8 +19,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private ListView _liste = null;
 	private Context context = null;
 	private TextView _resultRequest = null;
-// Use to wrap data	ArrayAdapter<Object> city = new ArrayAdapter<Object>();
-	
+	// Use to wrap data ArrayAdapter<Object> city = new ArrayAdapter<Object>();
 
 	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
@@ -90,9 +90,16 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		String locString = (String) parObject;
-		_resultRequest.setText(locString);
-	}
 
+		if (parObject == null) {
+			Toast locToast = Toast.makeText(context,
+					"Error when retrieving cities", Toast.LENGTH_LONG);
+			locToast.show();
+		} else {
+			String locString = (String) parObject;
+			_resultRequest.setText(locString);
+		}
+
+	}
 
 }

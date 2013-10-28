@@ -26,22 +26,23 @@ public class GetTask extends AsyncTask<String, String, String> {
 
 	String _responseString = null;
 	OnTaskCompleted _listener = null;
-	
+
 	public GetTask(Context parContext) {
 		_listener = (OnTaskCompleted) parContext;
 	}
-	
+
 	@Override
 	protected String doInBackground(String... arg0) {
 
-		//http://stackoverflow.com/questions/3505930/make-an-http-request-with-android
-		
+		// http://stackoverflow.com/questions/3505930/make-an-http-request-with-android
+
 		HttpClient locHttpclient = new DefaultHttpClient();
 		HttpResponse locHttpResponse;
 
 		try {
-			locHttpResponse = locHttpclient.execute(new HttpGet(
-					"http://honey.computing.dcu.ie/city/cities.php?id=34&cn=ie"));
+			locHttpResponse = locHttpclient
+					.execute(new HttpGet(
+							"http://honey.computing.dcu.ie/city/cities.php?id=34&cn=ie"));
 			StatusLine locStatusLine = locHttpResponse.getStatusLine();
 			if (locStatusLine.getStatusCode() == HttpStatus.SC_OK) {
 				ByteArrayOutputStream locOut = new ByteArrayOutputStream();
@@ -65,51 +66,36 @@ public class GetTask extends AsyncTask<String, String, String> {
 	@Override
 	protected void onPostExecute(String parVoid) {
 
-		
-		/*Use simple Json
-		  				JSONArray ja = new JSONArray(line);
-				for (int i = 0; i < ja.length(); i++) {
-					JSONObject jo = (JSONObject) ja.get(i);
-					listItems.add(jo.getString("text"));
-		 */
+		boolean isCitiesListSucess = true;
 		JSONParser locParser = new JSONParser();
 		JSONArray locCitiesJSONArray = null;
 		List<String> locCitiesList = new ArrayList<String>();
-		
-		try {			
-			JSONObject locAnswerJSON = (JSONObject) locParser.parse(_responseString);
-				
+
+		try {
+			JSONObject locAnswerJSON = (JSONObject) locParser
+					.parse(_responseString);
+
 			locCitiesJSONArray = (JSONArray) locAnswerJSON.get("result");
-			
-			for(int i=0; i<locCitiesJSONArray.size(); i++) {
-				
+
+			for (int i = 0; i < locCitiesJSONArray.size(); i++) {
+
 				JSONObject locCityJSON = (JSONObject) locCitiesJSONArray.get(i);
 				String locCityName = (String) locCityJSON.get("city");
 				locCitiesList.add(locCityName);
-				
-			}
-			
-			
-			
-			System.out.println("plouf");
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	//	JSONObject locJsonObject = ;
-		
-		
-		
-		_listener.onTaskCompleted(locCitiesList.toString());
-		
-//		String tmp  =locResponseString.toString();
-//		tmp.toString();
-//		_resultRequest.setText(locResponseString);
 
-//		Toast plaf = Toast.makeText(context, "hello", Toast.LENGTH_LONG);
-//		plaf.show();
+			}
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+			isCitiesListSucess = false;
+		}
+
+		if (isCitiesListSucess) {
+			_listener.onTaskCompleted(locCitiesList.toString());
+		} else {
+			_listener.onTaskCompleted(null);
+		}
+
 	}
 
 }
