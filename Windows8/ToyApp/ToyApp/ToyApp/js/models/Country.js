@@ -9,16 +9,45 @@
 
             //constructor
             function (data) {
-                this.name = data.name;
+                if (data && data.key) {
+                    this._key = data.key;
+                    this._name = CityAPI.Country.countriesName[this.key];
+                }
             },
 
             //properties of the class
             {
-                name: '',
+                _key: '',
+                _name: '',
+                _picture: 'images/country.png',
+
+                key: {
+                    get: function () {
+                        return this._key;
+                    }
+                },
+
+                name: {
+                    get: function () {
+                        return this._name;
+                    }
+                },
+
+                picture: {
+                    get: function () {
+                        return this._picture;
+                    }
+                },
             },
 
             //static methods
             {
+                countriesName: {
+                    'US': 'United States',
+                    'GB': 'Great Britain',
+                    'IE': 'Ireland',
+                    'NZ': 'New Zealand',
+                },
             }
         ),
     });

@@ -9,27 +9,76 @@
 
             //constructor
             function (data) {
-                this.id = data.id;
-                this.country = data.country;
-                this.region = data.region;
-                this.city = data.city;
-                this.latitude = data.latitude;
-                this.longitude = data.longitude;
-                this.comment = data.comment;
+                if (data) {
+                    this._id         = data.id           ? data.id           : '';
+                    this._country    = data.country      ? data.country      : '';
+                    this._region     = data.region       ? data.region       : '';
+                    this._city       = data.city         ? data.city         : '';
+                    this._latitude   = data.latitude     ? data.latitude     : '';
+                    this._longitude  = data.longitude    ? data.longitude    : '';
+                    this._comment    = data.comment      ? data.comment      : '';
+                }
             },
 
             //properties of the class
             {
-                id: '', 
-                country: '', 
-                region: '', 
-                city: '', 
-                latitude: '', 
-                longitude: '', 
-                comment: '',
-            },
+                _id: '', 
+                _country: '', 
+                _region: '', 
+                _city: '', 
+                _latitude: '', 
+                _longitude: '', 
+                _comment: '',
+                _picture: 'images/city.png',
 
-            
+                id: {
+                    get: function () {
+                        return this._id;
+                    },
+                },
+
+                country: {
+                    get: function () {
+                        return this._country;
+                    },
+                },
+
+                region: {
+                    get: function () {
+                        return this._region;
+                    },
+                },
+
+                city: {
+                    get: function () {
+                        return this._city;
+                    },
+                },
+
+                latitude: {
+                    get: function () {
+                        return this._latitude;
+                    },
+                },
+
+                longitude: {
+                    get: function () {
+                        return this._longitude;
+                    },
+                },
+
+                comment: {
+                    get: function () {
+                        return this._comment;
+                    },
+                },
+
+                picture: {
+                    get: function () {
+                        return this._picture;
+                    },
+                },
+            },
 
             //static methods
             {

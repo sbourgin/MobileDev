@@ -11,17 +11,16 @@
 
     <link href="/css/default.css" rel="stylesheet" />
     <link href="/pages/split/split.css" rel="stylesheet" />
-    <script src="/js/data.js"></script>
     <script src="/pages/split/split.js"></script>
 </head>
 <body>
     <!-- This template is used to display each item in the ListView declared below. -->
     <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
         <div class="item">
-            <img class="item-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
+            <img class="item-image" src="#" data-win-bind="src: picture; alt: city" />
             <div class="item-info">
-                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: title"></h3>
-                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: subtitle"></h6>
+                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: city"></h3>
+                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: region"></h6>
             </div>
         </div>
     </div>
@@ -35,13 +34,12 @@
             </h1>
         </header>
         <div class="itemlistsection" aria-label="List column">
-            <div class="itemlist win-selectionstylefilled" aria-label="List of this group's items" data-win-control="WinJS.UI.ListView" data-win-options="{
+            <div id="citiesList" class="itemlist win-selectionstylefilled" aria-label="List of this country's cities" data-win-control="WinJS.UI.ListView" data-win-options="{
                     layout: {type: WinJS.UI.ListLayout},
                     currentItem: {type: WinJS.UI.ObjectType.item, index: 0, hasFocus: true},
                     selectionMode: 'single',
                     swipeBehavior: 'none',
                     tapBehavior: 'toggleSelect',
-                    itemDataSource: select('.pagecontrol').winControl.itemDataSource,
                     itemTemplate: select('.itemtemplate'),
                     onselectionchanged: select('.pagecontrol').winControl.selectionChanged
                 }">
@@ -51,12 +49,12 @@
             <article>
                 <header class="header">
                     <div class="text">
-                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: title"></h2>
-                        <h4 class="article-subtitle" data-win-bind="textContent: subtitle"></h4>
+                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: city"></h2>
+                        <h4 class="article-subtitle" data-win-bind="textContent: region"></h4>
                     </div>
-                    <img class="article-image" src="#" data-win-bind="src: backgroundImage; alt: title" />
+                    <img class="article-image" src="#" data-win-bind="src: picture; alt: city" />
                 </header>
-                <div class="article-content" data-win-bind="innerHTML: content"></div>
+                <div class="article-content" data-win-bind="innerHTML: comment"></div>
             </article>
         </div>
     </div>
