@@ -30,6 +30,7 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/cities.php?";
 	private String _responseString = null;
 	private String _countryCode = null;
+	private String _debugString = null; // TODO delete
 
 	public CitiesListManager(Context parContext, EndLessScrollListener parScrollListener, String parCountryCode, Integer parNumber) {
 		_listener = (OnTaskCompleted) parContext;
@@ -55,6 +56,8 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 
 		StringBuilder locUrl = new StringBuilder();
 		locUrl.append(_httpLink).append("id=").append(_magicNumber).append("&cn=").append(_countryCode); 
+		
+		_debugString = locUrl.toString();
 		
 		try {
 			locHttpResponse = locHttpclient
@@ -109,6 +112,9 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 			isCitiesListSucess = false;
 		}
 
+		
+		_listener.setDebugTextView(_debugString);
+		
 		if (isCitiesListSucess) {
 			_listener.onTaskCompleted(locCitiesList);
 		} else {

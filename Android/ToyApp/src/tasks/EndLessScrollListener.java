@@ -44,7 +44,7 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 			if(false == _isUpdating) {
 				_isUpdating = Boolean.valueOf(true);
 				Integer locCount = Integer.valueOf(parListView.getCount());
-				new CitiesListManager(_contextParent, this, "ie", locCount).execute((Void)null); //TODO ne pas mettre le code pays en dur
+				new CitiesListManager(_contextParent, this, "us", locCount).execute((Void)null); //TODO ne pas mettre le code pays en dur
 			
 			}
 		
@@ -65,6 +65,13 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 	public void onTaskCompleted(Object parObject) {
 
 		_isUpdating = Boolean.valueOf(false);
+		
+	}
+
+
+	@Override //TODO DELETE 
+	public void setDebugTextView(String parTextToDisplay) {
+		// TODO Auto-generated method stub
 		
 	}
 	

@@ -24,7 +24,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
 	private Context _context = null;
-	private TextView _resultRequest = null;
+	private TextView _debugTextView = null;  //TODO delete
 	private ArrayAdapter<String> _citiesAdaptater = null;  //TODO Improve : mettre un objet city et afficher plus d'informations dessus
 
 	private OnClickListener _clickListener = new OnClickListener() {
@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		super.onCreate(savedInstanceState);
 		_context = this;
 
-		new GetTask(this).execute();
+		
 
 		// On récupère notre layout par désérialisation. La méthode inflate
 		// retourne un View
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_layout = (RelativeLayout) RelativeLayout.inflate(_context,
 				R.layout.activity_main, null);
 
-//		_resultRequest = (TextView) _layout.findViewById(R.id.resultRequest);
+		_debugTextView = (TextView) _layout.findViewById(R.id.debugTextView);
 
 		// A remettre en remettant la listView dans la vue
 		
@@ -70,7 +70,9 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			 exemple.add("Item" + i);
 		 }
 		
-		         
+		   
+	
+		 
 		    _citiesAdaptater = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, exemple);
 		    _liste.setAdapter(_citiesAdaptater);
 		    _liste.setOnScrollListener(new EndLessScrollListener(_context));
@@ -112,7 +114,10 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		} else {
 			List<String> locCitiesList = (List<String>) parObject;
 			
+		//	_citiesAdaptater.clear();
+			
 			for(String locCity:locCitiesList) {
+				
 				_citiesAdaptater.add(locCity);
 				_citiesAdaptater.notifyDataSetChanged();
 				
@@ -121,6 +126,10 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 		}
 
+	}
+	
+	public void setDebugTextView(String parTextToDisplay) {
+		_debugTextView.setText(parTextToDisplay);
 	}
 
 }
