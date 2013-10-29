@@ -3,13 +3,14 @@ package tasks;
 import interfaces.OnTaskCompleted;
 import android.content.Context;
 import android.widget.AbsListView;
-import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.Toast;
 
 public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted {
 
 	private Context _contextParent = null;
 	private Boolean _isUpdating = Boolean.valueOf(false);
+	private int _lastVisiblePosition = 0;
 	
 	
 	public EndLessScrollListener(Context parContextParent) {
@@ -19,10 +20,7 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 	
 	@Override
 	public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-		
-		
-
-		
+			
 	}
 
 	@Override
@@ -34,11 +32,22 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 		
 //		String displayString = "Scroling, last visible " + lastVisible + " / " + count;
 		
-//		Toast locToast = Toast.makeText(_contextParent,
-//				displayString, Toast.LENGTH_SHORT);
-		//locToast.show();
+		int locNewPosition = parListView.getLastVisiblePosition();
+		String locMessage = null;
+		if(_lastVisiblePosition < locNewPosition) {
+			locMessage = "down";
+		} else {
+			locMessage = "up";
+		}
 		
 		
+		Toast locToast = Toast.makeText(_contextParent,
+				locMessage, Toast.LENGTH_SHORT);
+		locToast.show();
+		
+		_lastVisiblePosition = locNewPosition;
+		
+		/*
 		
 		synchronized (this) {
 			if(false == _isUpdating) {
@@ -50,7 +59,7 @@ public class EndLessScrollListener implements OnScrollListener, OnTaskCompleted 
 		
 		}
 		
-		
+		*/
 		 
 		
 		

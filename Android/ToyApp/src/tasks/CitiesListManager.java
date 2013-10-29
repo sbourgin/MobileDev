@@ -20,7 +20,6 @@ import org.json.simple.parser.ParseException;
 import interfaces.OnTaskCompleted;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Looper;
 
 public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 
