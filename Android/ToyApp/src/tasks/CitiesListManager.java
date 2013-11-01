@@ -5,6 +5,8 @@ import interfaces.OnTaskCompleted;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.City;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -58,7 +60,7 @@ public class CitiesListManager implements OnTaskCompleted {
 		boolean isCitiesListSucess = true;
 		JSONParser locParser = new JSONParser();
 		JSONArray locCitiesJSONArray = null;
-		List<String> locCitiesList = new ArrayList<String>();
+		List<City> locCitiesList = new ArrayList<City>();
 
 		try {
 			JSONObject locAnswerJSON = (JSONObject) locParser
@@ -69,8 +71,11 @@ public class CitiesListManager implements OnTaskCompleted {
 			for (int i = 0; i < locCitiesJSONArray.size(); i++) {
 
 				JSONObject locCityJSON = (JSONObject) locCitiesJSONArray.get(i);
-				String locCityName = (String) locCityJSON.get("city");
-				locCitiesList.add(locCityName);
+				
+				City locCity = new City();
+				locCity.fillStates(locCityJSON);
+				
+			    locCitiesList.add(locCity);
 
 			}
 

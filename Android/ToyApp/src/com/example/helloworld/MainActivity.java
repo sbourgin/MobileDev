@@ -3,6 +3,7 @@ package com.example.helloworld;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.City;
 import interfaces.OnTaskCompleted;
 import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
@@ -67,7 +68,9 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			exemple.add("Item" + i);
 		}
 
-		_citiesAdaptater = new ArrayAdapter<String>(this,
+		
+		//TODO Extends baseAdapter
+		_citiesAdaptater = new ArrayAdapter<String>(this,  
 				android.R.layout.simple_list_item_1, exemple);
 		_liste.setAdapter(_citiesAdaptater);
 		
@@ -94,11 +97,12 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 					"Error when retrieving cities", Toast.LENGTH_LONG);
 			locToast.show();
 		} else {
-			List<String> locCitiesList = (List<String>) parObject;
+			List<City> locCitiesList = (List<City>) parObject;
 
-			for (String locCity : locCitiesList) {
-				_citiesAdaptater.add(locCity);
+			for (City locCity : locCitiesList) {
+				_citiesAdaptater.add(locCity.get_cityName());
 				_citiesAdaptater.notifyDataSetChanged();
+				
 			}
 
 		}
