@@ -1,12 +1,14 @@
 package model;
 
+import interfaces.Displayable;
+
 import org.json.simple.JSONObject;
 
 
 /*
  * The aim of this class is to describe a city and all the informations it's has
  */
-public class City {
+public class City implements Displayable {
 	
 	private Long _id=null;
 	private String _country=null;
@@ -62,6 +64,12 @@ public class City {
 	}
 	public String get_comment() {
 		return _comment;
+	}
+
+	@Override
+	public String getNameToDisplay() {
+		
+		return get_cityName();
 	}
 	
 	

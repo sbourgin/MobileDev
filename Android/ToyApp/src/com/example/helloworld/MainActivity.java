@@ -3,17 +3,16 @@ package com.example.helloworld;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.SizeLimitedAdapter;
 import model.City;
 import interfaces.OnTaskCompleted;
 import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
 	private TextView _debugTextView = null; // TODO delete
-	private ArrayAdapter<String> _citiesAdaptater = null; // TODO Improve :
+	private SizeLimitedAdapter<City> _citiesAdaptater = null; // TODO Improve :
 															// mettre un objet
 															// city et afficher
 															// plus
@@ -70,8 +69,11 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 		
 		//TODO Extends baseAdapter
-		_citiesAdaptater = new ArrayAdapter<String>(this,  
+	/*	_citiesAdaptater = new ArrayAdapter<String>(this,  
 				android.R.layout.simple_list_item_1, exemple);
+	*/	
+		_citiesAdaptater = new SizeLimitedAdapter<City>(200);
+		
 		_liste.setAdapter(_citiesAdaptater);
 		
 		CitiesListManager locCitiesListManager = new CitiesListManager(this);
@@ -92,6 +94,8 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	@Override
 	public void onTaskCompleted(Object parObject) {
 	
+		
+		
 		if (parObject == null) {
 			Toast locToast = Toast.makeText(this,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
@@ -100,7 +104,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			List<City> locCitiesList = (List<City>) parObject;
 
 			for (City locCity : locCitiesList) {
-				_citiesAdaptater.add(locCity.get_cityName());
+				_citiesAdaptater.addLast(locCity);  //TODO gérer si c'est un scroll up or Down !!
 				_citiesAdaptater.notifyDataSetChanged();
 				
 			}
