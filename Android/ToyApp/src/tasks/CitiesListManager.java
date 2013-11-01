@@ -73,9 +73,10 @@ public class CitiesListManager implements OnTaskCompleted {
 				JSONObject locCityJSON = (JSONObject) locCitiesJSONArray.get(i);
 				
 				City locCity = new City();
-				locCity.fillStates(locCityJSON);
-				
-			    locCitiesList.add(locCity);
+				boolean isCityValid = locCity.fillStates(locCityJSON);
+			    if(isCityValid) {
+			    	locCitiesList.add(locCity);
+			    }
 
 			}
 
