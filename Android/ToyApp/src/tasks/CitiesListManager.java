@@ -14,7 +14,7 @@ import android.content.Context;
 
 public class CitiesListManager implements OnTaskCompleted {
 
-	private int _magicNumber = 10;
+	private int _lastBottomIdFetch = 0;
 	private OnTaskCompleted _listener = null;
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/cities.php?";
 	private String _countryCode = "us";
@@ -27,15 +27,16 @@ public class CitiesListManager implements OnTaskCompleted {
 
 /**
  * Call this method to update Cities List. 
- * @param isScrollDown : is the user ask to scroll down. If it's false it mean the user want to go up
+ * @param isScrollingDown : is the user ask to scroll down. If it's false it mean the user want to go up
  */
 	public void updateCitiesList(boolean isScrollingDown) {	
 		
 		synchronized (_isUpdating) {
 			if(false == _isUpdating) {
+				
 				_isUpdating = Boolean.valueOf(true);
 				StringBuilder locUrl = new StringBuilder();
-				locUrl.append(_httpLink).append("id=").append(_magicNumber).append("&cn=").append(_countryCode);
+				locUrl.append(_httpLink).append("id=").append(_lastBottomIdFetch).append("&cn=").append(_countryCode);
 				new GetRESTTask(this).execute(locUrl.toString());
 			}
 		}
@@ -86,7 +87,7 @@ public class CitiesListManager implements OnTaskCompleted {
 			_listener.onTaskCompleted(null);
 		}
 		
-		
+		//TODO gérer la fin quand il n'y a plus de data à fetcher (max id atteint)
 	}
 
 

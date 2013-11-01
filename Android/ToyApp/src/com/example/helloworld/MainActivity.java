@@ -88,7 +88,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-
+	
 		if (parObject == null) {
 			Toast locToast = Toast.makeText(this,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
