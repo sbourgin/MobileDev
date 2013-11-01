@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.OnTaskCompleted;
+import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +22,6 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
-	private Context _context = null;
 	private TextView _debugTextView = null; // TODO delete
 	private ArrayAdapter<String> _citiesAdaptater = null; // TODO Improve :
 															// mettre un objet
@@ -46,13 +46,12 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		_context = this;
 
 		// On récupère notre layout par désérialisation. La méthode inflate
 		// retourne un View
 		// C'est pourquoi on caste (on convertit) le retour de la méthode avec
 		// le vrai type de notre layout, c'est-à-dire RelativeLayout
-		_layout = (RelativeLayout) RelativeLayout.inflate(_context,
+		_layout = (RelativeLayout) RelativeLayout.inflate(this,
 				R.layout.activity_main, null);
 
 		_debugTextView = (TextView) _layout.findViewById(R.id.debugTextView);
@@ -71,7 +70,10 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_citiesAdaptater = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, exemple);
 		_liste.setAdapter(_citiesAdaptater);
-		_liste.setOnScrollListener(new EndLessScrollListener(_context));
+		
+		CitiesListManager locCitiesListManager = new CitiesListManager(this);
+		
+		_liste.setOnScrollListener(new EndLessScrollListener(locCitiesListManager));
 
 		setContentView(_layout);
 
@@ -88,7 +90,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	public void onTaskCompleted(Object parObject) {
 
 		if (parObject == null) {
-			Toast locToast = Toast.makeText(_context,
+			Toast locToast = Toast.makeText(this,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
 			locToast.show();
 		} else {

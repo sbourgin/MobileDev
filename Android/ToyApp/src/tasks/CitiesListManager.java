@@ -1,92 +1,59 @@
 package tasks;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import interfaces.OnTaskCompleted;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import interfaces.OnTaskCompleted;
 import android.content.Context;
-import android.os.AsyncTask;
 
-public class CitiesListManager extends AsyncTask<Void, Void, Void> {
+public class CitiesListManager implements OnTaskCompleted {
 
-	private Integer _magicNumber = null;
+	private int _magicNumber = 10;
 	private OnTaskCompleted _listener = null;
-	private EndLessScrollListener _endLessScrollListener = null;
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/cities.php?";
-	private String _responseString = null;
-	private String _countryCode = null;
-	private String _debugString = null; // TODO delete
+	private String _countryCode = "us";
+	private Boolean _isUpdating = Boolean.valueOf(false);
 
-	public CitiesListManager(Context parContext, EndLessScrollListener parScrollListener, String parCountryCode, Integer parNumber) {
+	public CitiesListManager(Context parContext) {
 		_listener = (OnTaskCompleted) parContext;
-		_magicNumber = parNumber;
-		_endLessScrollListener = parScrollListener;
-		_countryCode = parCountryCode;
 	}
 
 
-
-	@Override
-	protected Void doInBackground(Void... params) {	
+/**
+ * Call this method to update Cities List. 
+ * @param isScrollDown : is the user ask to scroll down. If it's false it mean the user want to go up
+ */
+	public void updateCitiesList(boolean isScrollingDown) {	
 		
-		_magicNumber++;
-
-		_endLessScrollListener.onTaskCompleted(null);
-		
-		
-		// http://stackoverflow.com/questions/3505930/make-an-http-request-with-android
-
-		HttpClient locHttpclient = new DefaultHttpClient();
-		HttpResponse locHttpResponse;
-
-		StringBuilder locUrl = new StringBuilder();
-		locUrl.append(_httpLink).append("id=").append(_magicNumber).append("&cn=").append(_countryCode); 
-		
-		_debugString = locUrl.toString();
-		
-		try {
-			locHttpResponse = locHttpclient
-					.execute(new HttpGet(
-							locUrl.toString()));
-			StatusLine locStatusLine = locHttpResponse.getStatusLine();
-			if (locStatusLine.getStatusCode() == HttpStatus.SC_OK) {
-				ByteArrayOutputStream locOut = new ByteArrayOutputStream();
-				locHttpResponse.getEntity().writeTo(locOut);
-				locOut.close();
-				_responseString = locOut.toString();
-			} else {
-				// Closes the connection.
-				locHttpResponse.getEntity().getContent().close();
-				throw new IOException(locStatusLine.getReasonPhrase());
+		synchronized (_isUpdating) {
+			if(false == _isUpdating) {
+				_isUpdating = Boolean.valueOf(true);
+				StringBuilder locUrl = new StringBuilder();
+				locUrl.append(_httpLink).append("id=").append(_magicNumber).append("&cn=").append(_countryCode);
+				new GetRESTTask(this).execute(locUrl.toString());
 			}
-		} catch (ClientProtocolException e) {
-			// TODO Handle problems..
-		} catch (IOException e) {
-			// TODO Handle problems..
 		}
 
-		return null;
+		 
+		
+		//We get a call back with the OnTaskCompleted Method
+		
 		
 	
 	}
 	
-	@Override
-	protected void onPostExecute(Void parString) {
+	protected synchronized void updateCitiesList(String parString) {
 
+		synchronized (_isUpdating) {
+			_isUpdating = Boolean.valueOf(false);
+		}
+		
 		boolean isCitiesListSucess = true;
 		JSONParser locParser = new JSONParser();
 		JSONArray locCitiesJSONArray = null;
@@ -94,7 +61,7 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 
 		try {
 			JSONObject locAnswerJSON = (JSONObject) locParser
-					.parse(_responseString);
+					.parse(parString);
 
 			locCitiesJSONArray = (JSONArray) locAnswerJSON.get("result");
 
@@ -112,7 +79,6 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 		}
 
 		
-		_listener.setDebugTextView(_debugString);
 		
 		if (isCitiesListSucess) {
 			_listener.onTaskCompleted(locCitiesList);
@@ -121,6 +87,13 @@ public class CitiesListManager extends AsyncTask<Void, Void, Void> {
 		}
 		
 		
-	}	
+	}
+
+
+	@Override
+	public void onTaskCompleted(Object parObject) {
+		updateCitiesList((String) parObject);	
+	}
+
 
 }
