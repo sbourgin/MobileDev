@@ -1,19 +1,17 @@
 package com.example.helloworld;
 
-import java.util.ArrayList;
+import interfaces.OnTaskCompleted;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import model.SizeLimitedAdapter;
 import model.City;
-import interfaces.OnTaskCompleted;
+import model.SizeLimitedAdapter;
 import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,27 +22,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private RelativeLayout _layout = null;
 	private ListView _liste = null;
 	private TextView _debugTextView = null; // TODO delete
-	private SizeLimitedAdapter<City> _citiesAdaptater = null; // TODO Improve :
-																// mettre un
-																// objet
-																// city et
-																// afficher
-																// plus
-																// d'informations
-																// dessus
-
-	private OnClickListener _clickListener = new OnClickListener() {
-		@Override
-		public void onClick(View parView) {
-			/*
-			 * switch(parView.getId()) {
-			 * 
-			 * case R.id.buttonBold: //TODO TODO break; case R.id.buttonItalic:
-			 * break; case R.id.buttonUnderline: break; }
-			 */
-
-		}
-	};
+	private SizeLimitedAdapter<City> _citiesAdaptater = null; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
