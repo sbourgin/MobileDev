@@ -60,6 +60,10 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter { //T
 			    TextView textView = (TextView) rowView.findViewById(R.id.text1);
 			    textView.setText(_objectsList.get(parPosition).getNameToDisplay());
 		*/ 
+		
+		
+		//TODO You should make this comment visible in you UI.
+		
 		ViewHolder holder;   
 		if (parConvertView == null) { 
 			parConvertView = _inflater.inflate(R.layout.simple_list_item_1,parParent, false);

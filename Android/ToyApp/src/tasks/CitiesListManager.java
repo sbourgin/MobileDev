@@ -40,6 +40,8 @@ public class CitiesListManager implements OnTaskCompleted {
 		synchronized (_isUpdating) {
 			if (false == _isUpdating) {
 
+			 //TODO rajouter un check qui ne fetch les data que si nécessaire (on approche des derniers éléments affichés)
+				
 				_isUpdating = Boolean.valueOf(true);
 				StringBuilder locUrl = new StringBuilder();
 				locUrl.append(_httpLink).append("id=");
