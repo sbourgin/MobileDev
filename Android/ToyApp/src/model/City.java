@@ -76,6 +76,16 @@ public class City implements Displayable {
 		
 		return get_cityName();
 	}
+
+	@Override
+	public String getSubtitle() {
+		return _comment;
+	}
+
+	@Override
+	public long getIdOfItem() {
+		return _id;
+	}
 	
 	
 	
