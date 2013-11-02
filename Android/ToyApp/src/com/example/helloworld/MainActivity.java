@@ -1,6 +1,7 @@
 package com.example.helloworld;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import model.SizeLimitedAdapter;
@@ -24,11 +25,13 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private ListView _liste = null;
 	private TextView _debugTextView = null; // TODO delete
 	private SizeLimitedAdapter<City> _citiesAdaptater = null; // TODO Improve :
-															// mettre un objet
-															// city et afficher
-															// plus
-															// d'informations
-															// dessus
+																// mettre un
+																// objet
+																// city et
+																// afficher
+																// plus
+																// d'informations
+																// dessus
 
 	private OnClickListener _clickListener = new OnClickListener() {
 		@Override
@@ -60,25 +63,28 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 		_liste = (ListView) _layout.findViewById(R.id.listView1);
 
-		List<String> exemple = new ArrayList<String>();
-
+		LinkedList<City> locObjectsList = new LinkedList<City>();
+		
 		for (int i = 0; i < 50; i++) { // TODO delete et lancer un fetch data à
-										// l'init
-			exemple.add("Item" + i);
+			// l'init
+			City locCity = new City();
+			locCity.setCityName("Item" + i);
+			locObjectsList.addLast(locCity);
 		}
 
-		
-		//TODO Extends baseAdapter
-	/*	_citiesAdaptater = new ArrayAdapter<String>(this,  
-				android.R.layout.simple_list_item_1, exemple);
-	*/	
-		_citiesAdaptater = new SizeLimitedAdapter<City>(200);
-		
+		// TODO Extends baseAdapter
+		/*
+		 * _citiesAdaptater = new ArrayAdapter<String>(this,
+		 * android.R.layout.simple_list_item_1, exemple);
+		 */
+		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200, locObjectsList);
+
 		_liste.setAdapter(_citiesAdaptater);
-		
+
 		CitiesListManager locCitiesListManager = new CitiesListManager(this);
-		
-		_liste.setOnScrollListener(new EndLessScrollListener(locCitiesListManager));
+
+		_liste.setOnScrollListener(new EndLessScrollListener(
+				locCitiesListManager));
 
 		setContentView(_layout);
 
@@ -93,9 +99,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-	
-		
-		
+
 		if (parObject == null) {
 			Toast locToast = Toast.makeText(this,
 					"Error when retrieving cities", Toast.LENGTH_LONG);
@@ -104,16 +108,17 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			List<City> locCitiesList = (List<City>) parObject;
 
 			for (City locCity : locCitiesList) {
-				_citiesAdaptater.addLast(locCity);  //TODO gérer si c'est un scroll up or Down !!
+				_citiesAdaptater.addLast(locCity); // TODO gérer si c'est un
+													// scroll up or Down !!
 				_citiesAdaptater.notifyDataSetChanged();
-				
+
 			}
 
 		}
 
 	}
 
-	//TODO delete
+	// TODO delete
 	public void setDebugTextView(String parTextToDisplay) {
 		_debugTextView.setText(parTextToDisplay);
 	}
