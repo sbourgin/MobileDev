@@ -28,6 +28,12 @@ public class CitiesListManager implements OnTaskCompleted {
 		_listener = (OnTaskCompleted) parContext;
 	}
 
+	
+	public void initData() {
+		updateCitiesList(true);
+		
+	}
+	
 	/**
 	 * Call this method to update Cities List.
 	 * 
@@ -66,6 +72,8 @@ public class CitiesListManager implements OnTaskCompleted {
 		// We get a call back with the OnTaskCompleted Method
 
 	}
+	
+	
 
 	protected synchronized void updateCitiesList(String parString) {
 
@@ -130,5 +138,7 @@ public class CitiesListManager implements OnTaskCompleted {
 	public void onTaskCompleted(Object parObject) {
 		updateCitiesList((String) parObject);
 	}
+
+
 
 }

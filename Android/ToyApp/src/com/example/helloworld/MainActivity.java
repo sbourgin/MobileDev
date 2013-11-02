@@ -20,9 +20,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
-	private ListView _liste = null;
-	private TextView _debugTextView = null; // TODO delete
-	private SizeLimitedAdapter<City> _citiesAdaptater = null; 
+	private ListView _listeView = null;
+	private SizeLimitedAdapter<City> _citiesAdaptater = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +34,21 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_layout = (RelativeLayout) RelativeLayout.inflate(this,
 				R.layout.activity_main, null);
 
-		_debugTextView = (TextView) _layout.findViewById(R.id.debugTextView);
-
 		// A remettre en remettant la listView dans la vue
 
-		_liste = (ListView) _layout.findViewById(R.id.listView1);
+		_listeView = (ListView) _layout.findViewById(R.id.listView1);
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
-		
-		for (int i = 0; i < 50; i++) { // TODO delete et lancer un fetch data à
-			// l'init
-			City locCity = new City();
-			locCity.setCityName("Item" + i);
-			locObjectsList.addLast(locCity);
-		}
+		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
+				locObjectsList);
 
-		// TODO Extends baseAdapter
-		/*
-		 * _citiesAdaptater = new ArrayAdapter<String>(this,
-		 * android.R.layout.simple_list_item_1, exemple);
-		 */
-		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200, locObjectsList);
-
-		_liste.setAdapter(_citiesAdaptater);
+		_listeView.setAdapter(_citiesAdaptater);
 
 		CitiesListManager locCitiesListManager = new CitiesListManager(this);
 
-		_liste.setOnScrollListener(new EndLessScrollListener(
+		locCitiesListManager.initData();
+
+		_listeView.setOnScrollListener(new EndLessScrollListener(
 				locCitiesListManager));
 
 		setContentView(_layout);
@@ -94,11 +81,6 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 		}
 
-	}
-
-	// TODO delete
-	public void setDebugTextView(String parTextToDisplay) {
-		_debugTextView.setText(parTextToDisplay);
 	}
 
 }

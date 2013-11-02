@@ -44,10 +44,6 @@ public class City implements Displayable {
 		return true;
 	}
 	
-	//TODO DELETE
-	public void setCityName(String cityName) {
-		_cityName = cityName;
-	}
 
 	public Long get_id() {
 		return _id;
