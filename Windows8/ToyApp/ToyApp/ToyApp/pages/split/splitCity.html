@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>splitPage</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.2.0/css/ui-dark.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
+
+    <link href="/css/default.css" rel="stylesheet" />
+    <link href="/pages/split/split.css" rel="stylesheet" />
+    <script src="/pages/split/splitCity.js"></script>
+</head>
+<body>
+    <!-- This template is used to display each item in the ListView declared below. -->
+    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+        <div class="item">
+            <img class="item-image" src="#" data-win-bind="src: picture; alt: city" />
+            <div class="item-info">
+                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: city"></h3>
+                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: region"></h6>
+            </div>
+        </div>
+    </div>
+
+    <!-- The content that will be loaded and displayed. -->
+    <div class="splitpage fragment">
+        <header aria-label="Header content" role="banner">
+            <button data-win-control="WinJS.UI.BackButton"></button>
+            <h1 class="titlearea win-type-ellipsis">
+                <span class="pagetitle"></span>
+            </h1>
+        </header>
+        <div class="itemlistsection" aria-label="List column">
+            <div id="citiesList" class="itemlist win-selectionstylefilled" aria-label="List of this country's cities" data-win-control="WinJS.UI.ListView" data-win-options="{
+                    layout: {type: WinJS.UI.ListLayout},
+                    currentItem: {type: WinJS.UI.ObjectType.item, index: 0, hasFocus: true},
+                    selectionMode: 'single',
+                    swipeBehavior: 'none',
+                    tapBehavior: 'toggleSelect',
+                    itemTemplate: select('.itemtemplate'),
+                    onselectionchanged: select('.pagecontrol').winControl.selectionChanged
+                }">
+            </div>
+        </div>
+        <div class="articlesection" aria-atomic="true" aria-label="City detail column" aria-live="assertive">
+            <article>
+                <header class="header">
+                    <div class="text">
+                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: city"></h2>
+                        <h4 class="article-subtitle" data-win-bind="textContent: region"></h4>
+                    </div>
+                    <img class="article-image" src="#" data-win-bind="src: picture; alt: city" />
+                </header>
+                <div class="article-content" data-win-bind="innerHTML: comment"></div>
+                <input class="people-button" type="button" value="See People"/>
+            </article>
+        </div>
+    </div>
+</body>
+</html>

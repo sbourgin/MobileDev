@@ -10,8 +10,8 @@
             //constructor
             function (data) {
                 if (data && data.key) {
-                    this._key = data.key;
-                    this._name = CityAPI.Country.countriesName[this.key];
+                    this._key   = data.key;
+                    this._name  = CityAPI.Country.countriesName[this.key];
                 }
             },
 

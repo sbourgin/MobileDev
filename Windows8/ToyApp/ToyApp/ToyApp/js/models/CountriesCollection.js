@@ -10,32 +10,36 @@
             //constructor
             function (data) {
                 if (data) {
-                    this._collection = data.collection ? data.collection : [];
+                    this._items = data.items ? data.items : [];
                 }
             },
 
             //properties of the class
             {
-                _collection: [],
+                _items: [],
 
-                collection: {
+                items: {
                     get: function(){
-                        return this._collection;
+                        return this._items;
                     }
                 },
 
                 fetchAsync: function (onSuccess) {
                     var self = this;
 
-                    AJAX.Request.fetchAsync("countries", {},
-                        function(countries) {
-                            for (var i = 0, length = countries.length ; i < length ; i++) {                                
-                                self._collection.push(new CityAPI.Country({
-                                    key: countries[i]
-                                }));
+                    return new WinJS.Promise(function (onSuccess) {
+                        AJAX.Request.fetchAsync("countries", {}).then(
+                            function complete(countries) {
+                                for (var i = 0, length = countries.length ; i < length ; i++) {
+                                    self._items.push(new CityAPI.Country({
+                                        key: countries[i]
+                                    }));
+                                }
+
+                                onSuccess(self);
                             }
-                        }
-                    );
+                        );
+                    });
                 },
             },
 
