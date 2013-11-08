@@ -11,16 +11,16 @@
 
     <link href="/css/default.css" rel="stylesheet" />
     <link href="/pages/split/split.css" rel="stylesheet" />
-    <script src="/pages/split/split.js"></script>
+    <script src="/pages/split/splitPeople.js"></script>
 </head>
 <body>
     <!-- This template is used to display each item in the ListView declared below. -->
     <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
         <div class="item">
-            <img class="item-image" src="#" data-win-bind="src: picture; alt: city" />
+            <img class="item-image" src="#" data-win-bind="src: picture; alt: person" />
             <div class="item-info">
-                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: city"></h3>
-                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: region"></h6>
+                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: surname"></h3>
+                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: forename"></h6>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
             </h1>
         </header>
         <div class="itemlistsection" aria-label="List column">
-            <div id="citiesList" class="itemlist win-selectionstylefilled" aria-label="List of this country's cities" data-win-control="WinJS.UI.ListView" data-win-options="{
+            <div id="peopleList" class="itemlist win-selectionstylefilled" aria-label="List of this city's people" data-win-control="WinJS.UI.ListView" data-win-options="{
                     layout: {type: WinJS.UI.ListLayout},
                     currentItem: {type: WinJS.UI.ObjectType.item, index: 0, hasFocus: true},
                     selectionMode: 'single',
@@ -45,14 +45,14 @@
                 }">
             </div>
         </div>
-        <div class="articlesection" aria-atomic="true" aria-label="Item detail column" aria-live="assertive">
+        <div class="articlesection" aria-atomic="true" aria-label="Person detail column" aria-live="assertive">
             <article>
                 <header class="header">
                     <div class="text">
-                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: city"></h2>
-                        <h4 class="article-subtitle" data-win-bind="textContent: region"></h4>
+                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: surname"></h2>
+                        <h4 class="article-subtitle" data-win-bind="textContent: forename"></h4>
                     </div>
-                    <img class="article-image" src="#" data-win-bind="src: picture; alt: city" />
+                    <img class="article-image" src="#" data-win-bind="src: picture; alt: person" />
                 </header>
                 <div class="article-content" data-win-bind="innerHTML: comment"></div>
             </article>

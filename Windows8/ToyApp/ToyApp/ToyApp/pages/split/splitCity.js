@@ -6,15 +6,15 @@
     var ui = WinJS.UI;
     var utils = WinJS.Utilities;
 
-    ui.Pages.define("/pages/split/split.html", {
+    ui.Pages.define("/pages/split/splitCity.html", {
 
         _itemSelectionIndex: -1,
         _wasSingleColumn: false,
 
         _countrySelected: null,
         _citiesCollection: null,
-
         _citiesArray: null,
+        _citiesList: null,
 
         // This function is called to initialize the page.
         init: function (element, options) {
@@ -24,10 +24,10 @@
             this._countrySelected = options.country;
             this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
 
-            this._citiesArray = new WinJS.Binding.List();
+            this._citiesArray = new binding.List();
             this._citiesCollection = new CityAPI.CitiesCollection({
                 country: this._countrySelected.key,
-                collection: this._citiesArray,
+                items: this._citiesArray,
             });
 
             this.selectionChanged = ui.eventHandler(this._selectionChanged.bind(this));
@@ -35,13 +35,23 @@
 
         // This function is called whenever a user navigates to this page.
         ready: function (element, options) {
-            //bind listView HTML element to our list
-            var citiesList = document.getElementById("citiesList");
-            citiesList.winControl.itemDataSource = this._citiesArray.dataSource;
+            //handle click on people button to redirect to the new page
+            element.querySelector(".people-button").addEventListener("click", this._navigateToPeoplePage.bind(this));
 
-            for (var i = 0 ; i < 3 ; i++) {
-                this._citiesCollection.fetchAsync();
-            }
+            this._citiesList = element.querySelector("#citiesList");
+
+            //bind listView HTML element to our list
+            this._citiesList.winControl.itemDataSource = this._citiesArray.dataSource;
+
+            var self = this;
+            this._citiesCollection.fetchAsync().then(
+                function complete(collection) {
+                    self._citiesList.winControl.selection.set(0);
+                }
+            );
+
+            //use a templating function to dynamically load elements
+            this._citiesList.winControl.itemTemplate = Template.ListViewIncrementalTemplate.incrementalTemplate(this._citiesList.winControl.itemTemplate, this._citiesList, this._citiesCollection);
 
             element.querySelector("header[role=banner] .pagetitle").textContent = this._countrySelected.key;
 
@@ -104,7 +114,7 @@
             } else {
                 // If the app has unsnapped into the two-column view, remove any
                 // splitPage instances that got added to the backstack.
-                if (nav.canGoBack && nav.history.backStack[nav.history.backStack.length - 1].location === "/pages/split/split.html") {
+                if (nav.canGoBack && nav.history.backStack[nav.history.backStack.length - 1].location === "/pages/split/splitCity.html") {
                     nav.history.backStack.pop();
                 }
 
@@ -136,7 +146,7 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/split.html", { country: this._countrySelected, selectedIndex: this._itemSelectionIndex });
+                            nav.navigate("/pages/split/splitCity.html", { country: this._countrySelected, selectedIndex: this._itemSelectionIndex });
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.
@@ -165,6 +175,14 @@
                 utils.removeClass(splitPage, "itemdetail");
                 element.querySelector(".itemlist").focus();
             }
-        }
+        },
+
+        _navigateToPeoplePage: function (mouseEvent) {
+            var currentItem = this._citiesList.winControl.currentItem;
+
+            var currentCity = this._citiesCollection.items.getItem(currentItem.index).data;
+
+            nav.navigate("/pages/split/splitPeople.html", { city: currentCity });
+        },
     });
 })();

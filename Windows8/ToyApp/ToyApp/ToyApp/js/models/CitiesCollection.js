@@ -10,17 +10,24 @@
             //constructor
             function (data) {
                 if (data) {
-                    this._country = data.country ? data.country : '';
-                    this._collection = data.collection ? data.collection : [];
+                    this._country   = data.country  ? data.country  : '';
+                    this._items     = data.items    ? data.items    : [];
                 }
             },
 
             //properties of the class
             {
-                _id: 0,
+                _maxItems: 100,
+
                 _country: '',
 
-                _collection: [],
+                _items: [],
+
+                maxItems: {
+                    get: function(){
+                        return this._maxItems;
+                    }
+                },
 
                 country: {
                     get: function(){
@@ -28,29 +35,49 @@
                     }
                 },
 
-                collection: {
+                items: {
                     get: function () {
-                        return this._collection;
+                        return this._items;
                     },
                 },
 
-                fetchAsync: function (onSuccess) {
+                fetchAsync: function (id, reverse) {
                     var self = this;
 
                     var parameters = {
-                        id: this._id,
+                        id: id,
                         cn: this._country,
+                        reverse: reverse,
                     };
 
-                    AJAX.Request.fetchAsync("cities", parameters,
-                        function (cities) {
-                            for (var i = 0, length = cities.length ; i < length ; i++) {
-                                self._collection.push(new CityAPI.City(cities[i]));
-                            }
-                        }
-                    );
+                    return new WinJS.Promise(function(onSuccess){
+                        AJAX.Request.fetchAsync("cities", parameters).then(
+                            function complete(cities) {
+                                var length = cities.length;
 
-                    this._id++;
+                                if (reverse) {
+                                    for (var i = length - 1 ; i >= 0 ; i--) {
+                                        self._items.unshift(new CityAPI.City(cities[i]));
+                                    }
+
+                                    if (self._items.length > self._maxItems) {
+                                        self._items.splice((-1 * length), length);
+                                    }
+                                }
+                                else {
+                                    for (var i = 0 ; i < length ; i++) {
+                                        self._items.push(new CityAPI.City(cities[i]));
+                                    }
+
+                                    if (self._items.length > self._maxItems) {
+                                        self._items.splice(0, length);
+                                    }
+                                }
+                                
+                                onSuccess(self);
+                            }
+                        );
+                    });
                 },
             },
 

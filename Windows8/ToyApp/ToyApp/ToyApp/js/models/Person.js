@@ -9,22 +9,65 @@
 
             //constructor
             function (data) {
-                this.id = data.id;
-                this.surname = data.surname;
-                this.forename = data.forename;
-                this.dob = data.dob;
-                this.city = data.city;
-                this.comment = data.comment;
+                this._id = data.id;
+                this._surname = data.surname;
+                this._forename = data.forename;
+                this._dob = data.dob;
+                this._city = data.city;
+                this._comment = data.comment;
             },
 
             //properties of the class
             {
-                id: '',
-                surname: '',
-                forename: '',
-                dob: '',
-                city: '',
-                comment: '',
+                _id: '',
+                _surname: '',
+                _forename: '',
+                _dob: '',
+                _city: '',
+                _comment: '',
+                _picture: 'images/person.png',
+
+                id: {
+                    get: function () {
+                        return this._id;
+                    },
+                },
+
+                surname: {
+                    get: function () {
+                        return this._surname;
+                    },
+                },
+
+                forename: {
+                    get: function () {
+                        return this._forename;
+                    },
+                },
+
+                dob: {
+                    get: function () {
+                        return this._dob;
+                    },
+                },
+
+                city: {
+                    get: function () {
+                        return this._city;
+                    },
+                },
+
+                comment: {
+                    get: function () {
+                        return this._comment;
+                    },
+                },
+
+                picture: {
+                    get: function () {
+                        return this._picture;
+                    },
+                },
             },
 
             //static methods

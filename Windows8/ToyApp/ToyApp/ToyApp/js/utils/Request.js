@@ -38,7 +38,7 @@
 
             //static methods
             {
-                fetchAsync: function (endUrl, parameters, onSuccess) {
+                fetchAsync: function (endUrl, parameters) {
                     var ajaxRequest = new AJAX.Request();
 
                     var options = {};
@@ -54,26 +54,28 @@
                     options.url = ajaxRequest.baseUrl + endUrl + '?' + queryParameters;
                     options.responseType = 'json';
 
-                    WinJS.xhr(options).done(
-                        function complete(request) {
-                            if (request.status === 200) {
-                                var response = JSON.parse(request.response);
+                    return new WinJS.Promise(function (onSuccess) {
+                        WinJS.xhr(options).then(
+                            function complete(request) {
+                                if (request.status === 200) {
+                                    var response = JSON.parse(request.response);
 
-                                if (response.status == ajaxRequest.errorStatus) {
-                                    console.log('Request Error: ' + response.message);
-                                }
-                                else if (response.status == ajaxRequest.successStatus) {
-                                    console.log('Success: ' + response.result);
+                                    if (response.status == ajaxRequest.errorStatus) {
+                                        console.log('Request Error: ' + response.message);
+                                    }
+                                    else if (response.status == ajaxRequest.successStatus) {
+                                        //console.log('Success: ' + response.result);
 
-                                    onSuccess(response.result);
+                                        onSuccess(response.result);
+                                    }
                                 }
+                            },
+
+                            function error(request) {
+                                console.log('HTTP Error: ' + request.statusText);
                             }
-                        },
-
-                        function error(request) {
-                            console.log('HTTP Error: ' + request.statusText);
-                        }
-                    );
+                        );
+                    });
                 },
             }
         )

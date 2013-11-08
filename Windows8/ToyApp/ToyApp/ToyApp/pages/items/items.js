@@ -12,7 +12,7 @@
         init: function (element, options) {
             this._countriesArray = new WinJS.Binding.List();
             this._countriesCollection = new CityAPI.CountriesCollection({
-                collection: this._countriesArray,
+                items: this._countriesArray,
             });
 
             this.itemInvoked = ui.eventHandler(this._itemInvoked.bind(this));
@@ -21,8 +21,7 @@
         // This function is called whenever a user navigates to this page.
         ready: function (element, options) {
             //bind listView HTML element to our list
-            var contriesList = document.getElementById("countriesList");
-            countriesList.winControl.itemDataSource = this._countriesArray.dataSource;
+            element.querySelector("#countriesList").winControl.itemDataSource = this._countriesArray.dataSource;
 
             this._countriesCollection.fetchAsync();            
         },
@@ -35,9 +34,9 @@
         },
 
         _itemInvoked: function (args) {
-            var country = this._countriesCollection.collection.getAt(args.detail.itemIndex);
+            var country = this._countriesCollection.items.getAt(args.detail.itemIndex);
 
-            WinJS.Navigation.navigate("/pages/split/split.html", { country: country });
+            WinJS.Navigation.navigate("/pages/split/splitCity.html", { country: country });
         }
     });
 })();
