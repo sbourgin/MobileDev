@@ -16,8 +16,6 @@ import android.content.Context;
 
 public class CitiesListManager implements OnTaskCompleted {
 
-	private long _lastBottomIdFetch = 0;
-	private long _lastTopIdFetch = 0;
 	private OnTaskCompleted _listener = null;
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/cities.php?";
 	private String _countryCode = "us"; // TODO premettre de choisir !
@@ -28,37 +26,31 @@ public class CitiesListManager implements OnTaskCompleted {
 		_listener = (OnTaskCompleted) parContext;
 	}
 
-	
 	public void initData() {
-		updateCitiesList(true);
-		
+		updateCitiesList(true, 0);
 	}
-	
+
 	/**
 	 * Call this method to update Cities List.
 	 * 
 	 * @param isScrollingDown
 	 *            : is the user ask to scroll down. If it's false it mean the
 	 *            user want to go up
+	 * @param parItemId
+	 *            : item id to fetch
 	 */
-	public void updateCitiesList(boolean parIsScrollingDown) {
+	public void updateCitiesList(boolean parIsScrollingDown, long parItemId) {
 
 		synchronized (_isUpdating) {
 			if (false == _isUpdating) {
-				
+
 				_isUpdating = Boolean.valueOf(true);
 				StringBuilder locUrl = new StringBuilder();
-				locUrl.append(_httpLink).append("id=");
-
-				if (parIsScrollingDown) {
-					locUrl.append(_lastBottomIdFetch);
-				} else {
-					locUrl.append(_lastTopIdFetch);
-				}
+				locUrl.append(_httpLink).append("id=").append(parItemId);
 				locUrl.append("&cn=").append(_countryCode);
 
 				if (false == parIsScrollingDown) {
-					locUrl.append("reverse=1");
+					locUrl.append("&reverse=1");
 				}
 
 				isScrollingDown = parIsScrollingDown;
@@ -70,10 +62,10 @@ public class CitiesListManager implements OnTaskCompleted {
 		// We get a call back with the OnTaskCompleted Method
 
 	}
-	
-	
 
 	protected synchronized void updateCitiesList(String parString) {
+
+		List<Object> locResult = new ArrayList<Object>();
 
 		boolean isLastRequestScrollingDown;
 
@@ -97,6 +89,8 @@ public class CitiesListManager implements OnTaskCompleted {
 			isCitiesListSucess = false;
 		}
 
+		locResult.add(Boolean.valueOf(isLastRequestScrollingDown));
+
 		if (isCitiesListSucess) {
 
 			for (int i = 0; i < locCitiesJSONArray.size(); i++) {
@@ -106,27 +100,23 @@ public class CitiesListManager implements OnTaskCompleted {
 				City locCity = new City();
 				boolean isCityValid = locCity.fillStates(locCityJSON);
 				if (isCityValid) {
-					locCitiesList.add(locCity);
+					if (isLastRequestScrollingDown) {
+						locCitiesList.add(locCity);
+					} else {
+						locCitiesList.add(0, locCity);
+					}
+
 				}
 
 			}
 
-			if (isLastRequestScrollingDown) {
-				if (false == locCitiesList.isEmpty()) {
-					_lastBottomIdFetch = locCitiesList.get(
-							locCitiesList.size() - 1).get_id();
-				}
-			} else {
-				if (false == locCitiesList.isEmpty()) {
-					_lastTopIdFetch = locCitiesList.get(0).get_id();
-				}
-			}
-
-			_listener.onTaskCompleted(locCitiesList);
+			locResult.add(locCitiesList);
 
 		} else {
-			_listener.onTaskCompleted(null);
+			locResult.add(null);
 		}
+
+		_listener.onTaskCompleted(locResult);
 
 		// TODO gérer la fin quand il n'y a plus de data à fetcher (max id
 		// atteint)
@@ -136,7 +126,5 @@ public class CitiesListManager implements OnTaskCompleted {
 	public void onTaskCompleted(Object parObject) {
 		updateCitiesList((String) parObject);
 	}
-
-
 
 }

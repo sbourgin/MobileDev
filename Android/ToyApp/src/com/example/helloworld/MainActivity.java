@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnTaskCompleted {
@@ -39,7 +38,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_listeView = (ListView) _layout.findViewById(R.id.listView1);
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
-		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
+		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 50, //TODO remettre 200
 				locObjectsList);
 
 		_listeView.setAdapter(_citiesAdaptater);
@@ -70,14 +69,24 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 					"Error when retrieving cities", Toast.LENGTH_LONG);
 			locToast.show();
 		} else {
-			List<City> locCitiesList = (List<City>) parObject;
+
+			List<Object> locResult = (List<Object>) parObject;
+
+			Boolean isScrollingDown = (Boolean) locResult.get(0);
+
+			List<City> locCitiesList = (List<City>) locResult.get(1);
 
 			for (City locCity : locCitiesList) {
-				_citiesAdaptater.addLast(locCity); // TODO gérer si c'est un
-													// scroll up or Down !!
-				_citiesAdaptater.notifyDataSetChanged();
+
+				if (isScrollingDown.booleanValue()) {
+					_citiesAdaptater.addLast(locCity);
+				} else {
+					_citiesAdaptater.addFirst(locCity);
+				}
 
 			}
+
+			_citiesAdaptater.notifyDataSetChanged();
 
 		}
 
