@@ -31,29 +31,29 @@ public class EndLessScrollListener implements OnScrollListener {
 
 		int locNewPosition = parListView.getLastVisiblePosition();
 
-		if (_lastVisiblePosition < locNewPosition) {
+		if ( (_lastVisiblePosition < locNewPosition) || (locNewPosition == (parListView.getCount()-1) )) {
 
 			int locLastItemVisible = parListView.getLastVisiblePosition();
-			if ((locLastItemVisible +20) >= locItemsCount) {
+			if ((locLastItemVisible + 20) >= locItemsCount) {
 				isUpdateNeeded = true;
-				locItemId = ((Displayable) parListView.getAdapter().getItem(parListView.getAdapter().getCount()-1)).getIdOfItem();
+				locItemId = ((Displayable) parListView.getAdapter().getItem(
+						parListView.getAdapter().getCount() - 1)).getIdOfItem();
 			}
-			
+
 			isScrollingDown = true;
 		} else {
 			int locFirstItemVisible = parListView.getFirstVisiblePosition();
 			if ((locFirstItemVisible - 20) <= 0) {
 				isUpdateNeeded = true;
-				locItemId = ((Displayable) parListView.getAdapter().getItem(0)).getIdOfItem();
-				
+				locItemId = ((Displayable) parListView.getAdapter().getItem(0))
+						.getIdOfItem();
+
 			}
 			isScrollingDown = false;
 		}
 
 		if (isUpdateNeeded) {
-			
-			
-			
+
 			_citiesListManager.updateCitiesList(isScrollingDown, locItemId);
 		}
 
