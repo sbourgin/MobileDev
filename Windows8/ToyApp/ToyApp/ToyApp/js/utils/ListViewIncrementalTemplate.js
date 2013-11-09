@@ -27,9 +27,13 @@
                             //and if his id is different from 0 because that means that we already deleted items in our list
                             if (item.key === firstItem.key && firstItem.data.id != 1) {
                                 var fetching;
+                                
 
                                 //avoid interleavings
                                 if (!fetching) {
+                                    //save index of the last visible element as you are scrolling up, just before fetching new data
+                                    var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+
                                     fetching = true;
                                    
                                     collection.fetchAsync(firstItem.data.id, 1).then(
@@ -45,6 +49,9 @@
 
                                 //avoid interleavings
                                 if (!fetching) {
+                                    //save index of the first visible element as you are scrolling down, just before fetching new data
+                                    var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+
                                     fetching = true;
 
                                     collection.fetchAsync(lastItem.data.id, 0).then(

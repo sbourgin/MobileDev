@@ -16,12 +16,15 @@
         _peopleArray: null,
         _peopleList: null,
 
+        _personSelected: null,
+
         // This function is called to initialize the page.
         init: function (element, options) {
             // Store information about the group and selection that this page will
             // display.
 
             this._citySelected = options.city;
+            this._personSelected = options.personSelected ? options.personSelected : null;
             this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
 
             this._peopleArray = new WinJS.Binding.List();
@@ -43,10 +46,12 @@
             var self = this;
             this._peopleCollection.fetchAsync().then(
                 function complete(collection) {
-                    self._peopleList.winControl.selection.set(0);
+                    self._fetchCompleted(element);
                 }
             );
+        },
 
+        _fetchCompleted: function (element) {
             //use a templating function to dynamically load elements
             this._peopleList.winControl.itemTemplate = Template.ListViewIncrementalTemplate.incrementalTemplate(this._peopleList.winControl.itemTemplate, this._peopleList, this._peopleCollection);
 
@@ -56,8 +61,18 @@
             if (this._isSingleColumn()) {
                 this._wasSingleColumn = true;
                 if (this._itemSelectionIndex >= 0) {
-                    // For single-column detail view, load the article.
-                    binding.processAll(element.querySelector(".articlesection"), this._peopleArray.getAt(this._itemSelectionIndex));
+                    //fetch corresponding city
+                    var person = new CityAPI.Person({
+                        id: this._personSelected.id,
+                    });
+
+                    var self = this;
+                    person.fetchAsync().then(
+                        function complete(person) {
+                            // For single-column detail view, load the article.
+                            binding.processAll(element.querySelector(".articlesection"), person);
+                        }
+                    );
                 }
             } else {
                 // If this page has a selectionIndex, make that selection
@@ -143,7 +158,7 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/splitPeople.html", { city: this._citySelected, selectedIndex: this._itemSelectionIndex });
+                            nav.navigate("/pages/split/splitPeople.html", { city: this._citySelected, selectedIndex: this._itemSelectionIndex, personSelected: this._peopleArray.getAt(this._peopleList.winControl.currentItem.index) });
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.

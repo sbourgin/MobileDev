@@ -9,12 +9,14 @@
 
             //constructor
             function (data) {
-                this._id = data.id;
-                this._surname = data.surname;
-                this._forename = data.forename;
-                this._dob = data.dob;
-                this._city = data.city;
-                this._comment = data.comment;
+                if (data) {
+                    this._id        = data.id       ? data.id       : '';
+                    this._surname   = data.surname  ? data.surname  : '';
+                    this._forename  = data.forename ? data.forename : '';
+                    this._dob       = data.dob      ? data.dob      : '';
+                    this._city      = data.city     ? data.city     : '';
+                    this._comment   = data.comment  ? data.comment  : '';
+                }
             },
 
             //properties of the class
@@ -67,6 +69,28 @@
                     get: function () {
                         return this._picture;
                     },
+                },
+
+                fetchAsync: function () {
+                    var self = this;
+
+                    var parameters = {
+                        id: this._id,
+                    };
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        AJAX.Request.fetchAsync("person", parameters).then(
+                            function complete(person) {
+                                self._surname   = person.surname;
+                                self._forename  = person.forename;
+                                self._dob       = person.dob;
+                                self._city      = person.city;
+                                self._comment   = person.comment;
+
+                                onSuccess(self);
+                            }
+                        );
+                    });
                 },
             },
 

@@ -16,12 +16,15 @@
         _citiesArray: null,
         _citiesList: null,
 
+        _citySelected: null,
+
         // This function is called to initialize the page.
         init: function (element, options) {
             // Store information about the group and selection that this page will
             // display.
 
             this._countrySelected = options.country;
+            this._citySelected = options.citySelected ? options.citySelected : null;
             this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
 
             this._citiesArray = new binding.List();
@@ -39,6 +42,7 @@
             element.querySelector(".people-button").addEventListener("click", this._navigateToPeoplePage.bind(this));
 
             this._citiesList = element.querySelector("#citiesList");
+            this._citiesList.addEventListener("iteminvoked", this._itemInvoked.bind(this));
 
             //bind listView HTML element to our list
             this._citiesList.winControl.itemDataSource = this._citiesArray.dataSource;
@@ -46,9 +50,15 @@
             var self = this;
             this._citiesCollection.fetchAsync().then(
                 function complete(collection) {
-                    self._citiesList.winControl.selection.set(0);
+                    self._fetchCompleted(element);
                 }
             );
+        },
+
+        _fetchCompleted: function(element){
+            if (this._citySelected == null) {
+                this._citySelected = this._citiesArray.getAt(0);
+            }
 
             //use a templating function to dynamically load elements
             this._citiesList.winControl.itemTemplate = Template.ListViewIncrementalTemplate.incrementalTemplate(this._citiesList.winControl.itemTemplate, this._citiesList, this._citiesCollection);
@@ -59,8 +69,19 @@
             if (this._isSingleColumn()) {
                 this._wasSingleColumn = true;
                 if (this._itemSelectionIndex >= 0) {
-                    // For single-column detail view, load the article.
-                    binding.processAll(element.querySelector(".articlesection"), this._citiesArray.getAt(this._itemSelectionIndex));
+                    //fetch corresponding city
+                    var city = new CityAPI.City({
+                        id: this._citySelected.id,
+                    });
+                    
+                    var self = this;
+                    city.fetchAsync().then(
+                        function complete(city) {
+                            // For single-column detail view, load the article.
+                            binding.processAll(element.querySelector(".articlesection"), city);
+                            self._citySelected = city;
+                        }
+                    );
                 }
             } else {
                 // If this page has a selectionIndex, make that selection
@@ -100,7 +121,7 @@
                         selectedIndex: this._itemSelectionIndex
                     };
                     nav.history.backStack.push({
-                        location: "/pages/split/split.html",
+                        location: "/pages/split/splitCity.html",
                         state: { country: this._countrySelected }
                     });
                     element.querySelector(".articlesection").focus();
@@ -138,6 +159,7 @@
         _selectionChanged: function (args) {
             var listView = args.currentTarget.winControl;
             var details;
+
             // By default, the selection is restriced to a single item.
             listView.selection.getItems().done(function updateDetails(items) {
                 if (items.length > 0) {
@@ -146,7 +168,7 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/splitCity.html", { country: this._countrySelected, selectedIndex: this._itemSelectionIndex });
+                            nav.navigate("/pages/split/splitCity.html", { country: this._countrySelected, selectedIndex: this._itemSelectionIndex, citySelected: this._citiesArray.getAt(this._citiesList.winControl.currentItem.index) });
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.
@@ -177,12 +199,13 @@
             }
         },
 
+        _itemInvoked: function(){
+            //save the last invoked item to pass it as a parameter to the next page if "See people" button is pressed
+            this._citySelected = this._citiesArray.getAt(this._citiesList.winControl.currentItem.index);
+        },
+
         _navigateToPeoplePage: function (mouseEvent) {
-            var currentItem = this._citiesList.winControl.currentItem;
-
-            var currentCity = this._citiesCollection.items.getItem(currentItem.index).data;
-
-            nav.navigate("/pages/split/splitPeople.html", { city: currentCity });
+            nav.navigate("/pages/split/splitPeople.html", { city: this._citySelected });
         },
     });
 })();

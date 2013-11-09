@@ -78,6 +78,29 @@
                         return this._picture;
                     },
                 },
+
+                fetchAsync: function () {
+                    var self = this;
+
+                    var parameters = {
+                        id: this._id,
+                    };
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        AJAX.Request.fetchAsync("city", parameters).then(
+                            function complete(city) {
+                                self._country   = city.country;
+                                self._region    = city.region;
+                                self._city      = city.city;
+                                self._latitude  = city.latitude;
+                                self._longitude = city.longitude;
+                                self._comment   = city.comment;
+
+                                onSuccess(self);
+                            }
+                        );
+                    });
+                },
             },
 
             //static methods
