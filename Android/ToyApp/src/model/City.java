@@ -75,7 +75,7 @@ public class City implements Displayable {
 
 	@Override
 	public String getSubtitle() {
-		return _comment;
+		return ("id : " + _id.toString() + " || "+ _comment);
 	}
 
 	@Override

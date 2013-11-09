@@ -1,5 +1,6 @@
 package tasks;
 
+import interfaces.Displayable;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -25,29 +26,35 @@ public class EndLessScrollListener implements OnScrollListener {
 		boolean isUpdateNeeded = false; // TODO tester si le code est bon
 
 		int locItemsCount = parListView.getCount();
-
+		long locItemId = 0;
 		boolean isScrollingDown;
 
 		int locNewPosition = parListView.getLastVisiblePosition();
 
-		if (_lastVisiblePosition < locNewPosition) {
+		if ( (_lastVisiblePosition < locNewPosition) || (locNewPosition == (parListView.getCount()-1) )) {
 
 			int locLastItemVisible = parListView.getLastVisiblePosition();
 			if ((locLastItemVisible + 20) >= locItemsCount) {
 				isUpdateNeeded = true;
+				locItemId = ((Displayable) parListView.getAdapter().getItem(
+						parListView.getAdapter().getCount() - 1)).getIdOfItem();
 			}
 
 			isScrollingDown = true;
 		} else {
 			int locFirstItemVisible = parListView.getFirstVisiblePosition();
-			if (locFirstItemVisible - 20 <= 0) {
+			if ((locFirstItemVisible - 20) <= 0) {
 				isUpdateNeeded = true;
+				locItemId = ((Displayable) parListView.getAdapter().getItem(0))
+						.getIdOfItem();
+
 			}
 			isScrollingDown = false;
 		}
 
 		if (isUpdateNeeded) {
-			_citiesListManager.updateCitiesList(isScrollingDown);
+
+			_citiesListManager.updateCitiesList(isScrollingDown, locItemId);
 		}
 
 		_lastVisiblePosition = locNewPosition;
