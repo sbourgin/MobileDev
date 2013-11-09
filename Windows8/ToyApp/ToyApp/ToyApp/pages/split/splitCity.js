@@ -49,7 +49,7 @@
 
             var self = this;
             this._citiesCollection.fetchAsync().then(
-                function complete(collection) {
+                function complete(returnObject) {
                     self._fetchCompleted(element);
                 }
             );
@@ -76,10 +76,10 @@
                     
                     var self = this;
                     city.fetchAsync().then(
-                        function complete(city) {
+                        function complete(returnObject) {
                             // For single-column detail view, load the article.
-                            binding.processAll(element.querySelector(".articlesection"), city);
-                            self._citySelected = city;
+                            binding.processAll(element.querySelector(".articlesection"), returnObject.city);
+                            self._citySelected = returnObject.city;
                         }
                     );
                 }

@@ -54,6 +54,7 @@
                         AJAX.Request.fetchAsync("cities", parameters).then(
                             function complete(cities) {
                                 var length = cities.length;
+                                var nbElementRemoved = 0;
 
                                 if (reverse) {
                                     for (var i = length - 1 ; i >= 0 ; i--) {
@@ -62,6 +63,8 @@
 
                                     if (self._items.length > self._maxItems) {
                                         self._items.splice((-1 * length), length);
+
+                                        nbElementRemoved = length;
                                     }
                                 }
                                 else {
@@ -71,10 +74,17 @@
 
                                     if (self._items.length > self._maxItems) {
                                         self._items.splice(0, length);
+
+                                        nbElementRemoved = length;
+
                                     }
                                 }
                                 
-                                onSuccess(self);
+                                onSuccess({
+                                    collection: self,
+                                    nbElementAdded: length,
+                                    nbElementRemoved: nbElementRemoved,
+                                });
                             }
                         );
                     });

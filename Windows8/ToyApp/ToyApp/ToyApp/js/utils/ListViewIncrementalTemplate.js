@@ -37,8 +37,13 @@
                                     fetching = true;
                                    
                                     collection.fetchAsync(firstItem.data.id, 1).then(
-                                        function complete(collection) {
+                                        function complete(returnObject) {
                                             fetching = false;
+
+                                            //listview is shifted as we removed elements, modify scroll position to avoid infinite loop 
+                                            if (returnObject.nbElementAdded) {
+                                                listView.winControl.ensureVisible(indexOfLastVisible + returnObject.nbElementAdded);
+                                            }
                                         }
                                     );
                                 }
@@ -55,8 +60,13 @@
                                     fetching = true;
 
                                     collection.fetchAsync(lastItem.data.id, 0).then(
-                                        function complete(collection) {
+                                        function complete(returnObject) {
                                             fetching = false;
+
+                                            //listview is shifted as we removed elements, modify scroll position to avoid infinite loop 
+                                            if (returnObject.nbElementRemoved) {
+                                                listView.winControl.ensureVisible(indexOfFirstVisible - returnObject.nbElementRemoved);
+                                            }
                                         }
                                     );
                                 }

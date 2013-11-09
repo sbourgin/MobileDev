@@ -75,7 +75,9 @@
                                 }
 
 
-                                onSuccess(self);
+                                onSuccess({
+                                    collection: self,
+                                });
                             }
                         );
                     });

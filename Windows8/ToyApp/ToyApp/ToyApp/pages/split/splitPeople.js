@@ -45,7 +45,7 @@
 
             var self = this;
             this._peopleCollection.fetchAsync().then(
-                function complete(collection) {
+                function complete(returnObject) {
                     self._fetchCompleted(element);
                 }
             );
@@ -68,9 +68,9 @@
 
                     var self = this;
                     person.fetchAsync().then(
-                        function complete(person) {
+                        function complete(returnObject) {
                             // For single-column detail view, load the article.
-                            binding.processAll(element.querySelector(".articlesection"), person);
+                            binding.processAll(element.querySelector(".articlesection"), returnObject.person);
                         }
                     );
                 }

@@ -87,7 +87,9 @@
                                 self._city      = person.city;
                                 self._comment   = person.comment;
 
-                                onSuccess(self);
+                                onSuccess({
+                                    person: self
+                                });
                             }
                         );
                     });

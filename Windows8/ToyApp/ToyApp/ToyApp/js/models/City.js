@@ -96,7 +96,9 @@
                                 self._longitude = city.longitude;
                                 self._comment   = city.comment;
 
-                                onSuccess(self);
+                                onSuccess({
+                                    city: self,
+                                });
                             }
                         );
                     });
