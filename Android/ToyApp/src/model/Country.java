@@ -1,7 +1,5 @@
 package model;
 
-import org.json.simple.JSONObject;
-
 import interfaces.Displayable;
 
 public class Country implements Displayable {

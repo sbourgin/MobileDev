@@ -41,7 +41,7 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 		
 		LinkedList<Country> locObjectsList = new LinkedList<Country>();
 		_countriesAdaptater = new SizeLimitedAdapter<Country>(this, 200,
-				locObjectsList);
+				locObjectsList, 17367055); //  17367055 = simple_list_item_single_choice 
 
 		_listeView.setAdapter(_countriesAdaptater);
 

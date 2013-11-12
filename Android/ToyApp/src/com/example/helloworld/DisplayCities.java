@@ -39,7 +39,7 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
 		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
-				locObjectsList);
+				locObjectsList, 17367047); // 17367047 R.layout.simple_expandable_list_item_2
 
 		_listeView.setAdapter(_citiesAdaptater);
 

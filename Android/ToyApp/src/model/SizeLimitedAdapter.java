@@ -4,6 +4,7 @@ import interfaces.Displayable;
 
 import java.util.LinkedList;
 
+
 import android.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter { 
-												
+public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
+
 	/*
 	 * http://www.vogella.com/articles/AndroidListView/article.html#
 	 * androidlists_adapterintro
@@ -22,12 +23,14 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 	private LayoutInflater _inflater;
 	private final int MAX_SIZE;
 	private LinkedList<E> _objectsList = null;
+	private int _ressource;
 
 	public SizeLimitedAdapter(Context parContext, int parMAX_SIZE,
-			LinkedList<E> parObjectsList) {
+			LinkedList<E> parObjectsList, int parRessource) {
 		MAX_SIZE = parMAX_SIZE;
 		_objectsList = parObjectsList;
 		_inflater = LayoutInflater.from(parContext);
+		_ressource = parRessource;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 
 	@Override
 	public long getItemId(int parPosition) {
-		return _objectsList.get(parPosition).getIdOfItem(); 
+		return _objectsList.get(parPosition).getIdOfItem();
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 		ViewHolder locHolder;
 		if (parConvertView == null) {
 			parConvertView = _inflater.inflate(
-					R.layout.simple_expandable_list_item_2, parParent, false);
+					_ressource, parParent, false);
 			locHolder = new ViewHolder();
 			locHolder._mainText = (TextView) parConvertView
 					.findViewById(R.id.text1);
@@ -67,7 +70,10 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 				.get(parPosition);
 
 		locHolder._mainText.setText(locItemToDisplay.getNameToDisplay());
-		locHolder._subtitle.setText(locItemToDisplay.getSubtitle());
+
+		if (_ressource == 17367047) { // simple_expandable_list_item_2 
+			locHolder._subtitle.setText(locItemToDisplay.getSubtitle());
+		}
 
 		return parConvertView;
 	}
