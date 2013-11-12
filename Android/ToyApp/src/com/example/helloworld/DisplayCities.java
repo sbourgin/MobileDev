@@ -12,6 +12,9 @@ import tasks.EndLessScrollListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -53,6 +56,22 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 
 		_listeView.setOnScrollListener(new EndLessScrollListener(
 				locCitiesListManager));
+	
+		
+		_listeView.setOnItemClickListener(new OnItemClickListener() {
+	 
+			@Override	
+		public void onItemClick(AdapterView<?> parent, View view,
+	                int position, long id) {
+
+	       City locCity = (City) _citiesAdaptater.getItem(position);
+	       String display= locCity.get_cityName();
+	       Toast.makeText(getBaseContext(),display,Toast.LENGTH_SHORT).show();
+	        }
+
+	    });
+
+
 
 		setContentView(_layout);
 
