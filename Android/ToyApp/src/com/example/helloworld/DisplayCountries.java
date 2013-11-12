@@ -56,6 +56,15 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 			@Override
 			public void onClick(View parView) {
 
+				Intent locIntent = new Intent(DisplayCountries.this,
+						DisplayCity.class);
+			//	locIntent.putExtras(locBundle);
+				startActivity(locIntent);
+				
+				
+				
+				
+/*				
 				Country locCountryChecked = (Country) _countriesAdaptater
 						.getItem(_listeView.getCheckedItemPosition());
 
@@ -68,6 +77,8 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 						DisplayCities.class);
 				locIntent.putExtras(locBundle);
 				startActivity(locIntent);
+				
+				*/
 
 			}
 
