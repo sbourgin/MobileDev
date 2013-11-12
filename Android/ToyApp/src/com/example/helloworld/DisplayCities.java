@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnTaskCompleted {
+public class DisplayCities extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
 	private ListView _listeView = null;
@@ -31,7 +31,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		// C'est pourquoi on caste (on convertit) le retour de la méthode avec
 		// le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this,
-				R.layout.activity_main, null);
+				R.layout.display_cities, null);
 
 		// A remettre en remettant la listView dans la vue
 
