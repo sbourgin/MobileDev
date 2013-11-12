@@ -50,17 +50,22 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 		locCountriesListManager.initData();
 
-		Button locButton = (Button) _layout.findViewById(R.id.button1);
+		final Button locButton = (Button) _layout.findViewById(R.id.button1);
 
 		locButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View parView) {
 
-				Intent intent = new Intent(DisplayCountries.this,
+				
+				Country locCountryChecked = (Country) _countriesAdaptater.getItem(_listeView.getCheckedItemPosition());
+				
+				locButton.setText(locCountryChecked.getNameToDisplay());
+				
+	/*			Intent intent = new Intent(DisplayCountries.this,
 						DisplayCities.class);
 				startActivity(intent);
-
+*/
 			}
 
 		});
