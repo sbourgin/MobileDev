@@ -25,7 +25,6 @@ public class DisplayCountries extends Activity {
 		_textView = (TextView) _layout
 				.findViewById(R.id.textViewActivityCountries);
 
-		_textView.setText("PLOUF");
 
 		Button locButton = (Button) _layout.findViewById(R.id.button1);
 
@@ -36,7 +35,6 @@ public class DisplayCountries extends Activity {
 
 				Intent intent = new Intent(DisplayCountries.this,
 						DisplayCities.class);
-
 				startActivity(intent);
 
 			}

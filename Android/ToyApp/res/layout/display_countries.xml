@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".DisplayCities" >
+    tools:context=".DisplayCountries" >
 
     <TextView
         android:id="@+id/textViewActivityCountries"
@@ -25,5 +25,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="116dp"
         android:text="@string/change_activity" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="39dp"
+        android:layout_marginTop="35dp" >
+    </ListView>
 
 </RelativeLayout>

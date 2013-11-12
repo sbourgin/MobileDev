@@ -35,7 +35,7 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 
 		// A remettre en remettant la listView dans la vue
 
-		_listeView = (ListView) _layout.findViewById(R.id.listView1);
+		_listeView = (ListView) _layout.findViewById(R.id.listViewCities);
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
 		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
