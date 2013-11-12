@@ -10,21 +10,9 @@ public class Country implements Displayable {
 	private String _name = null;
 	private long _id = -1;
 
-	public Country() {
-	}
-
-	public boolean fillStates(JSONObject parJSon) {
-
+	public Country(String parName) {
 		_id = lastID++;
-
-		try {
-
-			_name = (String) parJSon.toString();
-
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
+		_name = parName;
 	}
 
 	@Override

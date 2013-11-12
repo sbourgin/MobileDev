@@ -12,15 +12,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import android.content.Context;
-
 public class CountriesListManager implements OnTaskCompleted {
 
 	private OnTaskCompleted _listener = null;
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/countries.php";
 
-	public CountriesListManager(Context parContext) {
-		_listener = (OnTaskCompleted) parContext;
+	public CountriesListManager(OnTaskCompleted parContext) {
+		_listener = parContext;
 	}
 
 	public void initData() {
@@ -45,12 +43,11 @@ public class CountriesListManager implements OnTaskCompleted {
 
 	protected synchronized void updateCountriesList(String parString) {
 
-		List<Object> locResult = new ArrayList<Object>();
+		List<Country> locResult = new ArrayList<Country>();
 
 		boolean isCountriesListSucess = true;
 		JSONParser locParser = new JSONParser();
 		JSONArray locCountriesJSONArray = null;
-		List<Country> locCountriesList = new ArrayList<Country>();
 
 		try {
 			JSONObject locAnswerJSON = (JSONObject) locParser.parse(parString);
@@ -65,22 +62,25 @@ public class CountriesListManager implements OnTaskCompleted {
 
 			for (int i = 0; i < locCountriesJSONArray.size(); i++) {
 
-				JSONObject locCountryJSON = (JSONObject) locCountriesJSONArray
-						.get(i);
+				Country locCountry = null;
 
-				Country locCountry = new Country();
-				boolean isCountryValid = locCountry.fillStates(locCountryJSON);
+				boolean isCountryValid = true;
+				try {
+					String locCountryName = (String) locCountriesJSONArray
+							.get(i);
+
+					locCountry = new Country(locCountryName);
+				} catch (Exception e) {
+					isCountryValid = false;
+				}
+
 				if (isCountryValid) {
-					locCountriesList.add(locCountry);
+					locResult.add(locCountry);
 
 				}
 
 			}
 
-			locResult.add(locCountriesList);
-
-		} else {
-			locResult.add(null);
 		}
 
 		_listener.onTaskCompleted(locResult);
