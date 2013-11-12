@@ -17,20 +17,24 @@ public class DisplayCity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_city);
 		
-	
+		Bundle locReceiveBundle = this.getIntent().getExtras();
+	    final String locCityName = locReceiveBundle.getString("cityName");
+	    final double locLatitude = locReceiveBundle.getDouble("latitude");
+	    final double locLongitude = locReceiveBundle.getDouble("longitude");
+	    
+	    
 		  // Get a handle to the Map Fragment
         GoogleMap map = ((MapFragment) getFragmentManager().findFragmentById(
                 R.id.map)).getMap();
 
-        LatLng sydney = new LatLng(-33.867, 151.206);
-
+        LatLng locCityToDisplay = new LatLng(locLatitude, locLongitude);
+        
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(locCityToDisplay, 13));
 
         map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+                .title(locCityName)
+                .position(locCityToDisplay));
 	}
 
 	@Override

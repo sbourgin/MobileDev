@@ -10,6 +10,7 @@ import model.SizeLimitedAdapter;
 import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -62,11 +63,24 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 	 
 			@Override	
 		public void onItemClick(AdapterView<?> parent, View view,
-	                int position, long id) {
+	                int parPosition, long id) {
 
-	       City locCity = (City) _citiesAdaptater.getItem(position);
+	       City locCity = (City) _citiesAdaptater.getItem(parPosition);
 	       String display= locCity.get_cityName();
 	       Toast.makeText(getBaseContext(),display,Toast.LENGTH_SHORT).show();
+	       
+	       
+	       Bundle locBundle = new Bundle();
+				locBundle.putString("cityName", locCity.get_cityName());
+				locBundle.putDouble("latitude", locCity.get_latitude());
+				locBundle.putDouble("longitude", locCity.get_longitude());
+			
+			Intent locIntent = new Intent(DisplayCities.this,
+					DisplayCity.class);
+			locIntent.putExtras(locBundle);
+			startActivity(locIntent);
+	       
+	       
 	        }
 
 	    });
