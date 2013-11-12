@@ -26,6 +26,10 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Bundle locReceiveBundle = this.getIntent().getExtras();
+	    final String locCountryCode = locReceiveBundle.getString("countryCode");
+		
+		
 		// On récupère notre layout par désérialisation. La méthode inflate
 		// retourne un View
 		// C'est pourquoi on caste (on convertit) le retour de la méthode avec
@@ -43,7 +47,7 @@ public class DisplayCities extends Activity implements OnTaskCompleted {
 
 		_listeView.setAdapter(_citiesAdaptater);
 
-		CitiesListManager locCitiesListManager = new CitiesListManager(this);
+		CitiesListManager locCitiesListManager = new CitiesListManager(this, locCountryCode);
 
 		locCitiesListManager.initData();
 

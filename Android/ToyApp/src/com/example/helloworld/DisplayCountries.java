@@ -62,7 +62,7 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 				String locCountryString = locCountryChecked.getNameToDisplay();
 
 				Bundle locBundle = new Bundle();
-				locBundle.putString("country", locCountryString);
+				locBundle.putString("countryCode", locCountryString);
 
 				Intent locIntent = new Intent(DisplayCountries.this,
 						DisplayCities.class);
