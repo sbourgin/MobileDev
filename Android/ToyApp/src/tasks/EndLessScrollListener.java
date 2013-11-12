@@ -23,8 +23,7 @@ public class EndLessScrollListener implements OnScrollListener {
 	@Override
 	public void onScrollStateChanged(AbsListView parListView, int parScrollState) {
 
-		boolean isUpdateNeeded = false; // TODO tester si le code est bon
-
+		boolean isUpdateNeeded = false; 
 		int locItemsCount = parListView.getCount();
 		long locItemId = 0;
 		boolean isScrollingDown;
@@ -34,7 +33,7 @@ public class EndLessScrollListener implements OnScrollListener {
 		if ( (_lastVisiblePosition < locNewPosition) || (locNewPosition == (parListView.getCount()-1) )) {
 
 			int locLastItemVisible = parListView.getLastVisiblePosition();
-			if ((locLastItemVisible + 20) >= locItemsCount) {
+			if ((locLastItemVisible + 60) >= locItemsCount) {
 				isUpdateNeeded = true;
 				locItemId = ((Displayable) parListView.getAdapter().getItem(
 						parListView.getAdapter().getCount() - 1)).getIdOfItem();
@@ -43,7 +42,7 @@ public class EndLessScrollListener implements OnScrollListener {
 			isScrollingDown = true;
 		} else {
 			int locFirstItemVisible = parListView.getFirstVisiblePosition();
-			if ((locFirstItemVisible - 20) <= 0) {
+			if ((locFirstItemVisible - 60) <= 0) {
 				isUpdateNeeded = true;
 				locItemId = ((Displayable) parListView.getAdapter().getItem(0))
 						.getIdOfItem();

@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_listeView = (ListView) _layout.findViewById(R.id.listView1);
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
-		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 50, //TODO remettre 200
+		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
 				locObjectsList);
 
 		_listeView.setAdapter(_citiesAdaptater);
