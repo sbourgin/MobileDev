@@ -23,8 +23,8 @@ import android.widget.Toast;
 public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
-	private TextView _textView = null;
 	private ListView _listeView = null;
+	private Button _buttonChangeActivity = null;
 	private SizeLimitedAdapter<Country> _countriesAdaptater = null;
 
 	@Override
@@ -34,14 +34,12 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 		_layout = (RelativeLayout) RelativeLayout.inflate(this,
 				R.layout.display_countries, null);
 
-		_textView = (TextView) _layout
-				.findViewById(R.id.textViewActivityCountries);
-
 		_listeView = (ListView) _layout.findViewById(R.id.listViewCountry);
-		
+
 		LinkedList<Country> locObjectsList = new LinkedList<Country>();
 		_countriesAdaptater = new SizeLimitedAdapter<Country>(this, 200,
-				locObjectsList, 17367055); //  17367055 = simple_list_item_single_choice 
+				locObjectsList, 17367055); // 17367055 =
+											// simple_list_item_single_choice
 
 		_listeView.setAdapter(_countriesAdaptater);
 
@@ -50,22 +48,27 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 		locCountriesListManager.initData();
 
-		final Button locButton = (Button) _layout.findViewById(R.id.button1);
+		_buttonChangeActivity = (Button) _layout
+				.findViewById(R.id.buttonViewCities);
 
-		locButton.setOnClickListener(new OnClickListener() {
+		_buttonChangeActivity.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View parView) {
 
-				
-				Country locCountryChecked = (Country) _countriesAdaptater.getItem(_listeView.getCheckedItemPosition());
-				
-				locButton.setText(locCountryChecked.getNameToDisplay());
-				
-	/*			Intent intent = new Intent(DisplayCountries.this,
+				Country locCountryChecked = (Country) _countriesAdaptater
+						.getItem(_listeView.getCheckedItemPosition());
+
+				String locCountryString = locCountryChecked.getNameToDisplay();
+
+				Bundle locBundle = new Bundle();
+				locBundle.putString("country", locCountryString);
+
+				Intent locIntent = new Intent(DisplayCountries.this,
 						DisplayCities.class);
-				startActivity(intent);
-*/
+				locIntent.putExtras(locBundle);
+				startActivity(locIntent);
+
 			}
 
 		});
@@ -82,9 +85,9 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		
+
 		List<Country> locResult = (List<Country>) parObject;
-		
+
 		if ((parObject == null) || (locResult.isEmpty())) {
 			Toast locToast = Toast.makeText(this,
 					"Error when retrieving countries", Toast.LENGTH_LONG);
@@ -92,7 +95,7 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 		} else {
 
 			for (Country locCountry : locResult) {
-					_countriesAdaptater.addLast(locCountry);
+				_countriesAdaptater.addLast(locCountry);
 			}
 
 			_countriesAdaptater.notifyDataSetChanged();

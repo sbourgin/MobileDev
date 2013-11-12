@@ -8,17 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DisplayCountries" >
 
-    <TextView
-        android:id="@+id/textViewActivityCountries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="148dp"
-        android:layout_marginTop="158dp" />
-
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonViewCities"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
