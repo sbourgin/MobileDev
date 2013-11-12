@@ -9,18 +9,21 @@
     tools:context=".DisplayCities" >
 
     <TextView
-        android:id="@+id/debugTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
         android:id="@+id/textViewActivityCountries"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/debugTextView"
-        android:layout_marginLeft="87dp"
-        android:layout_marginTop="116dp"
-        android:layout_toRightOf="@+id/debugTextView"
-         />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="148dp"
+        android:layout_marginTop="158dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="116dp"
+        android:text="@string/change_activity" />
 
 </RelativeLayout>
