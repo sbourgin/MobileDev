@@ -15,14 +15,13 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class DisplayCountries extends Activity implements OnTaskCompleted {
 
-	private RelativeLayout _layout = null;
+	private LinearLayout _layout = null;
 	private ListView _listeView = null;
 	private Button _buttonChangeActivity = null;
 	private SizeLimitedAdapter<Country> _countriesAdaptater = null;
@@ -31,7 +30,7 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		_layout = (RelativeLayout) RelativeLayout.inflate(this,
+		_layout = (LinearLayout) LinearLayout.inflate(this,
 				R.layout.display_countries, null);
 
 		_listeView = (ListView) _layout.findViewById(R.id.listViewCountry);
