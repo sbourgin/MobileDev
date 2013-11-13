@@ -31,7 +31,8 @@ public class DisplayCity extends Activity {
         
         map.setMyLocationEnabled(true);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(locCityToDisplay, 13));
-
+        
+        
         map.addMarker(new MarkerOptions()
                 .title(locCityName)
                 .position(locCityToDisplay));
@@ -39,8 +40,6 @@ public class DisplayCity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.display_city, menu);
 		return true;
 	}
 
