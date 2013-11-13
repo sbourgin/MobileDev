@@ -30,7 +30,7 @@ public class DisplayCity extends Activity {
         LatLng locCityToDisplay = new LatLng(locLatitude, locLongitude);
         
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(locCityToDisplay, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(locCityToDisplay, 3));
         
         
         map.addMarker(new MarkerOptions()
