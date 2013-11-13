@@ -55,17 +55,16 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 			@Override
 			public void onClick(View parView) {
-/*
-				Intent locIntent = new Intent(DisplayCountries.this,
-						DisplayCity.class);
-				startActivity(locIntent);
-				
-	*/			//TODO to remove
-				
-				
-				
+
+				//Avoir -1 if nothing is checked
+				int locItemCheckedPosition = _listeView
+						.getCheckedItemPosition();
+				if (locItemCheckedPosition < 0) {
+					locItemCheckedPosition = 0;
+				}
+
 				Country locCountryChecked = (Country) _countriesAdaptater
-						.getItem(_listeView.getCheckedItemPosition());
+						.getItem(locItemCheckedPosition);
 
 				String locCountryString = locCountryChecked.getNameToDisplay();
 
@@ -76,8 +75,6 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 						DisplayCities.class);
 				locIntent.putExtras(locBundle);
 				startActivity(locIntent);
-				
-				
 
 			}
 
@@ -89,7 +86,6 @@ public class DisplayCountries extends Activity implements OnTaskCompleted {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		//getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
