@@ -1,6 +1,4 @@
-package tasks;
-
-import interfaces.OnTaskCompleted;
+package com.mmessage.dcu.sylvain.tasks;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -13,6 +11,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
+
+import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
 public class GetRESTTask extends AsyncTask<String, Void, String> {
 

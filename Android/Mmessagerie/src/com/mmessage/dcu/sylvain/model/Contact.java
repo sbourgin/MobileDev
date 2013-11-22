@@ -1,6 +1,6 @@
-package model;
+package com.mmessage.dcu.sylvain.model;
 
-import interfaces.Displayable;
+import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Contact implements Displayable{
 

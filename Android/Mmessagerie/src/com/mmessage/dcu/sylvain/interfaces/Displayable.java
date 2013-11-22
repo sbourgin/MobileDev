@@ -1,4 +1,4 @@
-package interfaces;
+package com.mmessage.dcu.sylvain.interfaces;
 
 public interface Displayable {
 

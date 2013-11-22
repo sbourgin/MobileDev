@@ -1,8 +1,8 @@
-package model;
+package com.mmessage.dcu.sylvain.model;
 
 import java.sql.Timestamp;
 
-import interfaces.Displayable;
+import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Message implements Displayable{
 
