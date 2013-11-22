@@ -4,22 +4,27 @@ import interfaces.Displayable;
 
 public class Contact implements Displayable{
 
+	Long _id;
+	String _name;
+	
+	
+	
 	@Override
-	public String getNameToDisplay() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getTitleToDisplay() {
+		return _name;
 	}
 
 	@Override
-	public String getSubtitle() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getFullTextToDisplay() {
+		
+		return "";
 	}
 
 	@Override
 	public long getIdOfItem() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _id;
 	}
+
+
 
 }

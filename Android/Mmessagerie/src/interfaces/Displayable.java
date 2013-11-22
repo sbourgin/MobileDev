@@ -2,8 +2,8 @@ package interfaces;
 
 public interface Displayable {
 
-	public String getNameToDisplay();
-	public String getSubtitle();
+	public String getTitleToDisplay();
+	public String getFullTextToDisplay();
 	public long getIdOfItem();
 	
 }

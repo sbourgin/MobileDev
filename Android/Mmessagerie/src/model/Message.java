@@ -1,28 +1,32 @@
 package model;
 
+import java.sql.Timestamp;
+
 import interfaces.Displayable;
 
 public class Message implements Displayable{
 
-	
-	
+	Long _id;
+	Integer _status;
+	Timestamp _time;
+	Contact _fromContact;
+	Contact _toContact;
+	String _subject;
+	String _text;
 	
 	@Override
-	public String getNameToDisplay() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getTitleToDisplay() {
+		return _subject;
 	}
-
 	@Override
-	public String getSubtitle() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getFullTextToDisplay() {
+		return _text;
 	}
-
 	@Override
 	public long getIdOfItem() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		return _id;
+	}	
+	
+
 
 }
