@@ -18,12 +18,13 @@ public class CitiesListManager implements OnTaskCompleted {
 
 	private OnTaskCompleted _listener = null;
 	private final String _httpLink = "http://honey.computing.dcu.ie/city/cities.php?";
-	private String _countryCode = "us"; // TODO premettre de choisir !
+	private String _countryCode = null;
 	private Boolean _isUpdating = Boolean.valueOf(false);
 	private boolean isScrollingDown = false;
 
-	public CitiesListManager(Context parContext) {
+	public CitiesListManager(Context parContext, String parCountryCode) {
 		_listener = (OnTaskCompleted) parContext;
+		_countryCode = parCountryCode;
 	}
 
 	public void initData() {
@@ -118,8 +119,6 @@ public class CitiesListManager implements OnTaskCompleted {
 
 		_listener.onTaskCompleted(locResult);
 
-		// TODO gérer la fin quand il n'y a plus de data à fetcher (max id
-		// atteint)
 	}
 
 	@Override

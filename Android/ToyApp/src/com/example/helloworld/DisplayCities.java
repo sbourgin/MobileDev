@@ -10,13 +10,17 @@ import model.SizeLimitedAdapter;
 import tasks.CitiesListManager;
 import tasks.EndLessScrollListener;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnTaskCompleted {
+public class DisplayCities extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
 	private ListView _listeView = null;
@@ -26,29 +30,62 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Bundle locReceiveBundle = this.getIntent().getExtras();
+	    final String locCountryCode = locReceiveBundle.getString("countryCode");
+		
+		
 		// On récupère notre layout par désérialisation. La méthode inflate
 		// retourne un View
 		// C'est pourquoi on caste (on convertit) le retour de la méthode avec
 		// le vrai type de notre layout, c'est-à-dire RelativeLayout
 		_layout = (RelativeLayout) RelativeLayout.inflate(this,
-				R.layout.activity_main, null);
+				R.layout.display_cities, null);
 
 		// A remettre en remettant la listView dans la vue
 
-		_listeView = (ListView) _layout.findViewById(R.id.listView1);
+		_listeView = (ListView) _layout.findViewById(R.id.listViewCities);
 
 		LinkedList<City> locObjectsList = new LinkedList<City>();
-		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 50, //TODO remettre 200
-				locObjectsList);
+		_citiesAdaptater = new SizeLimitedAdapter<City>(this, 200,
+				locObjectsList, 17367047); // 17367047 R.layout.simple_expandable_list_item_2
 
 		_listeView.setAdapter(_citiesAdaptater);
 
-		CitiesListManager locCitiesListManager = new CitiesListManager(this);
+		CitiesListManager locCitiesListManager = new CitiesListManager(this, locCountryCode);
 
 		locCitiesListManager.initData();
 
 		_listeView.setOnScrollListener(new EndLessScrollListener(
 				locCitiesListManager));
+	
+		
+		_listeView.setOnItemClickListener(new OnItemClickListener() {
+	 
+			@Override	
+		public void onItemClick(AdapterView<?> parent, View view,
+	                int parPosition, long id) {
+
+	       City locCity = (City) _citiesAdaptater.getItem(parPosition);
+	       String display= locCity.get_cityName();
+	       Toast.makeText(getBaseContext(),display,Toast.LENGTH_SHORT).show();
+	       
+	       
+	       Bundle locBundle = new Bundle();
+				locBundle.putString("cityName", locCity.get_cityName());
+				locBundle.putDouble("latitude", locCity.get_latitude());
+				locBundle.putDouble("longitude", locCity.get_longitude());
+			
+			Intent locIntent = new Intent(DisplayCities.this,
+					DisplayCity.class);
+			locIntent.putExtras(locBundle);
+			startActivity(locIntent);
+	       
+	       
+	        }
+
+	    });
+
+
 
 		setContentView(_layout);
 
@@ -56,8 +93,6 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
