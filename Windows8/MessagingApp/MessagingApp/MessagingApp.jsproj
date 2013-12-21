@@ -49,9 +49,7 @@
     <RequiredPlatformVersion>8.1</RequiredPlatformVersion>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    
     <PackageCertificateKeyFile>MessagingApp_TemporaryKey.pfx</PackageCertificateKeyFile>
-    
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
@@ -64,7 +62,17 @@
     <Content Include="images\storelogo.scale-100.png" />
     <Content Include="js\data.js" />
     <Content Include="js\default.js" />
+    <Content Include="js\models\contentDecorator.js" />
+    <Content Include="js\models\emptyMessage.js" />
+    <Content Include="js\models\imageMessageDecorator.js" />
+    <Content Include="js\models\message.js" />
+    <Content Include="js\models\messageFactory.js" />
+    <Content Include="js\models\messagesCollection.js" />
+    <Content Include="js\models\textMessageDecorator.js" />
+    <Content Include="js\models\user.js" />
+    <Content Include="js\models\usersCollection.js" />
     <Content Include="js\navigator.js" />
+    <Content Include="js\utils\messageAPI.js" />
     <Content Include="pages\items\items.css" />
     <Content Include="pages\items\items.html" />
     <Content Include="pages\items\items.js" />
@@ -72,9 +80,7 @@
     <Content Include="pages\split\split.html" />
     <Content Include="pages\split\split.js" />
     <Content Include="default.html" />
-    
     <None Include="MessagingApp_TemporaryKey.pfx" />
-    
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.WinJS.2.0, Version=1.0" />
