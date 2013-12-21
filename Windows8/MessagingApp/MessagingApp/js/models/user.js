@@ -49,7 +49,7 @@
                         password: this._password,
                     };
 
-                    return new WinJS.Promise(function (onSuccess) {
+                    return new WinJS.Promise(function (onSuccess, onError) {
                         Utils.MessageAPI.getAsync("logon", parameters).then(
                             function complete(user) {
                                 self._description = user.description;
@@ -58,7 +58,8 @@
                                 onSuccess({
                                     model: self,
                                 });
-                            }
+                            },
+                            onError
                         );
                     });
                 },
@@ -69,7 +70,9 @@
                             function complete() {
 
                                 //execute callback
-                                onSuccess({});
+                                onSuccess({
+                                    model: self,
+                                });
                             }
                         );
                     });
@@ -82,13 +85,16 @@
                         description: this._description,
                     };
 
-                    return new WinJS.Promise(function (onSuccess) {
+                    return new WinJS.Promise(function (onSuccess, onError) {
                         Utils.MessageAPI.getAsync("register", parameters).then(
                             function complete() {
 
                                 //execute callback
-                                onSuccess({});
-                            }
+                                onSuccess({
+                                    model: self,
+                                });
+                            },
+                            onError
                         );
                     });
                 },
@@ -99,7 +105,7 @@
                             function complete() {
 
                                 //execute callback
-                                onSuccess({});
+                                onSuccess();
                             }
                         );
                     });

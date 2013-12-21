@@ -63,21 +63,31 @@
                 sendAsync: function (onSuccess) {
                     var self = this;
 
-                    var formData = new FormData();
-                    //formData.append("image", MSApp.createFileFromStorageFile(file));
-                    formData.append("message", JSON.stringify(self.getSendParameters()));
+                    var uri = new Windows.Foundation.Uri('ms-appx:///images/person.jpg');
 
-                    return new WinJS.Promise(function (onSuccess) {
-                        Utils.MessageAPI.postAsync("send", formData).then(
-                            function complete(message) {
+                    return Windows.Storage.StorageFile.getFileFromApplicationUriAsync(uri).then(
+                        function complete(file) {
+                            var formData = new FormData();
+                            formData.append("image", MSApp.createFileFromStorageFile(file));
+                            formData.append("message", JSON.stringify(self.getSendParameters()));
 
-                                //execute callback
-                                onSuccess({
-                                    message: self,
-                                });
-                            }
-                        );
-                    });
+                            return new WinJS.Promise(function (onSuccess) {
+                                Utils.MessageAPI.postAsync("send", formData).then(
+                                    function complete(message) {
+
+                                        //execute callback
+                                        onSuccess({
+                                            message: self,
+                                        });
+                                    }
+                                );
+                            });
+                            
+                        },
+                        function error(error) {
+                            console.log(error)
+                        }
+                    );
                 },
 
                 readAsync: function () {

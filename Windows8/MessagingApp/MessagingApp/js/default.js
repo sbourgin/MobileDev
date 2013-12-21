@@ -19,37 +19,6 @@
                 // Restore application state here.
             }
 
-
-            /////// tests model: to delete
-            var user = new Models.User({
-                name: "frenchteam1",
-                password: "frenchteam1",
-            });
-
-            user.logonAsync().then(
-                function complete(returnObject) {
-                    console.log(returnObject.name);
-
-                    var message = Models.MessageFactory.createMessage({
-                        subject: "test",
-                        to: "frenchteam2",
-                        from: "frenchteam1",
-                        text: "test",
-                        image: "person.jpg",
-                    });
-
-                    return message.sendAsync();
-                }
-            ).then(
-                function complete(returnObject) {
-                    console.log(returnObject);
-                }
-            )
-            
-
-            ///////////////////////////////////////////////////////
-            
-
             nav.history = app.sessionState.history || {};
             nav.history.current.initialPlaceholder = true;
 

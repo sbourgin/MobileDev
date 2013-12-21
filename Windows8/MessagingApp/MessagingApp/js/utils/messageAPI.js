@@ -42,14 +42,16 @@
                     options.url = Utils.MessageAPI._baseUrl + endUrl + '?' + queryParameters;
                     options.responseType = 'json';
 
-                    return new WinJS.Promise(function (onSuccess) {
+                    return new WinJS.Promise(function (onSuccess, onError) {
                         WinJS.xhr(options).then(
                             function complete(request) {
                                 if (request.status === 200) {
                                     var response = JSON.parse(request.response);
 
                                     if (response.status == Utils.MessageAPI._errorStatus) {
-                                        console.log('Request Error: ' + response.message);
+                                        //console.log('Request Error: ' + response.message);
+
+                                        onError(response.message);
                                     }
                                     else if (response.status == Utils.MessageAPI._successStatus) {
                                         //console.log('Success: ' + response);
@@ -60,7 +62,7 @@
                             },
 
                             function error(request) {
-                                console.log('HTTP Error: ' + request.statusText);
+                                console.log('HTTP Error: ' + request.statusText);                                
                             }
                         );
                     });
