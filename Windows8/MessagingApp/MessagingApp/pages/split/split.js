@@ -8,33 +8,58 @@
 
     ui.Pages.define("/pages/split/split.html", {
 
-        _group: null,
-        /// <field type="WinJS.Binding.List" />
-        _items: null,
         _itemSelectionIndex: -1,
         _wasSingleColumn: false,
 
+        _userLogged: null,
+        _usersCollection: null,
+        _usersArray: null,
+        _usersList: null,
+
         // This function is called to initialize the page.
         init: function (element, options) {
-            // Store information about the group and selection that this page will
-            // display.
-            this._group = Data.resolveGroupReference(options.groupKey);
-            this._items = Data.getItemsFromGroup(this._group);
+            this._userLogged = options.user;
+
             this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
-            this.itemDataSource = this._items.dataSource;
+
+            this._usersArray = new binding.List();
+            this._usersCollection = new Models.UsersCollection({
+                items: this._usersArray,
+            });
+
             this.selectionChanged = ui.eventHandler(this._selectionChanged.bind(this));
         },
 
         // This function is called whenever a user navigates to this page.
         ready: function (element, options) {
-            element.querySelector("header[role=banner] .pagetitle").textContent = this._group.title;
+            this._usersList = element.querySelector("#usersList");
+
+            //bind listView HTML element to our list
+            this._usersList.winControl.itemDataSource = this._usersArray.dataSource;
+
+            var self = this;
+            this._usersCollection.fetchAsync().then(
+                function complete(returnObject) {
+                    self._fetchCompleted(element);
+                }
+            );
+
+            element.querySelector("#settings_button").addEventListener("click", this._showSettings);
+            element.querySelector("#remove_account_button").addEventListener("click", this._removeAccount.bind(this));
+            element.querySelector("#logoff_button").addEventListener("click", this._logOff.bind(this));
+        },
+
+        _fetchCompleted: function (element) {            
+            element.querySelector("header[role=banner] .pagetitle").textContent = this._userLogged.name;
 
             this._updateVisibility(element);
             if (this._isSingleColumn()) {
                 this._wasSingleColumn = true;
                 if (this._itemSelectionIndex >= 0) {
+                    var user = this._usersCollection.items.getAt(this._itemSelectionIndex);
+
                     // For single-column detail view, load the article.
-                    binding.processAll(element.querySelector(".articlesection"), this._items.getAt(this._itemSelectionIndex));
+                    binding.processAll(element.querySelector(".articlesection"), user);
                 }
             } else {
                 // If this page has a selectionIndex, make that selection
@@ -45,7 +70,7 @@
         },
 
         unload: function () {
-            this._items.dispose();
+            if(this._citiesArray) this._citiesArray.dispose();
         },
 
         updateLayout: function (element) {
@@ -69,13 +94,16 @@
                     // If the app has snapped into a single-column detail view,
                     // add the single-column list view to the backstack.
                     nav.history.current.state = {
-                        groupKey: this._group.key,
+                        user: this._userLogged,
                         selectedIndex: this._itemSelectionIndex
                     };
                     nav.history.backStack.push({
                         location: "/pages/split/split.html",
-                        state: { groupKey: this._group.key }
+                        state: { user: this._userLogged, }
                     });
+                    
+
+
                     element.querySelector(".articlesection").focus();
                 } else {
                     listView.addEventListener("contentanimating", handler, false);
@@ -119,7 +147,7 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/split.html", { groupKey: this._group.key, selectedIndex: this._itemSelectionIndex });
+                            nav.navigate("/pages/split/split.html", { user: this._userLogged, selectedIndex: this._itemSelectionIndex});
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.
@@ -139,15 +167,41 @@
                 if (this._itemSelectionIndex >= 0) {
                     utils.addClass(splitPage, "itemdetail");
                     element.querySelector(".articlesection").focus();
+
+                    document.getElementById("back_button").style.visibility = "visible";
+                    document.getElementById("settings_button").style.visibility = "hidden";
+
                 } else {
                     utils.addClass(splitPage, "groupdetail");
                     element.querySelector(".itemlist").focus();
+
+                    document.getElementById("back_button").style.visibility = "hidden";
+                    document.getElementById("settings_button").style.visibility = "visible";
                 }
             } else {
                 utils.removeClass(splitPage, "groupdetail");
                 utils.removeClass(splitPage, "itemdetail");
                 element.querySelector(".itemlist").focus();
+
+                document.getElementById("back_button").style.visibility = "hidden";
+                document.getElementById("settings_button").style.visibility = "visible";
             }
-        }
+        },
+
+        _showSettings: function () {
+            WinJS.UI.SettingsFlyout.showSettings("settings");
+        },
+
+        _removeAccount: function () {
+            this._userLogged.removeAsync();
+
+            nav.navigate("/pages/login/login.html");
+        },
+
+        _logOff: function () {
+            this._userLogged.logoffAsync();
+
+            nav.navigate("/pages/login/login.html");
+        },
     });
 })();

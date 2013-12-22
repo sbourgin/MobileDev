@@ -13,6 +13,7 @@
                     this._name          = data.name         ? data.name         : "";
                     this._password      = data.password     ? data.password     : "";
                     this._description   = data.description  ? data.description  : "";
+                    this._thumbnail     = data.thumbnail    ? data.thumbnail    : "images/thumbnail.png";
                 }
             },
 
@@ -21,6 +22,7 @@
                 _name: "",
                 _password: "",
                 _description: "",
+                _thumbnail: "",
 
                 name: {
                     get: function () {
@@ -40,6 +42,11 @@
                     },
                 },
 
+                thumbnail: {
+                    get: function () {
+                        return this._thumbnail;
+                    },
+                },
 
                 logonAsync: function () {
                     var self = this;
@@ -105,7 +112,9 @@
                             function complete() {
 
                                 //execute callback
-                                onSuccess();
+                                onSuccess({
+                                    model: self,
+                                });
                             }
                         );
                     });

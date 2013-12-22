@@ -1,4 +1,18 @@
-﻿.splitpage {
+﻿#settings_button {
+    position: absolute;
+    margin-top: 45px;
+    margin-left: 40px;
+    visibility: hidden;
+}
+
+#back_button {
+    position: absolute;
+    margin-left: 25px;
+    margin-right: 0;
+    visibility: hidden;
+}
+
+.splitpage {
     -ms-grid-columns: 106px 314px 1fr;
     display: -ms-grid;
     height: 100%;
