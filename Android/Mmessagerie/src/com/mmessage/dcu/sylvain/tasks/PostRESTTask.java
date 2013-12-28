@@ -1,11 +1,22 @@
 package com.mmessage.dcu.sylvain.tasks;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 
 import android.os.AsyncTask;
 
@@ -14,57 +25,86 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 public class PostRESTTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted _listener = null;
+	private Map _parameters;
 
-	public PostRESTTask(OnTaskCompleted parOnTaskCompleted) {
+	public PostRESTTask(OnTaskCompleted parOnTaskCompleted, Map parParameters) {
 		_listener = parOnTaskCompleted;
+		_parameters = parParameters;
 	}
 
 	@Override
 	protected String doInBackground(String... params) {
 
-		// http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
-
+		//TODO Ca ne marche pas
+		
+		
+	//	http://stackoverflow.com/questions/15870636/how-to-execute-restful-post-requests-from-android
+		
 		String locUrl = params[0];
 		String locResponseString = "";
-
-		// String locUrl = "https://selfsolve.apple.com/wcResults.do";
+/*
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(locUrl);
+		httppost.setHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF8");
+		
 		try {
-			URL obj = new URL(locUrl);
-			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+		    // Add your data
+		    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+		    nameValuePairs.add(new BasicNameValuePair("username", "Sylvain2"));
+		    nameValuePairs.add(new BasicNameValuePair("password", "Sylvain2"));
+		    nameValuePairs.add(new BasicNameValuePair("email", "sykvain2@sylvain.com"));
+		    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		    
+		    // Execute HTTP Post Request
+		    HttpResponse response = httpclient.execute(httppost);
+		    
+		    locResponseString =  EntityUtils.toString(response.getEntity());
+		    
 
-			// add reuqest header
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-			String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + locUrl);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-			locResponseString = response.toString();
-		} catch (Exception e) {
-			locResponseString = null;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		// print result
+*/		
+		
+		HttpPost httppost;
+        DefaultHttpClient httpclient;
+        ResponseHandler <String> res=new BasicResponseHandler();  
+        List<NameValuePair> nameValuePairs;
+        String bytesSent;
+
+        httppost = new HttpPost(locUrl);  
+       httppost.setHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF8");
+        HttpParams parameters = new BasicHttpParams();  
+
+        HttpProtocolParams.setContentCharset(parameters, "UTF-8");
+
+        httpclient = new DefaultHttpClient(parameters);
+        nameValuePairs = new ArrayList<NameValuePair>(2);  
+	    nameValuePairs.add(new BasicNameValuePair("username", "Sylvain2"));
+	    nameValuePairs.add(new BasicNameValuePair("password", "Sylvain2"));
+	    nameValuePairs.add(new BasicNameValuePair("email", "sykvain2@sylvain.com"));
+        try {
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+        try {
+			bytesSent = httpclient.execute(httppost, res);
+			locResponseString=bytesSent;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		return (locResponseString);
 
 	}

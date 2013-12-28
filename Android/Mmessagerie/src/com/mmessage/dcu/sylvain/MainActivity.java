@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 public class MainActivity extends Activity {
 
 	private RelativeLayout _layout = null;
-	private EditText _login = null;
+	private EditText _userName = null;
 	private EditText _password = null;
 	private Button _createAccount = null;
 	private Button _signIn = null;
@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
 		_layout = (RelativeLayout) RelativeLayout.inflate(this,
 				R.layout.activity_main, null);
 		
-		_login =  (EditText) _layout.findViewById(R.id.mainUserName);
+		_userName =  (EditText) _layout.findViewById(R.id.mainUserName);
 		_password = (EditText) _layout.findViewById(R.id.mainPassword);
 		_createAccount = (Button) _layout.findViewById(R.id.mainCreateAccount);
 		_signIn = (Button) _layout.findViewById(R.id.mainSignIn);
