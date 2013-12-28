@@ -1,8 +1,11 @@
 package com.mmessage.dcu.sylvain;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -29,8 +32,19 @@ public class MainActivity extends Activity {
 		_createAccount = (Button) _layout.findViewById(R.id.mainCreateAccount);
 		_signIn = (Button) _layout.findViewById(R.id.mainSignIn);
 		
-		_createAccount.setText("Create an account");
+		_createAccount.setText("Create an account"); //TODO add : label OR 
 		_signIn.setText("Sign In");
+		
+		_createAccount.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+				startActivity(intent);
+
+				
+			}
+		});
 		
 		setContentView(_layout);
 	}
