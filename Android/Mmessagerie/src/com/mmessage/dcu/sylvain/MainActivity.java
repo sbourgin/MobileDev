@@ -11,15 +11,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTaskCompleted {
 
-	private RelativeLayout _layout = null;
+	private LinearLayout _layout = null;
 	private EditText _userName = null;
 	private EditText _password = null;
 	private Button _createAccount = null;
 	private Button _signIn = null;
+	private TextView _messageUser;
 	
 	
 	@Override
@@ -27,15 +30,19 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		super.onCreate(savedInstanceState);
 		
 		
-		_layout = (RelativeLayout) RelativeLayout.inflate(this,
+		_layout = (LinearLayout) RelativeLayout.inflate(this,
 				R.layout.activity_main, null);
+		
+		_messageUser = (TextView) _layout.findViewById(R.id.mainTextMessage);
+		
+		_messageUser.setText("Please fill your details");
 		
 		_userName =  (EditText) _layout.findViewById(R.id.mainUserName);
 		_password = (EditText) _layout.findViewById(R.id.mainPassword);
 		_createAccount = (Button) _layout.findViewById(R.id.mainCreateAccount);
 		_signIn = (Button) _layout.findViewById(R.id.mainSignIn);
 		
-		_createAccount.setText("Create an account"); //TODO add : label OR 
+		_createAccount.setText("Create an account");  
 		_signIn.setText("Sign In");
 		
 		_createAccount.setOnClickListener(new OnClickListener() {
@@ -69,8 +76,12 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		String reponse = (String) parObject;
-		_userName.setText(reponse);
+		Boolean locAnswerFromServer = (Boolean) parObject;
+		if(locAnswerFromServer) {
+			//TODO lancer écran suivant
+		} else {
+			_messageUser.setText("Authentication failed");
+		}
 		
 	}
 
