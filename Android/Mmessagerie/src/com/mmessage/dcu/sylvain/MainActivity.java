@@ -1,5 +1,8 @@
 package com.mmessage.dcu.sylvain;
 
+import com.mmessage.dcu.sylvain.controler.MainActivityController;
+import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnTaskCompleted {
 
 	private RelativeLayout _layout = null;
 	private EditText _userName = null;
@@ -40,11 +43,20 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, CreateAccount.class);
-				startActivity(intent);
-
-				
+				startActivity(intent);	
 			}
 		});
+		
+		
+		_signIn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MainActivityController controller = new MainActivityController(MainActivity.this);
+				controller.logInUser(_userName.getText().toString(), _password.getText().toString());
+			}
+		});
+		
 		
 		setContentView(_layout);
 	}
@@ -54,6 +66,13 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onTaskCompleted(Object parObject) {
+		String reponse = (String) parObject;
+		_userName.setText(reponse);
+		
 	}
 
 }

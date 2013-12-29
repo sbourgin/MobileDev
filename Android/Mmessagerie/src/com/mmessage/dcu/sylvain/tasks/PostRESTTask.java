@@ -35,7 +35,7 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... params) {
 
-		//TODO Ca ne marche pas
+		//TODO Ca ne marche pas, erreur 500., ça a eu marcher (cf liste user !!)
 		
 		
 	//	http://stackoverflow.com/questions/15870636/how-to-execute-restful-post-requests-from-android
