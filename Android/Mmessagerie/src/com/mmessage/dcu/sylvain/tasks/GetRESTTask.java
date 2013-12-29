@@ -14,16 +14,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
 
+import com.mmessage.dcu.sylvain.MainActivity;
+import com.mmessage.dcu.sylvain.controler.MainActivityController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
 public class GetRESTTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted _listener = null;
-	private String _authentication;
 
-	public GetRESTTask(OnTaskCompleted parOnTaskCompleted, String parAuth) {
+	public GetRESTTask(OnTaskCompleted parOnTaskCompleted) {
 		_listener = parOnTaskCompleted;
-		_authentication = parAuth;
 	}
 
 	@Override
@@ -38,20 +38,12 @@ public class GetRESTTask extends AsyncTask<String, Void, String> {
 
 		String locResponseString = "";
 
-//		locHttpclient.sRequestProperty("Authorization", "Basic " + _authentication);
-		
-		
 		try {
-			
+
 			HttpGet get = new HttpGet(locUrl.toString());
-			
-			
-			get.addHeader(BasicScheme.authenticate(
-					 new UsernamePasswordCredentials("cil", "cil"),
-					 "UTF-8", false));
 			get.addHeader("Accept", "application/json");
-			
-			//get.setHeader("Authorization", "Basic " + _authentication); erreur 406
+
+			get.addHeader("Authorization", "Basic " + MainActivityController.getAuthentification());
 			locHttpResponse = locHttpclient.execute(get);
 			StatusLine locStatusLine = locHttpResponse.getStatusLine();
 			if (locStatusLine.getStatusCode() == HttpStatus.SC_OK) {

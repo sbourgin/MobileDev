@@ -57,7 +57,6 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			}
 		});
 		
-		
 		setContentView(_layout);
 	}
 
