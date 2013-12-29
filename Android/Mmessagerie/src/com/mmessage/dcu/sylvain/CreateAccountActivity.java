@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.mmessage.dcu.sylvain.controler.CreateAccountController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
-public class CreateAccount extends Activity implements OnTaskCompleted{
+public class CreateAccountActivity extends Activity implements OnTaskCompleted{
 
 	private LinearLayout _layout = null;
 	private EditText _userName = null;

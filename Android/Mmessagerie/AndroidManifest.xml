@@ -8,8 +8,8 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
 
-     <uses-permission android:name="android.permission.INTERNET" />
-    
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -25,12 +25,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mmessage.dcu.sylvain.CreateAccount"
+            android:name="com.mmessage.dcu.sylvain.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
             android:parentActivityName="com.mmessage.dcu.sylvain.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmessage.dcu.sylvain.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.mmessage.dcu.sylvain.ConversationsActivity"
+            android:label="@string/title_activity_conversations" >
         </activity>
     </application>
 

@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+				Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
 				startActivity(intent);	
 			}
 		});
@@ -78,7 +78,8 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	public void onTaskCompleted(Object parObject) {
 		Boolean locAnswerFromServer = (Boolean) parObject;
 		if(locAnswerFromServer) {
-			//TODO lancer écran suivant
+			Intent intent = new Intent(MainActivity.this, ConversationsActivity.class);
+			startActivity(intent);	
 		} else {
 			_messageUser.setText("Authentication failed");
 		}
