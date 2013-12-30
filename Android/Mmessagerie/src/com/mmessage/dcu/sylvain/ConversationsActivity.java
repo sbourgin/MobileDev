@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -38,37 +40,11 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 		LinkedList<Conversation> locObjectsList = new LinkedList<Conversation>();
 
-		_conversationsAdapter = new SizeLimitedAdapter<Conversation>(
-				this, 200, locObjectsList, 17367047);
+		_conversationsAdapter = new SizeLimitedAdapter<Conversation>(this, 200,
+				locObjectsList, 17367047);
 
 		_listeView.setAdapter(_conversationsAdapter);
 
-		/*
-		 * _buttonChangeActivity.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View parView) {
-		 * 
-		 * //Avoir -1 if nothing is checked int locItemCheckedPosition =
-		 * _listeView .getCheckedItemPosition(); if (locItemCheckedPosition < 0)
-		 * { locItemCheckedPosition = 0; }
-		 * 
-		 * Country locCountryChecked = (Country) _countriesAdaptater
-		 * .getItem(locItemCheckedPosition);
-		 * 
-		 * String locCountryString = locCountryChecked.getNameToDisplay();
-		 * 
-		 * Bundle locBundle = new Bundle(); locBundle.putString("countryCode",
-		 * locCountryString);
-		 * 
-		 * Intent locIntent = new Intent(DisplayCountries.this,
-		 * DisplayCities.class); locIntent.putExtras(locBundle);
-		 * startActivity(locIntent);
-		 * 
-		 * }
-		 * 
-		 * });
-		 */
-/*
 		_conversationsPlus = (Button) _layout
 				.findViewById(R.id.conversationsPlus);
 
@@ -76,15 +52,36 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 			@Override
 			public void onClick(View v) {
+
 				Intent locIntent = new Intent(ConversationsActivity.this,
 						CreateConversationActivity.class);
 				startActivity(locIntent);
 
 			}
 		});
-*/
+
+		_listeView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int parPosition, long id) {
+				Conversation locConversationChecked = (Conversation) _conversationsAdapter
+						.getItem(parPosition);
+				Long idConversation = locConversationChecked.getIdOfItem();
+				Bundle locBundle = new Bundle();
+				locBundle.putLong("conversationID", idConversation);
+
+				Intent locIntent = new Intent(ConversationsActivity.this,
+						ConversationViewActivity.class);
+				locIntent.putExtras(locBundle);
+				startActivity(locIntent);
+
+			}
+
+		});
+
 		setContentView(_layout);
-		
+
 		_controller = new ConversationsController(ConversationsActivity.this);
 
 	}
@@ -105,7 +102,7 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 					"Error when retrieving conversations", Toast.LENGTH_LONG);
 			locToast.show();
 		} else {
-		//TODO	_conversationsAdapter.resetData();
+			_conversationsAdapter.resetData();
 			for (Conversation locConversation : locResult) {
 				_conversationsAdapter.addLast(locConversation);
 			}
