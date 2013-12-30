@@ -12,7 +12,7 @@ public class Conversation implements Displayable {
 
 	private long _id;
 	private String _name;
-	private List<String> _addresseeList = new ArrayList<String>();
+	private List<Contact> _addresseeList = new ArrayList<Contact>();
 
 	
 	
@@ -25,14 +25,20 @@ public class Conversation implements Displayable {
 	public boolean fillStates(JSONObject parJSon) {
 		try {
 			
-			this._id =  (Long) parJSon.get("id");;
+			this._id =  (Long) parJSon.get("id");
 			this._name = (String) parJSon.get("name");
 
-			JSONArray locContactsJSONArray = (JSONArray) parJSon.get("conversations");
+			JSONArray locContactsJSONArray = (JSONArray) parJSon.get("users");
 			
 			for (int i = 0; i < locContactsJSONArray.size(); i++) {
+				JSONObject locContactJSON = (JSONObject) locContactsJSONArray
+						.get(i);
+				Contact locContact = new Contact();
+				boolean isContactValid = locContact.fillStates(locContactJSON);
 				
-				
+				if(isContactValid) {
+					_addresseeList.add(locContact);
+				}
 				
 			} 
 			
@@ -51,10 +57,10 @@ public class Conversation implements Displayable {
 		StringBuilder locListAddresse = new StringBuilder();
 		
 		for(int i=0; i<_addresseeList.size()-1;i++) {
-			locListAddresse.append(_addresseeList.get(i));
+			locListAddresse.append(_addresseeList.get(i).getTitleToDisplay());
 			locListAddresse.append(", ");
 		}
-		locListAddresse.append(_addresseeList.get(_addresseeList.size())); //TODO Check si ça marche pour la virgule
+		locListAddresse.append(_addresseeList.get(_addresseeList.size()-1).getTitleToDisplay());
 		return locListAddresse.toString();
 		
 	}

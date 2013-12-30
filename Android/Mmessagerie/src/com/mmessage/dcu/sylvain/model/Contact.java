@@ -1,19 +1,30 @@
 package com.mmessage.dcu.sylvain.model;
 
+import org.json.simple.JSONObject;
+
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
-public class Contact implements Displayable{
+public class Contact implements Displayable {
 
-	Long _id;
-	String _name;
-	String _email;
-	
-	
-	public Contact(Long _id, String _name, String _email) {
-		super();
-		this._id = _id;
-		this._name = _name;
-		this._email = _email;
+	private Long _id;
+	private String _name;
+	private String _email;
+
+	public Contact() {
+	}
+
+	public boolean fillStates(JSONObject parJSon) {
+
+		try {
+
+			this._id = (Long) parJSon.get("id");;
+			this._name = (String) parJSon.get("username");
+			this._email = (String) parJSon.get("email");
+
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -23,15 +34,12 @@ public class Contact implements Displayable{
 
 	@Override
 	public String getFullTextToDisplay() {
-		
-		return "";
+		return _email;
 	}
 
 	@Override
 	public long getIdOfItem() {
 		return _id;
 	}
-
-
 
 }
