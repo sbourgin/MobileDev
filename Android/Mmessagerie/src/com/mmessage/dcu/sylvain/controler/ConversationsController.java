@@ -28,6 +28,7 @@ public class ConversationsController implements OnTaskCompleted {
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
+		//TODO gérer le cas où on réenvoit false et éviter de faire la suite et prévenir la vue
 		_listener.onTaskCompleted(getAllConversations());
 	}
 	

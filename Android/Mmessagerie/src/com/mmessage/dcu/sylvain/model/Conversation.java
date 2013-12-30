@@ -3,6 +3,9 @@ package com.mmessage.dcu.sylvain.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Conversation implements Displayable {
@@ -13,12 +16,34 @@ public class Conversation implements Displayable {
 
 	
 	
-	public Conversation(long _id, String name, List<String> addresseeList) {
-		super();
-		this._id = _id;
-		this._name = name;
-		this._addresseeList = addresseeList;
+
+
+	public Conversation() {
+		
 	}
+	
+	public boolean fillStates(JSONObject parJSon) {
+		try {
+			
+			this._id =  (Long) parJSon.get("id");;
+			this._name = (String) parJSon.get("name");
+
+			JSONArray locContactsJSONArray = (JSONArray) parJSon.get("conversations");
+			
+			for (int i = 0; i < locContactsJSONArray.size(); i++) {
+				
+				
+				
+			} 
+			
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+		
+		
+	}
+	
 
 	@Override
 	public String getTitleToDisplay() {
@@ -31,6 +56,7 @@ public class Conversation implements Displayable {
 		}
 		locListAddresse.append(_addresseeList.get(_addresseeList.size())); //TODO Check si ça marche pour la virgule
 		return locListAddresse.toString();
+		
 	}
 
 	@Override

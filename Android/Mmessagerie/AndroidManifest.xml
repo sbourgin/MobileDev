@@ -36,6 +36,10 @@
             android:name="com.mmessage.dcu.sylvain.ConversationsActivity"
             android:label="@string/title_activity_conversations" >
         </activity>
+        <activity
+            android:name="com.mmessage.dcu.sylvain.CreateConversationActivity"
+            android:label="@string/title_activity_create_conversation" >
+        </activity>
     </application>
 
 </manifest>

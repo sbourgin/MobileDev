@@ -6,9 +6,16 @@ public class Contact implements Displayable{
 
 	Long _id;
 	String _name;
+	String _email;
 	
 	
-	
+	public Contact(Long _id, String _name, String _email) {
+		super();
+		this._id = _id;
+		this._name = _name;
+		this._email = _email;
+	}
+
 	@Override
 	public String getTitleToDisplay() {
 		return _name;
