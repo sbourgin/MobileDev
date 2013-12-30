@@ -9,18 +9,21 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
-public class ConversationsManager implements ItemManager, Iterator<Conversation>, OnTaskCompleted {
+public class ConversationsManager implements ItemManager,
+		Iterator<Conversation>, OnTaskCompleted {
 
 	private List<Conversation> _conversations = new LinkedList<Conversation>();
-	private Iterator<Conversation> _iterator = null; //TODO chelou d'avoir besoin du cast
+	private Iterator<Conversation> _iterator = null; // TODO chelou d'avoir
+														// besoin du cast
 	private String _urlPostUser = "http://message.eventhub.eu/conversations";
-	
-	//TODO attention si on fait un refresh data, l'itérator merde
-	
-	public ConversationsManager() {
-		
+	private OnTaskCompleted _listener;
+
+	// TODO attention si on fait un refresh data, l'itérator merde
+
+	public ConversationsManager(OnTaskCompleted parListener) {
+		_listener = parListener;
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		return _iterator.hasNext();
@@ -44,16 +47,15 @@ public class ConversationsManager implements ItemManager, Iterator<Conversation>
 	@Override
 	public void initData() {
 		new GetRESTTask(this).execute(_urlPostUser);
-		
-		
+
 	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
 		// TODO créer la list
-		
-		
+
 		_iterator = (Iterator<Conversation>) _conversations.iterator();
+		_listener.onTaskCompleted(Boolean.valueOf(true));
 	}
 
 }
