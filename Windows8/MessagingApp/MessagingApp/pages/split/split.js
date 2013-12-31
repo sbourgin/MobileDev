@@ -12,9 +12,15 @@
         _wasSingleColumn: false,
 
         _userLogged: null,
+        _userSelected: null,
+
         _usersCollection: null,
         _usersArray: null,
         _usersList: null,
+
+        _messagesCollection: null,
+        _messagesArray: null,
+        _messagesList: null,
 
         // This function is called to initialize the page.
         init: function (element, options) {
@@ -40,6 +46,14 @@
             var self = this;
             this._usersCollection.fetchAsync().then(
                 function complete(returnObject) {
+                    //remove current user from list
+                    for(var i = 0 ; i < returnObject.collection.items.length ; i++) {
+                        if (returnObject.collection.items.getAt(i).name == self._userLogged.name) {
+                            break;
+                        }
+                    }
+                    returnObject.collection.items.splice(i, 1);
+
                     self._fetchCompleted(element);
                 }
             );
@@ -47,6 +61,8 @@
             element.querySelector("#settings_button").addEventListener("click", this._showSettings);
             element.querySelector("#remove_account_button").addEventListener("click", this._removeAccount.bind(this));
             element.querySelector("#logoff_button").addEventListener("click", this._logOff.bind(this));
+            element.querySelector("#photo_button").addEventListener("click", this._uploadPhoto.bind(this));
+            element.querySelector("#send_button").addEventListener("click", this._sendMessage.bind(this));
         },
 
         _fetchCompleted: function (element) {            
@@ -102,8 +118,6 @@
                         state: { user: this._userLogged, }
                     });
                     
-
-
                     element.querySelector(".articlesection").focus();
                 } else {
                     listView.addEventListener("contentanimating", handler, false);
@@ -147,13 +161,17 @@
                         // If snapped or portrait, navigate to a new page containing the
                         // selected item's details.
                         setImmediate(function () {
-                            nav.navigate("/pages/split/split.html", { user: this._userLogged, selectedIndex: this._itemSelectionIndex});
+                            nav.navigate("/pages/split/split.html", { user: this._userLogged, selectedIndex: this._itemSelectionIndex });
+
+                            this._fetchMessages();
                         }.bind(this));
                     } else {
                         // If fullscreen or filled, update the details column with new data.
                         details = document.querySelector(".articlesection");
                         binding.processAll(details, items[0].data);
                         details.scrollTop = 0;
+
+                        this._fetchMessages();
                     }
                 }
             }.bind(this));
@@ -193,15 +211,60 @@
         },
 
         _removeAccount: function () {
-            this._userLogged.removeAsync();
-
-            nav.navigate("/pages/login/login.html");
+            this._userLogged.removeAsync().then(
+                function complete(returnObject) {
+                    nav.navigate("/pages/login/login.html");
+                }
+            );            
         },
 
         _logOff: function () {
-            this._userLogged.logoffAsync();
+            this._userLogged.logoffAsync().then(
+                function complete(returnObject) {
+                    nav.navigate("/pages/login/login.html");
+                }
+            );
+        },
 
-            nav.navigate("/pages/login/login.html");
+        _uploadPhoto: function(){
+            console.log("upload photo");
+        },
+
+        _sendMessage: function(){
+            var messageHTML = document.getElementById("message");
+
+            if (messageHTML.value) {
+                var message = Models.MessageFactory.createMessage({
+                    from:       this._userLogged.name,
+                    to:         this._userSelected.name,
+                    subject:    "",
+                    text:       messageHTML.value,
+                });
+
+                var self = this;
+
+                message.sendAsync().then(
+                    function complete(returnObject) {
+                        self._fetchMessages();
+                    }
+                );
+            }
+        },
+
+        _fetchMessages: function () {
+            this._userSelected = this._usersCollection.items.getAt(this._itemSelectionIndex);
+
+            this._messagesArray = new binding.List();
+
+            this._messagesCollection = new Models.MessagesCollection({
+                items: this._messagesArray,
+            });
+
+            this._messagesList = document.getElementById("messagesList");
+            this._messagesList.winControl.itemDataSource = this._messagesArray.dataSource;
+            this._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(this._userLogged.name);
+
+            this._messagesCollection.fetchAsync(this._userSelected.name);
         },
     });
 })();

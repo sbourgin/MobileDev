@@ -22,7 +22,7 @@
                 this._mandatoryFields[i].addEventListener("keyup", this._validateForm.bind(this));
             }
 
-            element.querySelector("#form_register").addEventListener("submit", this._submitLogin.bind(this));
+            element.querySelector("#form_register").addEventListener("submit", this._submitRegister.bind(this));
         },
 
         _validateForm: function (event) {
@@ -43,7 +43,7 @@
             }
         },
 
-        _submitLogin: function (event) {
+        _submitRegister: function (event) {
             event.preventDefault();
 
             var user = new Models.User({

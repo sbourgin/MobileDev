@@ -4,7 +4,7 @@
     //creation of namespace    
     WinJS.Namespace.define('Models', {
 
-        //creation of the class to manage a city object
+        //creation of the class to manage a user object
         User: WinJS.Class.define(
 
             //constructor

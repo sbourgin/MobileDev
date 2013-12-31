@@ -3,7 +3,7 @@
 
     WinJS.Namespace.define('Utils', {
 
-        //creation of the class to manage a request object
+        //creation of the class to manage interactions with the API
         MessageAPI: WinJS.Class.define(
 
             //constructor
@@ -25,6 +25,7 @@
                 _responseField: {
                     "logon": "user",
                     "users": "users",
+                    "conversation": "result",
                 },
 
                 //private methods to do get request
@@ -85,9 +86,9 @@
                                         console.log('Request Error: ' + response.message);
                                     }
                                     else if (response.status == Utils.MessageAPI._successStatus) {
-                                        console.log('Success: ' + response);
+                                        //console.log('Success: ' + response);
 
-                                        //onSuccess(response[Utils.MessageAPI._responseField[endUrl]]);
+                                        onSuccess();
                                     }
                                 }
                             },

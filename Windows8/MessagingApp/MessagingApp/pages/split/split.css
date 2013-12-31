@@ -12,6 +12,51 @@
     visibility: hidden;
 }
 
+#messagesList {
+    height: 85%;
+}
+
+#messageBar {
+    height: 15%;
+    width: 100%;
+    text-align: left;
+}
+
+#message {
+    min-width: 100px;
+    width: 100%;
+    padding-right: 0px;
+}
+
+#messagesList .win-container {
+    height: auto;
+}
+
+#messagesList .win-container:hover{
+    outline: none;
+    background-color: transparent !important;
+}
+
+.bubleLeft {
+  position: relative;
+  width: 200px;
+  border-radius: 4px;
+  padding: 20px;
+  background: #00aedf;
+  color: white;
+}
+
+.bubleRight {
+  position: relative;
+  width: 200px;
+  border-radius: 4px;
+  padding: 20px;
+  background: #00df31;
+  color: white;
+  float: right;
+  height: auto !important;
+}
+
 .splitpage {
     -ms-grid-columns: 106px 314px 1fr;
     display: -ms-grid;
@@ -96,7 +141,6 @@
         -ms-grid-row: 1;
         -ms-grid-row-span: 2;
         margin-top: 60px;
-        overflow-y: auto;
         padding-left: 60px;
         padding-right: 66px;
         position: relative;

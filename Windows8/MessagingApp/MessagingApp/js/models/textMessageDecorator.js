@@ -4,7 +4,7 @@
     //creation of namespace    
     WinJS.Namespace.define('Models', {
 
-        //creation of the class to manage a empty message object
+        //creation of the class to manage a text message decorator
         TextMessageDecorator: WinJS.Class.derive(Models.ContentDecorator,
 
             //constructor
@@ -22,6 +22,12 @@
             //properties of the class
             {
                 _text: "",
+
+                text: {
+                    get: function () {
+                        return this._text;
+                    },
+                },
 
                 getSendParameters: function () {
                     var parameters = this._messageComponent.getSendParameters();

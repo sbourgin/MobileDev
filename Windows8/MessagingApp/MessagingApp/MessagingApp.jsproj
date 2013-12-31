@@ -73,6 +73,7 @@
     <Content Include="js\models\usersCollection.js" />
     <Content Include="js\navigator.js" />
     <Content Include="js\utils\messageAPI.js" />
+    <Content Include="js\utils\template.js" />
     <Content Include="pages\login\login.css" />
     <Content Include="pages\login\login.html" />
     <Content Include="pages\login\login.js" />

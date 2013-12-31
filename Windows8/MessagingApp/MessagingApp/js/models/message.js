@@ -56,38 +56,22 @@
                     },
                 },
 
-                fetchAsync: function () {
-                    console.log("TODO");
-                },
+                sendAsync: function () {
+                    var formData = new FormData();
+                    //formData.append("image", MSApp.createFileFromStorageFile(file));
+                    formData.append("message", JSON.stringify(this.getSendParameters()));
 
-                sendAsync: function (onSuccess) {
-                    var self = this;
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.postAsync("send", formData).then(
+                            function complete(message) {
 
-                    var uri = new Windows.Foundation.Uri('ms-appx:///images/person.jpg');
-
-                    return Windows.Storage.StorageFile.getFileFromApplicationUriAsync(uri).then(
-                        function complete(file) {
-                            var formData = new FormData();
-                            formData.append("image", MSApp.createFileFromStorageFile(file));
-                            formData.append("message", JSON.stringify(self.getSendParameters()));
-
-                            return new WinJS.Promise(function (onSuccess) {
-                                Utils.MessageAPI.postAsync("send", formData).then(
-                                    function complete(message) {
-
-                                        //execute callback
-                                        onSuccess({
-                                            message: self,
-                                        });
-                                    }
-                                );
-                            });
-                            
-                        },
-                        function error(error) {
-                            console.log(error)
-                        }
-                    );
+                                //execute callback
+                                onSuccess({
+                                    message: self,
+                                });
+                            }
+                        );
+                    });
                 },
 
                 readAsync: function () {

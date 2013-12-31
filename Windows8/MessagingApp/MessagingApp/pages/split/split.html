@@ -15,7 +15,7 @@
 </head>
 <body>
     <!-- This template is used to display each item in the ListView declared below. -->
-    <div class="itemtemplate" data-win-control="WinJS.Binding.Template">
+    <div class="userstemplate" data-win-control="WinJS.Binding.Template">
         <div class="item">
             <img class="item-image" src="#" data-win-bind="src: thumbnail; alt: thumbnail" />
             <div class="item-info">
@@ -29,7 +29,7 @@
     <div class="splitpage fragment">
         <header aria-label="Header content" role="banner">
             <button id="back_button" data-win-control="WinJS.UI.BackButton"></button>
-            <button id="settings_button" data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'settings'}"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{id:'settings_button', icon:'settings',tooltip:'Settings' }"></button>
             <h1 class="titlearea win-type-ellipsis">
                 <span class="pagetitle"></span>
             </h1>
@@ -42,22 +42,25 @@
                     swipeBehavior: 'none',
                     tapBehavior: 'toggleSelect',
                     itemDataSource: select('.pagecontrol').winControl.itemDataSource,
-                    itemTemplate: select('.itemtemplate'),
+                    itemTemplate: select('.userstemplate'),
                     onselectionchanged: select('.pagecontrol').winControl.selectionChanged
                 }">
             </div>
         </div>
         <div class="articlesection" aria-atomic="true" aria-label="Item detail column" aria-live="assertive">
-            <article>
-                <header class="header">
-                    <div class="text">
-                        <h2 class="article-title win-type-ellipsis" data-win-bind="textContent: name"></h2>
-                        <h4 class="article-subtitle" data-win-bind="textContent: description"></h4>
-                    </div>
-                    <img class="article-image" src="#" data-win-bind="src: thumbnail; alt: thumbnail" />
-                </header>
-                <div class="article-content" data-win-bind="innerHTML: description"></div>
-            </article>
+            <div id="messagesList" class="itemlist win-selectionstylefilled" aria-label="List of messages" data-win-control="WinJS.UI.ListView" data-win-options="{
+                    layout: {type: WinJS.UI.ListLayout},
+                    currentItem: {type: WinJS.UI.ObjectType.item, index: 0, hasFocus: true},
+                    selectionMode: 'none',
+                    swipeBehavior: 'none',
+                    tapBehavior: 'none',
+                }">
+            </div>
+            <div id="messageBar">
+                <textarea id="message" rows="3"></textarea>
+                <button id="photo_button">Photo &#xe16c</button>
+                <button id="send_button">Send &#xe119</button>
+            </div>
         </div>
     </div>
 
