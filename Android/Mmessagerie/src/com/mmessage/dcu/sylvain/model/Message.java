@@ -6,13 +6,13 @@ import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Message implements Displayable{
 
-	Long _id;
-	Integer _status;
-	Timestamp _time;
-	Contact _fromContact;
-	Contact _toContact;
-	String _subject;
-	String _text;
+	private Long _id;
+	private Integer _status;
+	private Timestamp _time;
+	private Contact _fromContact;
+	private Contact _toContact;
+	private String _subject;
+	private String _text;
 	
 	@Override
 	public String getTitleToDisplay() {
