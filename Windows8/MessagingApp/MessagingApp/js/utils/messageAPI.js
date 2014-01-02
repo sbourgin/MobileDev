@@ -40,14 +40,30 @@
                     queryParameters = queryParameters.join("&");
 
                     //setting options
-                    options.url = Utils.MessageAPI._baseUrl + endUrl + '?' + queryParameters;
-                    options.responseType = 'json';
+                    options.url = Utils.MessageAPI._baseUrl + endUrl + "?" + queryParameters;
+
+                    if (endUrl == "img") {
+                        options.responseType = "arraybuffer";
+                    }
+                    else {
+                        options.responseType = "json";
+                    }
 
                     return new WinJS.Promise(function (onSuccess, onError) {
                         WinJS.xhr(options).then(
                             function complete(request) {
                                 if (request.status === 200) {
-                                    var response = JSON.parse(request.response);
+                                    try{
+                                        var response = JSON.parse(request.response);
+                                    }
+                                    catch (e) {
+                                        if (endUrl == "img") {
+                                            onSuccess(request.response);
+                                            return;
+                                        }
+
+                                        console.log("error parsing JSON: " + e)
+                                    }
 
                                     if (response.status == Utils.MessageAPI._errorStatus) {
                                         //console.log('Request Error: ' + response.message);

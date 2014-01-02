@@ -13,13 +13,6 @@
 
             //properties of the class
             {
-                _id: "",
-                _status: -1,
-                _time: -1,
-                _from: "",
-                _to: "",
-                _subject: "",
-
                 id: {
                     get: function () {
                         return this._id;
@@ -57,9 +50,15 @@
                 },
 
                 sendAsync: function () {
+                    var parameters = this.getSendParameters();
+                    var properties = this.getAllProperties();
+
                     var formData = new FormData();
-                    //formData.append("image", MSApp.createFileFromStorageFile(file));
                     formData.append("message", JSON.stringify(this.getSendParameters()));
+
+                    if (properties.imageFile) {
+                        formData.append("image", properties.imageFile);
+                    }
 
                     return new WinJS.Promise(function (onSuccess) {
                         Utils.MessageAPI.postAsync("send", formData).then(
@@ -75,16 +74,52 @@
                 },
 
                 readAsync: function () {
-
+                    
                 },
 
                 removeAsync: function () {
 
                 },
 
+                getImageAsync: function () {
+                    var properties = this.getAllProperties();
+
+                    if (properties.imageName) {
+                        var parameters = {
+                            id: properties.id
+                        };
+
+                        var self = this;
+
+                        return new WinJS.Promise(function (onSuccess) {
+                            Utils.MessageAPI.getAsync("img", parameters).then(
+                                function complete(image) {
+
+                                    //execute callback
+                                    onSuccess({
+                                        model: self,
+                                        imageFile: image,
+                                    });
+                                }
+                            );
+                        });
+                    }
+                },
+
                 //abstract method that should be implemented in subclasses
                 getSendParameters: function(){
                     return {
+                        from:       this._from,
+                        to:         this._to,
+                        subject:    this._subject,
+                    };
+                },
+
+                getAllProperties: function () {
+                    return {
+                        id:         this._id,
+                        status:     this._status,
+                        time:       this._time,
                         from:       this._from,
                         to:         this._to,
                         subject:    this._subject,

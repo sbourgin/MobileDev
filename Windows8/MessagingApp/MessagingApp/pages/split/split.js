@@ -22,6 +22,9 @@
         _messagesArray: null,
         _messagesList: null,
 
+        _imageName: null,
+        _imageFile: null,
+
         // This function is called to initialize the page.
         init: function (element, options) {
             this._userLogged = options.user;
@@ -58,11 +61,11 @@
                 }
             );
 
-            element.querySelector("#settings_button").addEventListener("click", this._showSettings);
-            element.querySelector("#remove_account_button").addEventListener("click", this._removeAccount.bind(this));
-            element.querySelector("#logoff_button").addEventListener("click", this._logOff.bind(this));
-            element.querySelector("#photo_button").addEventListener("click", this._uploadPhoto.bind(this));
-            element.querySelector("#send_button").addEventListener("click", this._sendMessage.bind(this));
+            element.querySelector("#settingsButton").addEventListener("click", this._showSettings);
+            element.querySelector("#removeAccountButton").addEventListener("click", this._removeAccount.bind(this));
+            element.querySelector("#logoffButton").addEventListener("click", this._logOff.bind(this));
+            element.querySelector("#photoButton").addEventListener("click", this._uploadPhoto.bind(this));
+            element.querySelector("#sendButton").addEventListener("click", this._sendMessage.bind(this));
         },
 
         _fetchCompleted: function (element) {            
@@ -186,23 +189,23 @@
                     utils.addClass(splitPage, "itemdetail");
                     element.querySelector(".articlesection").focus();
 
-                    document.getElementById("back_button").style.visibility = "visible";
-                    document.getElementById("settings_button").style.visibility = "hidden";
+                    document.getElementById("backButton").style.visibility = "visible";
+                    document.getElementById("settingsButton").style.visibility = "hidden";
 
                 } else {
                     utils.addClass(splitPage, "groupdetail");
                     element.querySelector(".itemlist").focus();
 
-                    document.getElementById("back_button").style.visibility = "hidden";
-                    document.getElementById("settings_button").style.visibility = "visible";
+                    document.getElementById("backButton").style.visibility = "hidden";
+                    document.getElementById("settingsButton").style.visibility = "visible";
                 }
             } else {
                 utils.removeClass(splitPage, "groupdetail");
                 utils.removeClass(splitPage, "itemdetail");
                 element.querySelector(".itemlist").focus();
 
-                document.getElementById("back_button").style.visibility = "hidden";
-                document.getElementById("settings_button").style.visibility = "visible";
+                document.getElementById("backButton").style.visibility = "hidden";
+                document.getElementById("settingsButton").style.visibility = "visible";
             }
         },
 
@@ -226,20 +229,55 @@
             );
         },
 
-        _uploadPhoto: function(){
-            console.log("upload photo");
+        _uploadPhoto: function () {
+            // Verify that we are currently not snapped, or that we can unsnap to open the picker
+            var currentState = Windows.UI.ViewManagement.ApplicationView.value;
+            if (currentState === Windows.UI.ViewManagement.ApplicationViewState.snapped &&
+                !Windows.UI.ViewManagement.ApplicationView.tryUnsnap()) {
+                // Fail silently if we can't unsnap
+                return;
+            }
+
+            var selector = new Windows.Storage.Pickers.FileOpenPicker();
+            selector.suggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.picturesLibrary;
+            selector.fileTypeFilter.replaceAll([".jpg", ".jpeg"]);
+            selector.viewMode = Windows.Storage.Pickers.PickerViewMode.thumbnail;
+
+            var self = this;
+
+            selector.pickSingleFileAsync().then(
+                function complete(file) {
+                    if (file && file.contentType == "image/jpeg") {
+                        self._imageName = file.name;
+                        self._imageFile = MSApp.createFileFromStorageFile(file);
+
+                        document.getElementById("imageIndicator").innerText = file.name;
+                    }
+                },
+
+                function error(errorMessage) {
+                    console.log("Error: " + errorMessage);
+                }
+            );
         },
 
         _sendMessage: function(){
-            var messageHTML = document.getElementById("message");
+            var messageHTML = document.getElementById("messageText");
 
             if (messageHTML.value) {
-                var message = Models.MessageFactory.createMessage({
-                    from:       this._userLogged.name,
-                    to:         this._userSelected.name,
-                    subject:    "",
-                    text:       messageHTML.value,
-                });
+                var parameters = {
+                    from: this._userLogged.name,
+                    to: this._userSelected.name,
+                    subject: "",
+                    text: messageHTML.value,
+                };
+
+                if (this._imageName && this._imageFile) {
+                    parameters["imageName"] = this._imageName;
+                    parameters["imageFile"] = this._imageFile;
+                }
+
+                var message = Models.MessageFactory.createMessage(parameters);
 
                 var self = this;
 
@@ -264,7 +302,19 @@
             this._messagesList.winControl.itemDataSource = this._messagesArray.dataSource;
             this._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(this._userLogged.name);
 
-            this._messagesCollection.fetchAsync(this._userSelected.name);
+            var self = this;
+            this._messagesCollection.fetchAsync(this._userSelected.name).then(
+                function complete(returnObject) {
+                    /*self._messagesList.addEventListener("loadingstatechanged", function () {
+                        console.log(self._messagesList.winControl.loadingState);
+
+                        if (self._messagesList.winControl.loadingState == "complete") {
+                            self._messagesList.winControl.ensureVisible(returnObject.collection.items.length);
+
+                        }
+                    });*/
+                }
+            );
         },
     });
 })();

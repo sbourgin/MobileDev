@@ -9,9 +9,6 @@
 
             //constructor
             function (data) {
-                //call super class constructor to access its properties
-                Models.ContentDecorator.prototype.constructor.call(this);
-
                 //initialize properties
                 if (data) {
                     this._messageComponent  = data.messageComponent ? data.messageComponent : "";
@@ -31,6 +28,14 @@
 
                 getSendParameters: function () {
                     var parameters = this._messageComponent.getSendParameters();
+
+                    parameters.text = this._text;
+
+                    return parameters;
+                },
+
+                getAllProperties: function () {
+                    var parameters = this._messageComponent.getAllProperties();
 
                     parameters.text = this._text;
 

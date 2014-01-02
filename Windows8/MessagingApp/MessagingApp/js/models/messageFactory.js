@@ -27,11 +27,17 @@
                         });
                     }
 
-                    if (data.hasOwnProperty("image")) {
-                        message = new Models.ImageMessageDecorator({
+                    if (data.hasOwnProperty("imageName")) {
+                        var parameters = {
                             messageComponent: message,
-                            image: data.image,
-                        });
+                            imageName: data.imageName,
+                        };
+
+                        if (data.hasOwnProperty("imageFile")) {
+                            parameters["imageFile"] = data.imageFile;
+                        }
+
+                        message = new Models.ImageMessageDecorator(parameters);
                     }
 
                     return message;

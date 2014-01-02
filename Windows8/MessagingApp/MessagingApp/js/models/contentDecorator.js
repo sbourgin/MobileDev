@@ -15,39 +15,9 @@
             {
                 _messageComponent: null,
 
-                id: {
+                messageComponent: {
                     get: function () {
-                        return this._messageComponent._id;
-                    },
-                },
-
-                status: {
-                    get: function () {
-                        return this._messageComponent._status;
-                    },
-                },
-
-                time: {
-                    get: function () {
-                        return this._messageComponent._time;
-                    },
-                },
-
-                from: {
-                    get: function () {
-                        return this._messageComponent._from;
-                    },
-                },
-
-                to: {
-                    get: function () {
-                        return this._messageComponent._to;
-                    },
-                },
-
-                subject: {
-                    get: function () {
-                        return this._messageComponent._subject;
+                        return this._messageComponent;
                     },
                 },
             },

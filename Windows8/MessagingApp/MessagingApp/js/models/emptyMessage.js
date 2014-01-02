@@ -14,12 +14,12 @@
 
                 //initialize properties
                 if (data) {
-                    this._id = data.id ? data.id : "";
-                    this._status = data.status ? data.status : -1;
-                    this._time = data.time ? data.time : -1;
-                    this._from = data.from ? data.from : "";
-                    this._to = data.to ? data.to : "";
-                    this._subject = data.subject ? data.subject : "";
+                    this._id        = data.id       ? data.id       : "";
+                    this._status    = data.status   ? data.status   : -1;
+                    this._time      = data.time     ? data.time     : -1;
+                    this._from      = data.from     ? data.from     : "";
+                    this._to        = data.to       ? data.to       : "";
+                    this._subject   = data.subject  ? data.subject  : "";
                 }
             },
 

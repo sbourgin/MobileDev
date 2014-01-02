@@ -9,36 +9,46 @@
 
             //constructor
             function (data) {
-                //call super class constructor to access its properties
-                Models.ContentDecorator.prototype.constructor.call(this);
-
                 //initialize properties
                 if (data) {
                     this._messageComponent  = data.messageComponent ? data.messageComponent : "";
-                    this._image             = data.image            ? data.image            : "";
+                    this._imageName         = data.imageName        ? data.imageName        : "";
+                    this._imageFile         = data.imageFile        ? data.imageFile        : null;
                 }
             },
 
             //properties of the class
             {
-                _image: "",
+                _imageName: "",
+                _imageFile: null,
 
-                image: {
+                imageName: {
                     get: function () {
-                        return this._image;
+                        return this._imageName;
+                    },
+                },
+
+                imageFile: {
+                    get: function () {
+                        return this._imageFile;
                     },
                 },
 
                 getSendParameters: function () {
                     var parameters = this._messageComponent.getSendParameters();
 
-                    parameters.image = this._image;
+                    parameters.imageName = this._imageName;
 
                     return parameters;
                 },
 
-                getImageAsync: function () {
+                getAllProperties: function () {
+                    var parameters = this._messageComponent.getAllProperties();
 
+                    parameters.imageName = this._imageName;
+                    parameters.imageFile = this._imageFile;
+
+                    return parameters;
                 },
             },
 

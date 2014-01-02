@@ -1,11 +1,11 @@
-﻿#settings_button {
+﻿#settingsButton {
     position: absolute;
     margin-top: 45px;
     margin-left: 40px;
     visibility: hidden;
 }
 
-#back_button {
+#backButton {
     position: absolute;
     margin-left: 25px;
     margin-right: 0;
@@ -22,7 +22,7 @@
     text-align: left;
 }
 
-#message {
+#messageText {
     min-width: 100px;
     width: 100%;
     padding-right: 0px;
@@ -32,9 +32,20 @@
     height: auto;
 }
 
-#messagesList .win-container:hover{
-    outline: none;
-    background-color: transparent !important;
+#imageIndicator {
+    display: inline-block;
+    color: lightgreen;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    width: calc(100% - 190px); 
+}
+
+.messageTime {
+    font-size: 10px;
+    color: black;
+    margin-bottom: 10px;
 }
 
 .bubleLeft {
@@ -55,6 +66,11 @@
   color: white;
   float: right;
   height: auto !important;
+}
+
+.imageMessageMin {
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .splitpage {
