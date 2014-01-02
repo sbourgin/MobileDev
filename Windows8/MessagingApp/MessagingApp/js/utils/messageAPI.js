@@ -42,7 +42,7 @@
                     //setting options
                     options.url = Utils.MessageAPI._baseUrl + endUrl + "?" + queryParameters;
 
-                    if (endUrl == "img") {
+                    if (endUrl == "img" || endUrl == "getThumb") {
                         options.responseType = "arraybuffer";
                     }
                     else {
@@ -57,7 +57,7 @@
                                         var response = JSON.parse(request.response);
                                     }
                                     catch (e) {
-                                        if (endUrl == "img") {
+                                        if (endUrl == "img" || endUrl == "getThumb") {
                                             onSuccess(request.response);
                                             return;
                                         }

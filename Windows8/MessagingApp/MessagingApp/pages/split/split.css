@@ -42,6 +42,11 @@
     width: calc(100% - 190px); 
 }
 
+#thumbnailImage {
+    height: 60px;
+    width: 60px;
+}
+
 .messageTime {
     font-size: 10px;
     color: black;

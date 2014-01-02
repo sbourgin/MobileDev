@@ -29,6 +29,54 @@
                     return days[d.getDay()] + " " + months[d.getMonth()] + " " + d.getDate() + " " + d.getFullYear() + " " + hours + ":" + minutes + ampm;
                 },
 
+                userTemplate: function () {
+                    return function (itemPromise) {
+
+                        return itemPromise.then(function (item) {
+                            var div = document.createElement("div");
+                            div.className = "userstemplate";
+
+                            var itemDiv = document.createElement("div");
+                            itemDiv.className = "item";
+
+                            div.appendChild(itemDiv);
+
+                            var img = document.createElement("img");
+                            img.className = "item-image";
+                            img.src = "images/thumbnail.png";
+
+                            item.data.getThumbAsync().then(
+                                function complete(returnObject) {
+                                    var blob = new Blob([returnObject.model.thumbnail], { "type": "image\/jpeg" });
+                                    var objectURL = window.URL.createObjectURL(blob);
+                                    img.src = objectURL;
+                                }
+                            );
+
+                            itemDiv.appendChild(img);
+
+                            var itemInfo = document.createElement("div");
+                            itemInfo.className = "item-info";
+
+                            itemDiv.appendChild(itemInfo);
+
+                            var h3 = document.createElement("h3");
+                            h3.className = "item-title win-type-ellipsis";
+                            h3.textContent = item.data.name;
+
+                            itemInfo.appendChild(h3);
+
+                            var h6 = document.createElement("h6");
+                            h6.className = "item-subtitle win-type-ellipsis";
+                            h6.textContent = item.data.description;
+
+                            itemInfo.appendChild(h6);
+
+                            return div;
+                        });
+                    };
+                },
+
                 messageTemplate: function (userLogged) {
                     return function (itemPromise) {
 
@@ -36,7 +84,7 @@
                             var properties = item.data.getAllProperties();
 
                             var div = document.createElement("div");
-                            WinJS.Utilities.addClass(div, "messagestemplate");
+                            div.className = "messagestemplate";
 
                             var divBuble = document.createElement("div");
 
@@ -59,13 +107,14 @@
                                         var objectURL = window.URL.createObjectURL(blob);
                                         imgMin.src = objectURL;
 
-                                        imgBig.src = objectURL;
-
                                         imgMin.addEventListener("click", function () {
+                                            imgBig.src = objectURL;
                                             document.getElementById("imageFlyout").winControl.show(this);
                                         });
                                     }
                                 );
+
+                                
 
                                 divBuble.appendChild(imgMin);
                             }

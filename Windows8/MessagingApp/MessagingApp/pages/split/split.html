@@ -14,16 +14,6 @@
     <script src="/pages/split/split.js"></script>
 </head>
 <body>
-    <!-- This template is used to display each item in the ListView declared below. -->
-    <div class="userstemplate" data-win-control="WinJS.Binding.Template">
-        <div class="item">
-            <img class="item-image" src="#" data-win-bind="src: thumbnail; alt: thumbnail" />
-            <div class="item-info">
-                <h3 class="item-title win-type-ellipsis" data-win-bind="textContent: name"></h3>
-                <h6 class="item-subtitle win-type-ellipsis" data-win-bind="textContent: description"></h6>
-            </div>
-        </div>
-    </div>
 
     <!-- The content that will be loaded and displayed. -->
     <div class="splitpage fragment">
@@ -42,7 +32,6 @@
                     swipeBehavior: 'none',
                     tapBehavior: 'toggleSelect',
                     itemDataSource: select('.pagecontrol').winControl.itemDataSource,
-                    itemTemplate: select('.userstemplate'),
                     onselectionchanged: select('.pagecontrol').winControl.selectionChanged
                 }">
             </div>
@@ -79,6 +68,11 @@
             <div class="win-settings-section">
                 <h3>Logoff current user</h3>
                 <button id="logoffButton">Log off</button>
+            </div>
+            <div class="win-settings-section">
+                <h3>Change thumbnail</h3>
+                <img id="thumbnailImage" src="ms-appx:///images/thumbnail.png" /> <br />
+                <button id="thumbnailButton">Change</button>
             </div>
         </div>
     </div>

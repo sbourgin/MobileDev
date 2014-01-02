@@ -29,7 +29,7 @@
         init: function (element, options) {
             this._userLogged = options.user;
 
-            this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1;
+            this._itemSelectionIndex = (options && "selectedIndex" in options) ? options.selectedIndex : -1
 
             this._usersArray = new binding.List();
             this._usersCollection = new Models.UsersCollection({
@@ -41,10 +41,20 @@
 
         // This function is called whenever a user navigates to this page.
         ready: function (element, options) {
+            //get user thumbnail
+            this._userLogged.getThumbAsync().then(
+                function complete(returnObject) {
+                    var blob = new Blob([returnObject.model.thumbnail], { "type": "image\/jpeg" });
+                    var objectURL = window.URL.createObjectURL(blob);
+                    document.getElementById("thumbnailImage").src = objectURL;
+                }
+            );
+
             this._usersList = element.querySelector("#usersList");
 
             //bind listView HTML element to our list
             this._usersList.winControl.itemDataSource = this._usersArray.dataSource;
+            this._usersList.winControl.itemTemplate = Utils.Template.userTemplate();
 
             var self = this;
             this._usersCollection.fetchAsync().then(
@@ -66,6 +76,7 @@
             element.querySelector("#logoffButton").addEventListener("click", this._logOff.bind(this));
             element.querySelector("#photoButton").addEventListener("click", this._uploadPhoto.bind(this));
             element.querySelector("#sendButton").addEventListener("click", this._sendMessage.bind(this));
+            element.querySelector("#thumbnailButton").addEventListener("click", this._changeThumbnail.bind(this));
         },
 
         _fetchCompleted: function (element) {            
@@ -287,6 +298,34 @@
                     }
                 );
             }
+        },
+
+        _changeThumbnail: function(){
+            var selector = new Windows.Storage.Pickers.FileOpenPicker();
+            selector.suggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.picturesLibrary;
+            selector.fileTypeFilter.replaceAll([".jpg", ".jpeg"]);
+            selector.viewMode = Windows.Storage.Pickers.PickerViewMode.thumbnail;
+
+            var self = this;
+
+            selector.pickSingleFileAsync().then(
+                function complete(file) {
+                    if (file && file.contentType == "image/jpeg") {
+                        var thumbnail = MSApp.createFileFromStorageFile(file);
+
+                        self._userLogged.thumbnail = thumbnail;
+                        self._userLogged.setThumbAsync().then(
+                            function complete(returnObject) {
+                                document.getElementById("thumbnailImage").src = returnObject.model.thumbnail;
+                            }
+                        );
+                    }
+                },
+
+                function error(errorMessage) {
+                    console.log("Error: " + errorMessage);
+                }
+            );
         },
 
         _fetchMessages: function () {

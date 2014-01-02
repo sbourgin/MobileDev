@@ -13,7 +13,7 @@
                     this._name          = data.name         ? data.name         : "";
                     this._password      = data.password     ? data.password     : "";
                     this._description   = data.description  ? data.description  : "";
-                    this._thumbnail     = data.thumbnail    ? data.thumbnail    : "images/thumbnail.png";
+                    this._thumbnail     = data.thumbnail    ? data.thumbnail    : null;
                 }
             },
 
@@ -22,7 +22,7 @@
                 _name: "",
                 _password: "",
                 _description: "",
-                _thumbnail: "",
+                _thumbnail: null,
 
                 name: {
                     get: function () {
@@ -46,6 +46,9 @@
                     get: function () {
                         return this._thumbnail;
                     },
+                    set: function (thumbnail) {
+                        this._thumbnail = thumbnail;
+                    }
                 },
 
                 logonAsync: function () {
@@ -109,6 +112,45 @@
                 removeAsync: function () {
                     return new WinJS.Promise(function (onSuccess) {
                         Utils.MessageAPI.getAsync("remove", {}).then(
+                            function complete(thumbnail) {
+                                self.thumbnail = thumbnail;
+
+                                //execute callback
+                                onSuccess({
+                                    model: self,
+                                });
+                            }
+                        );
+                    });
+                },
+
+                getThumbAsync: function () {
+                    var parameters = {
+                        name: this._name,
+                    };
+
+                    var self = this;
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("getThumb", parameters).then(
+                            function complete(thumbnail) {
+                                self._thumbnail = thumbnail;
+
+                                //execute callback
+                                onSuccess({
+                                    model: self,
+                                });
+                            }
+                        );
+                    });
+                },
+
+                setThumbAsync: function () {
+                    var formData = new FormData();
+                    formData.append("image", this._thumbnail);
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.postAsync("setThumb", formData).then(
                             function complete() {
 
                                 //execute callback
