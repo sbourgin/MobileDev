@@ -46,6 +46,16 @@
                         );
                     });
                 },
+
+                readAllMessagesFrom: function (user) {
+                    for (var i = 0 ; i < this.items.length ; i++) {
+                        var message = this.items.getAt(i);
+
+                        if (message.getAllProperties().from == user) {
+                            message.readAsync();
+                        }
+                    }
+                },
             },
 
             //static methods
