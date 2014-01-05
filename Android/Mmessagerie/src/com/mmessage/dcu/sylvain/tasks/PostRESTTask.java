@@ -23,11 +23,11 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 public class PostRESTTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted _listener = null;
-	private Map _parameters;
+	private List<NameValuePair> _parameters;
 
-	public PostRESTTask(OnTaskCompleted parOnTaskCompleted, Map parParameters) {
+	public PostRESTTask(OnTaskCompleted parOnTaskCompleted, List<NameValuePair> parNameValuePairs) {
 		_listener = parOnTaskCompleted;
-		_parameters = parParameters;
+		_parameters = parNameValuePairs;
 	}
 
 	@Override
@@ -41,11 +41,8 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
     	httppost.addHeader("Accept", "application/json");
 	    try {
 	    	//TODO mettre en dynamique avec la map des attributs
-	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-		    nameValuePairs.add(new BasicNameValuePair("username", "Sylvain47"));
-		    nameValuePairs.add(new BasicNameValuePair("password", "Sylvain47"));
-		    nameValuePairs.add(new BasicNameValuePair("email", "sylvain47@sylvain.com"));
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        httppost.setEntity(new UrlEncodedFormEntity(_parameters));
 
 	        // Execute HTTP Post Request
 	        HttpResponse response = httpclient.execute(httppost);
