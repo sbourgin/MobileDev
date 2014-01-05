@@ -14,22 +14,24 @@ import com.mmessage.dcu.sylvain.interfaces.ItemManager;
 import com.mmessage.dcu.sylvain.interfaces.Iterator;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Conversation;
+import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
-public class ConversationsManager implements ItemManager,
-		Iterator<Conversation>, OnTaskCompleted {
+public class ConversationManager implements ItemManager, Iterator<Message>, OnTaskCompleted{
 
-	private List<Conversation> _conversations = new LinkedList<Conversation>();
-	private ListIterator<Conversation> _iterator = null; 
-	private String _urlPostUser = "http://message.eventhub.eu/conversations";
+	private List<Message> _messages = new LinkedList<Message>();
+	private ListIterator<Message> _iterator = null; 
+	private String _urlPostUser = "http://message.eventhub.eu/conversations/%d/messages";
 	private OnTaskCompleted _listener;
 
 	// TODO attention si on fait un refresh data, l'itérator merde
-
-	public ConversationsManager(OnTaskCompleted parListener) {
+	
+	public ConversationManager(OnTaskCompleted parListener, Long parConversationId) {
 		_listener = parListener;
+		_urlPostUser = String.format(_urlPostUser, parConversationId); //TODO Check
 	}
 
+	
 	@Override
 	public boolean hasNext() {
 		return _iterator.hasNext();
@@ -41,25 +43,29 @@ public class ConversationsManager implements ItemManager,
 	}
 
 	@Override
-	public Conversation next() {
+	public Message next() {
 		return _iterator.next();
 	}
 
 	@Override
-	public Conversation previous() {
+	public Message previous() {
 		return _iterator.previous();
 	}
 
 	@Override
 	public void initData() {
 		new GetRESTTask(this).execute(_urlPostUser);
-
+		
 	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-
-		boolean isConversationsListSucess = true;
+		
+		
+		// TODO Analyser les données et les filer à la vue qui va les afficher
+		
+		/*
+		 * 		boolean isConversationsListSucess = true;
 		List<Conversation> locResult = new ArrayList<Conversation>();
 
 		if (parObject != null) {
@@ -112,4 +118,8 @@ public class ConversationsManager implements ItemManager,
 			_listener.onTaskCompleted(Boolean.valueOf(false));
 		}
 	}
+		 */
+		
+	}
+
 }
