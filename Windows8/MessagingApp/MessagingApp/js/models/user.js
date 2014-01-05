@@ -134,7 +134,10 @@
                     return new WinJS.Promise(function (onSuccess) {
                         Utils.MessageAPI.getAsync("getThumb", parameters).then(
                             function complete(thumbnail) {
-                                self._thumbnail = thumbnail;
+                                var blob = new Blob([thumbnail], { "type": "image\/jpeg" });
+                                var objectURL = window.URL.createObjectURL(blob);
+
+                                self._thumbnail = objectURL;
 
                                 //execute callback
                                 onSuccess({
@@ -148,6 +151,8 @@
                 setThumbAsync: function () {
                     var formData = new FormData();
                     formData.append("image", this._thumbnail);
+
+                    var self = this;
 
                     return new WinJS.Promise(function (onSuccess) {
                         Utils.MessageAPI.postAsync("setThumb", formData).then(

@@ -66,7 +66,7 @@
 
                                 //execute callback
                                 onSuccess({
-                                    message: self,
+                                    model: self,
                                 });
                             }
                         );
@@ -74,11 +74,47 @@
                 },
 
                 readAsync: function () {
-                    
+                    var properties = this.getAllProperties();
+
+                    var parameters = {
+                        id: properties.id,
+                    };
+
+                    var self = this;
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("read", parameters).then(
+                            function complete() {
+
+                                //execute callback
+                                onSuccess({
+                                    model: self,
+                                });
+                            }
+                        );
+                    });
                 },
 
                 removeAsync: function () {
+                    var properties = this.getAllProperties();
 
+                    var parameters = {
+                        id: properties.id,
+                    };
+
+                    var self = this;
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("rem", parameters).then(
+                            function complete() {
+
+                                //execute callback
+                                onSuccess({
+                                    model: self,
+                                });
+                            }
+                        );
+                    });
                 },
 
                 getImageAsync: function () {
@@ -94,11 +130,14 @@
                         return new WinJS.Promise(function (onSuccess) {
                             Utils.MessageAPI.getAsync("img", parameters).then(
                                 function complete(image) {
+                                    var blob = new Blob([image], { "type": "image\/jpeg" });
+                                    var objectURL = window.URL.createObjectURL(blob);
+
+                                    self._imageFile = objectURL;
 
                                     //execute callback
                                     onSuccess({
                                         model: self,
-                                        imageFile: image,
                                     });
                                 }
                             );

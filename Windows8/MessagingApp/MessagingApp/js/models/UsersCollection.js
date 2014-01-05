@@ -41,6 +41,15 @@
                         );
                     });
                 },
+
+                removeUser: function (user) {
+                    for (var i = 0 ; i < this.items.length ; i++) {
+                        if (this.items.getAt(i).name == user.name) {
+                            break;
+                        }
+                    }
+                    this.items.splice(i, 1);
+                },
             },
 
             //static methods

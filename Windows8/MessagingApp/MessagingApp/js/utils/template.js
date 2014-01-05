@@ -47,9 +47,7 @@
 
                             item.data.getThumbAsync().then(
                                 function complete(returnObject) {
-                                    var blob = new Blob([returnObject.model.thumbnail], { "type": "image\/jpeg" });
-                                    var objectURL = window.URL.createObjectURL(blob);
-                                    img.src = objectURL;
+                                    img.src = returnObject.model.thumbnail;
                                 }
                             );
 
@@ -89,11 +87,11 @@
                             var divBuble = document.createElement("div");
 
                             //unix timestamp are expressed in seconds, JavaScript works in miliseconds
-                            var time = document.createElement("div");
-                            time.className = "messageTime";
-                            time.innerText = Utils.Template.formatAMPM(properties.time * 1000);
+                            var header = document.createElement("div");
+                            header.className = "messageTime";
+                            header.innerText = Utils.Template.formatAMPM(properties.time * 1000);
 
-                            divBuble.appendChild(time);
+                            divBuble.appendChild(header);
 
                             if (properties.imageName) {
                                 var imgMin = document.createElement("img");
@@ -103,12 +101,10 @@
 
                                 item.data.getImageAsync().then(
                                     function complete(returnObject) {
-                                        var blob = new Blob([returnObject.imageFile], { "type": "image\/jpeg" });
-                                        var objectURL = window.URL.createObjectURL(blob);
-                                        imgMin.src = objectURL;
+                                        imgMin.src = returnObject.model.imageFile;
 
                                         imgMin.addEventListener("click", function () {
-                                            imgBig.src = objectURL;
+                                            imgBig.src = returnObject.model.imageFile;
                                             document.getElementById("imageFlyout").winControl.show(this);
                                         });
                                     }
@@ -127,6 +123,20 @@
 
                             if (properties.from == userLogged) {
                                 WinJS.Utilities.addClass(divBuble, "bubleRight");
+
+                                /*var remove = document.createElement("a");
+                                remove.className = "removeMessage";
+                                remove.innerText = 'x';
+
+                                remove.addEventListener("click", function () {
+                                    item.data.removeAsync().then(
+                                        function complete() {
+                                            console.log("remove");
+                                        }
+                                    );
+                                })
+
+                                divBuble.appendChild(remove);*/
                             }
                             else {
                                 WinJS.Utilities.addClass(divBuble, "bubleLeft");

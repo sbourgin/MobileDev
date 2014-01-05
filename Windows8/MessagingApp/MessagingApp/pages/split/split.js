@@ -44,9 +44,7 @@
             //get user thumbnail
             this._userLogged.getThumbAsync().then(
                 function complete(returnObject) {
-                    var blob = new Blob([returnObject.model.thumbnail], { "type": "image\/jpeg" });
-                    var objectURL = window.URL.createObjectURL(blob);
-                    document.getElementById("thumbnailImage").src = objectURL;
+                    document.getElementById("thumbnailImage").src = returnObject.model.thumbnail;
                 }
             );
 
@@ -60,12 +58,7 @@
             this._usersCollection.fetchAsync().then(
                 function complete(returnObject) {
                     //remove current user from list
-                    for(var i = 0 ; i < returnObject.collection.items.length ; i++) {
-                        if (returnObject.collection.items.getAt(i).name == self._userLogged.name) {
-                            break;
-                        }
-                    }
-                    returnObject.collection.items.splice(i, 1);
+                    returnObject.collection.removeUser(self._userLogged);
 
                     self._fetchCompleted(element);
                 }
@@ -316,7 +309,9 @@
                         self._userLogged.thumbnail = thumbnail;
                         self._userLogged.setThumbAsync().then(
                             function complete(returnObject) {
-                                document.getElementById("thumbnailImage").src = returnObject.model.thumbnail;
+                                var objectURL = window.URL.createObjectURL(returnObject.model.thumbnail);
+
+                                document.getElementById("thumbnailImage").src = objectURL;
                             }
                         );
                     }
@@ -344,6 +339,8 @@
             var self = this;
             this._messagesCollection.fetchAsync(this._userSelected.name).then(
                 function complete(returnObject) {
+                    returnObject.collection.readAllMessagesFrom(self._userSelected.name);
+
                     /*self._messagesList.addEventListener("loadingstatechanged", function () {
                         console.log(self._messagesList.winControl.loadingState);
 
