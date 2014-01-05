@@ -1,6 +1,5 @@
 package com.mmessage.dcu.sylvain.controler.manager;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -60,7 +59,6 @@ public class ConversationsManager implements ItemManager,
 	public void onTaskCompleted(Object parObject) {
 
 		boolean isConversationsListSucess = true;
-		List<Conversation> locResult = new ArrayList<Conversation>();
 
 		if (parObject != null) {
 
@@ -105,7 +103,7 @@ public class ConversationsManager implements ItemManager,
 				_listener.onTaskCompleted(Boolean.valueOf(true));
 
 			} else {
-
+				_listener.onTaskCompleted(Boolean.valueOf(false));
 			}
 
 		} else {

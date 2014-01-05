@@ -16,7 +16,6 @@ public class Contact implements Displayable {
 	public boolean fillStates(JSONObject parJSon) {
 
 		try {
-
 			this._id = (Long) parJSon.get("id");;
 			this._name = (String) parJSon.get("username");
 			this._email = (String) parJSon.get("email");

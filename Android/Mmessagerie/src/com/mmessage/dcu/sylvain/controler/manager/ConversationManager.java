@@ -28,7 +28,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>, OnTa
 	
 	public ConversationManager(OnTaskCompleted parListener, Long parConversationId) {
 		_listener = parListener;
-		_urlPostUser = String.format(_urlPostUser, parConversationId); //TODO Check
+		_urlPostUser = String.format(_urlPostUser, parConversationId);
 	}
 
 	
@@ -66,7 +66,6 @@ public class ConversationManager implements ItemManager, Iterator<Message>, OnTa
 		
 		/*
 		 * 		boolean isConversationsListSucess = true;
-		List<Conversation> locResult = new ArrayList<Conversation>();
 
 		if (parObject != null) {
 
@@ -111,7 +110,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>, OnTa
 				_listener.onTaskCompleted(Boolean.valueOf(true));
 
 			} else {
-
+_listener.onTaskCompleted(Boolean.valueOf(false));
 			}
 
 		} else {
