@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,23 +17,25 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
-public class ConversationManager implements ItemManager, Iterator<Message>, OnTaskCompleted{
+public class ConversationManager implements ItemManager, Iterator<Message>,
+		OnTaskCompleted {
 
 	private List<Message> _messages = new LinkedList<Message>();
-	private ListIterator<Message> _iterator = null; 
+	private ListIterator<Message> _iterator = null;
 	private String _urlPostUser = "http://message.eventhub.eu/conversations/%d/messages";
 	private OnTaskCompleted _listener;
 
 	// TODO attention si on fait un refresh data, l'itérator merde
-	
-	public ConversationManager(OnTaskCompleted parListener, Long parConversationId) {
+
+	public ConversationManager(OnTaskCompleted parListener,
+			Long parConversationId) {
 		_listener = parListener;
 		_urlPostUser = String.format(_urlPostUser, parConversationId);
 	}
 
-	
 	@Override
 	public boolean hasNext() {
 		return _iterator.hasNext();
@@ -55,70 +58,75 @@ public class ConversationManager implements ItemManager, Iterator<Message>, OnTa
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this, Commands.GET_A_CONVERSATION).execute(_urlPostUser);
-		
+		new GetRESTTask(this, Commands.GET_A_CONVERSATION)
+				.execute(_urlPostUser);
+
 	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		
-		
-		// TODO Analyser les données et les filer à la vue qui va les afficher
-		
-		/*
-		 * 		boolean isConversationsListSucess = true;
 
-		if (parObject != null) {
+		TaskMessage locTaskMessage = (TaskMessage) parObject;
 
-			String locStringFromServer = (String) parObject;
+		boolean isMessagesListSucess = true;
+
+		if (locTaskMessage.getHttpCode() != HttpStatus.SC_OK) {
+			isMessagesListSucess = false;
+		}
+
+		if (locTaskMessage.getResult() != null && isMessagesListSucess) {
+
+			String locStringFromServer = (String) locTaskMessage.getResult();
 
 			JSONParser locParser = new JSONParser();
-			JSONArray locConversationsJSONArray = null;
+			JSONArray locMessagesJSONArray = null;
 
 			try {
 				JSONObject locAnswerJSON = (JSONObject) locParser
 						.parse(locStringFromServer);
-				locConversationsJSONArray = (JSONArray) locAnswerJSON
-						.get("conversations");
-			} catch (ParseException e) {
-				isConversationsListSucess = false;
+				locMessagesJSONArray = (JSONArray) locAnswerJSON
+						.get("messages");
+			} catch (Exception e) {
+				isMessagesListSucess = false;
 			}
 
-			if (isConversationsListSucess) {
+			if (isMessagesListSucess) {
 
-				for (int i = 0; i < locConversationsJSONArray.size(); i++) {
+				for (int i = 0; i < locMessagesJSONArray.size(); i++) {
 
-					Conversation locConversation = null;
+					Message locMessage = null;
 
-					boolean isConversationValid = true;
+					boolean isMessageValid = true;
 					try {
-						JSONObject locConversationJSON = (JSONObject) locConversationsJSONArray
+						JSONObject locMessageJSON = (JSONObject) locMessagesJSONArray
 								.get(i);
-						locConversation = new Conversation();
-						locConversation.fillStates(locConversationJSON);
+						locMessage = new Message();
+						isMessageValid = locMessage.fillStates(locMessageJSON);
 					} catch (Exception e) {
-						isConversationValid = false;
+						isMessageValid = false;
 					}
 
-					if (isConversationValid) {
-						_conversations.add(locConversation);
+					if (isMessageValid) {
+						_messages.add(locMessage);
 
 					}
 
 				}
 
-				_iterator = _conversations.listIterator();
-				_listener.onTaskCompleted(Boolean.valueOf(true));
-
-			} else {
-_listener.onTaskCompleted(Boolean.valueOf(false));
+				_iterator = _messages.listIterator();
 			}
 
-		} else {
-			_listener.onTaskCompleted(Boolean.valueOf(false));
 		}
-	}
-		 */
+
+		TaskMessage locTaskMessageToController;
+		
+		if (isMessagesListSucess) {
+			locTaskMessageToController = new TaskMessage(Commands.GET_A_CONVERSATION, HttpStatus.SC_OK, null);
+		} else {
+			locTaskMessageToController = new TaskMessage(Commands.GET_A_CONVERSATION, HttpStatus.SC_BAD_REQUEST, null);
+		}
+
+		_listener.onTaskCompleted(locTaskMessageToController);
 		
 	}
 

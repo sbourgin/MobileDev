@@ -94,7 +94,7 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 						JSONObject locContactJSON = (JSONObject) locContactsJSONArray
 								.get(i);
 						locContact = new Contact();
-						locContact.fillStates(locContactJSON);
+						isContactValid = locContact.fillStates(locContactJSON);
 					} catch (Exception e) {
 						isContactValid = false;
 					}
@@ -111,10 +111,17 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 
 		}
 
+		TaskMessage locTaskMessageToListener;
+		
 		if (isContactsListSucess) {
-			_listener.onTaskCompleted(Boolean.valueOf(true));
+			locTaskMessageToListener = new TaskMessage(Commands.GET_ALL_USERS,
+					HttpStatus.SC_OK, null);
+			
 		} else {
-			_listener.onTaskCompleted(Boolean.valueOf(false));
+			locTaskMessageToListener = new TaskMessage(Commands.GET_ALL_USERS,
+					HttpStatus.SC_BAD_REQUEST, null);
 		}
+		
+		_listener.onTaskCompleted(locTaskMessageToListener);
 	}
 }

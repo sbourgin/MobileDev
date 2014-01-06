@@ -97,7 +97,7 @@ public class ConversationsManager implements ItemManager,
 						JSONObject locConversationJSON = (JSONObject) locConversationsJSONArray
 								.get(i);
 						locConversation = new Conversation();
-						locConversation.fillStates(locConversationJSON);
+						isConversationValid = locConversation.fillStates(locConversationJSON);
 					} catch (Exception e) {
 						isConversationValid = false;
 					}

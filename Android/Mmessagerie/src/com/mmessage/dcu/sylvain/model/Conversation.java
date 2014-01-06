@@ -10,14 +10,23 @@ import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Conversation implements Displayable {
 
-	private long _id;
-	private String _name;
+	private long _id = -1;
+	private String _name = null;
 	private List<Contact> _addresseeList = new ArrayList<Contact>();
 
 	public Conversation() {
 		
 	}
 	
+	
+	
+	public Conversation(String parName, List<Contact> parAddresseeList) {
+		this._name = parName;
+		this._addresseeList = parAddresseeList;
+	}
+
+
+
 	public boolean fillStates(JSONObject parJSon) {
 		try {
 			
