@@ -10,13 +10,15 @@
             //constructor
             function (data) {
                 if (data) {
-                    this._items = data.items ? data.items : [];
+                    this._items     = data.items    ? data.items    : [];
+                    this._receiver  = data.receiver ? data.receiver : "";
                 }
             },
 
             //properties of the class
             {
                 _items: [],
+                _receiver: "",
 
                 items: {
                     get: function () {
@@ -24,11 +26,17 @@
                     }
                 },
 
-                fetchAsync: function (name) {
+                receiver: {
+                    get: function () {
+                        return this._receiver;
+                    }
+                },
+
+                fetchAsync: function () {
                     var self = this;
 
                     var parameters = {
-                        name: name,
+                        name: this._receiver,
                         action: 1,
                     };
 
@@ -47,22 +55,22 @@
                     });
                 },
 
-                readAllMessagesFrom: function (user) {
+                readAllMessagesFrom: function () {
                     for (var i = 0 ; i < this.items.length ; i++) {
                         var message = this.items.getAt(i);
 
-                        if (message.getAllProperties().from == user) {
+                        if (message.getAllProperties().from == this._receiver) {
                             message.readAsync();
                         }
                     }
                 },
 
-                getNbNewMessagesFromAsync: function(userName){
+                getNbNewMessagesFromAsync: function(){
                     var self = this;
 
                     var parameters = {
                         sent: 0,
-                        name: userName,
+                        name: this._receiver,
                         status: 0,
                         action: 0,
                     };
@@ -80,20 +88,20 @@
                     });
                 },
 
-                refreshAsync: function (userName) {
+                refreshAsync: function () {
                     var self = this;
 
                     return new WinJS.Promise(function (onSuccess) {
                         WinJS.Promise.timeout(5000).then(
                             function (complete) {
                                 if (! self._stopRefresh) {
-                                    return self.getNbNewMessagesFromAsync(userName);
+                                    return self.getNbNewMessagesFromAsync();
                                 }
                             }
                         ).then(
                             function complete(returnObject) {
                                 if (returnObject) {
-                                    console.log("refresh for " + userName + "! count: " + returnObject.count);
+                                    console.log("refresh for " + self_receiver + "! count: " + returnObject.count);
 
                                     if (returnObject.count > 0) {
                                         onSuccess({
@@ -102,7 +110,7 @@
                                     }
 
 
-                                    self.refreshAsync(userName);
+                                    self.refreshAsync();
                                 }
                             }
                         );

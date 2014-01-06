@@ -85,7 +85,7 @@
                     };
                 },
 
-                messageTemplate: function (userLogged, onMessageRemove) {
+                messageTemplate: function (userLogged, onMessageRemove, listview, nbItems) {
                     return function (itemPromise) {
 
                         return itemPromise.then(function (item) {
@@ -117,10 +117,12 @@
                                             imgBig.src = returnObject.model.imageFile;
                                             document.getElementById("imageFlyout").winControl.show(this);
                                         });
+
+                                        msSetImmediate(function () {
+                                            listview.winControl.ensureVisible(nbItems - 1);
+                                        });
                                     }
                                 );
-
-                                
 
                                 divBuble.appendChild(imgMin);
                             }
@@ -155,6 +157,12 @@
                             }
 
                             div.appendChild(divBuble);
+
+                            if (item.index == nbItems - 1) {
+                                msSetImmediate(function () {
+                                    listview.winControl.ensureVisible(nbItems - 1);
+                                });
+                            }
 
                             return div;
                         });

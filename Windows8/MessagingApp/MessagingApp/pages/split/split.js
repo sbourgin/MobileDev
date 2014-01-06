@@ -288,6 +288,10 @@
                 message.sendAsync().then(
                     function complete(returnObject) {
                         messageHTML.value = '';
+                        document.getElementById("imageIndicator").innerText = '';
+
+                        self._imageName = null;
+                        self._imageFile = null;
 
                         self._fetchMessages();
                     }
@@ -332,29 +336,33 @@
 
             this._messagesCollection = new Models.MessagesCollection({
                 items: this._messagesArray,
+                receiver: this._userSelected.getNormalisedName(),
             });
 
             this._messagesList = document.getElementById("messagesList");
             this._messagesList.winControl.itemDataSource = this._messagesArray.dataSource;
-            this._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(this._userLogged.name, this._messageRemove.bind(this));
 
             var self = this;
-            this._messagesCollection.fetchAsync(this._userSelected.name).then(
+
+            this._messagesCollection.fetchAsync().then(
                 function complete(returnObject) {
+                    //apply template 
+                    self._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(
+                        self._userLogged.getNormalisedName(),
+                        self._messageRemove.bind(self),
+                        self._messagesList,
+                        self._messagesCollection.items.length
+                    );
+
+                    //make all messages read
                     returnObject.collection.readAllMessagesFrom(self._userSelected.getNormalisedName());
-
-                    var subtitle = self._usersList.querySelectorAll(".item-subtitle")[self._itemSelectionIndex];
-                    subtitle.innerText = self._userSelected.description;
-                    WinJS.Utilities.removeClass(subtitle, "unreadMessages");
-
-                    /*self._messagesList.addEventListener("loadingstatechanged", function () {
-                        console.log(self._messagesList.winControl.loadingState);
-
-                        if (self._messagesList.winControl.loadingState == "complete") {
-                            self._messagesList.winControl.ensureVisible(returnObject.collection.items.length);
-
-                        }
-                    });*/
+                    
+                    //remove notification
+                    if (self._userSelected.unreadMessages) {
+                        var subtitle = self._usersList.querySelectorAll(".item-subtitle")[self._itemSelectionIndex];
+                        subtitle.innerText = self._userSelected.description;
+                        WinJS.Utilities.removeClass(subtitle, "unreadMessages");
+                    }
                 }
             );
         },
