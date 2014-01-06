@@ -8,9 +8,7 @@ public class Message implements Displayable{
 
 	private Long _id;
 	private Integer _status;
-	private Timestamp _time;
-	private Contact _fromContact;
-	private Contact _toContact;
+	private Timestamp _creationtime;
 	private String _subject;
 	private String _text;
 	
