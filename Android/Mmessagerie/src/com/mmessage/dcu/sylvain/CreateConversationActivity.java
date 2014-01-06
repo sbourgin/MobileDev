@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,18 +29,25 @@ public class CreateConversationActivity extends Activity implements
 	private TextView _contactName;
 	private Button _changeContact;
 	private List<Displayable> _allContacts = null;
+	private Button _submitMessage;
+	private EditText _conversationName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		_layout = (LinearLayout) LinearLayout.inflate(this,
 				R.layout.activity_create_conversation, null);
-		setContentView(_layout);
+
 
 		_contactName = (TextView) _layout
 				.findViewById(R.id.CreateConversationContactName);
 		_contactName.setText("Addresse : No Contact selected");
 
+		
+		_conversationName = (EditText) _layout
+				.findViewById(R.id.CreateConversationConversationName);
+		_conversationName.setText("Conversation Name");
+		
 		_changeContact = (Button) _layout
 				.findViewById(R.id.CreateConversationChangeContactButton);
 		_changeContact.setText("Change Addressee");
@@ -61,6 +69,20 @@ public class CreateConversationActivity extends Activity implements
 		_controller = new CreateConversationController(
 				CreateConversationActivity.this);
 
+		
+		_submitMessage = (Button) _layout
+				.findViewById(R.id.CreateConversationSubmit);
+		_submitMessage.setText("Submit Message");
+		_submitMessage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendMessage();	
+			}
+		});
+		
+		
+		
+		setContentView(_layout);
 	}
 
 	@Override
@@ -99,6 +121,11 @@ public class CreateConversationActivity extends Activity implements
 		AlertDialog dialog = builder.create();
 
 		dialog.show();
+	}
+	
+	public void sendMessage() {
+		//TODO
+		_controller.sendMessage(null, null);
 	}
 
 }

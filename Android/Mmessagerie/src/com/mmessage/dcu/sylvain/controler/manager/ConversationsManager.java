@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,7 +13,9 @@ import org.json.simple.parser.ParseException;
 import com.mmessage.dcu.sylvain.interfaces.ItemManager;
 import com.mmessage.dcu.sylvain.interfaces.Iterator;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
 public class ConversationsManager implements ItemManager,
@@ -51,18 +54,25 @@ public class ConversationsManager implements ItemManager,
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this).execute(_urlPostUser);
+		new GetRESTTask(this, Commands.GET_ALL_CONVERSATIONS).execute(_urlPostUser);
 
 	}
+	
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
+		TaskMessage locTaskMessage = (TaskMessage) parObject;
+		
 		boolean isConversationsListSucess = true;
 
-		if (parObject != null) {
+		if (locTaskMessage.getHttpCode() != HttpStatus.SC_OK) {
+			isConversationsListSucess = false;
+		}
+		
+		if (locTaskMessage.getResult() != null && isConversationsListSucess) {
 
-			String locStringFromServer = (String) parObject;
+			String locStringFromServer = (String) locTaskMessage.getResult();
 
 			JSONParser locParser = new JSONParser();
 			JSONArray locConversationsJSONArray = null;
@@ -100,12 +110,12 @@ public class ConversationsManager implements ItemManager,
 				}
 
 				_iterator = _conversations.listIterator();
-				_listener.onTaskCompleted(Boolean.valueOf(true));
-
-			} else {
-				_listener.onTaskCompleted(Boolean.valueOf(false));
 			}
 
+		}
+
+		if (isConversationsListSucess) {
+			_listener.onTaskCompleted(Boolean.valueOf(true));
 		} else {
 			_listener.onTaskCompleted(Boolean.valueOf(false));
 		}

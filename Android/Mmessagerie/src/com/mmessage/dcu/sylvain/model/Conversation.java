@@ -14,10 +14,6 @@ public class Conversation implements Displayable {
 	private String _name;
 	private List<Contact> _addresseeList = new ArrayList<Contact>();
 
-	
-	
-
-
 	public Conversation() {
 		
 	}
@@ -75,4 +71,10 @@ public class Conversation implements Displayable {
 		return _id;
 	}
 
+	public List<Contact> getAddresseeList() {
+		return _addresseeList;
+	}
+
+	
+	
 }

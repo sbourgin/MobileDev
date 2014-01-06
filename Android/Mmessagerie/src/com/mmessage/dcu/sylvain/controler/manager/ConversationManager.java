@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import com.mmessage.dcu.sylvain.interfaces.ItemManager;
 import com.mmessage.dcu.sylvain.interfaces.Iterator;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
@@ -54,7 +55,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>, OnTa
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this).execute(_urlPostUser);
+		new GetRESTTask(this, Commands.GET_A_CONVERSATION).execute(_urlPostUser);
 		
 	}
 

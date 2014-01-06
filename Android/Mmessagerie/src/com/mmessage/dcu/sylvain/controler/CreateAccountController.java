@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.PostRESTTask;
 
 
@@ -34,17 +37,17 @@ public class CreateAccountController implements OnTaskCompleted{
 	    locNameValuePairs.add(new BasicNameValuePair("password", parPassword));
 	    locNameValuePairs.add(new BasicNameValuePair("email", parEmailAddress));
 */	
-		new PostRESTTask(this, locNameValuePairs).execute(_urlPostUser);
+		new PostRESTTask(this, false, Commands.CREATE_A_USER, locNameValuePairs).execute(_urlPostUser);
 	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-	//TODO lire et traiter l'objet reçu pour envoyer boolean à view
 		
-		String locHttpCode = (String) parObject;
+		TaskMessage locTaskMessage = (TaskMessage) parObject;
+		
 		Boolean isCreatingAccountASuccess;
 				
-		if(locHttpCode.equals("200")) {
+		if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
 			isCreatingAccountASuccess = Boolean.valueOf(true);
 		} else {
 			isCreatingAccountASuccess = Boolean.valueOf(false);
