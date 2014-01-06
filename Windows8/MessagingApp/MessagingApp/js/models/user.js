@@ -10,10 +10,11 @@
             //constructor
             function (data) {
                 if (data) {
-                    this._name          = data.name         ? data.name         : "";
-                    this._password      = data.password     ? data.password     : "";
-                    this._description   = data.description  ? data.description  : "";
-                    this._thumbnail     = data.thumbnail    ? data.thumbnail    : null;
+                    this._name              = data.name             ? data.name             : "";
+                    this._password          = data.password         ? data.password         : "";
+                    this._description       = data.description      ? data.description      : "";
+                    this._thumbnail         = data.thumbnail        ? data.thumbnail        : null;
+                    this._unreadMessages    = data.unreadMessages   ? data.unreadMessages   : 0;
                 }
             },
 
@@ -23,6 +24,7 @@
                 _password: "",
                 _description: "",
                 _thumbnail: null,
+                _unreadMessages: 0,
 
                 name: {
                     get: function () {
@@ -49,6 +51,16 @@
                     set: function (thumbnail) {
                         this._thumbnail = thumbnail;
                     }
+                },
+
+                unreadMessages: {
+                    get: function () {
+                        return this._unreadMessages;
+                    },
+                },
+
+                getNormalisedName: function(){
+                    return this._name.toLowerCase().replace(/\s/g, "");
                 },
 
                 logonAsync: function () {
@@ -159,6 +171,29 @@
                             function complete() {
 
                                 //execute callback
+                                onSuccess({
+                                    model: self,
+                                });
+                            }
+                        );
+                    });
+                },
+
+                getUnreadMessagesAsync: function () {
+                    var self = this;
+
+                    var parameters = {
+                        sent: 0,
+                        name: this._name,
+                        status: 0,
+                        action: 0,
+                    };
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("list", parameters).then(
+                            function complete(result) {
+                                self._unreadMessages = result.count;
+
                                 onSuccess({
                                     model: self,
                                 });
