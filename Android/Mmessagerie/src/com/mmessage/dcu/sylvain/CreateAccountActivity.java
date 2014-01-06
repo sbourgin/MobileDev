@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mmessage.dcu.sylvain.controler.CreateAccountController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
@@ -67,23 +68,20 @@ public class CreateAccountActivity extends Activity implements OnTaskCompleted{
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		
-		String locObject = (String) parObject;
-		
-		_messageUser.setText(locObject);
-		
-		/*
+				
 		Boolean locIsAccountCreated = (Boolean) parObject;
 		
 		if(locIsAccountCreated) {
-			Intent intent = new Intent(CreateAccount.this, MainActivity.class);
+			String locToDisplay = "Account created";
+		    Toast.makeText(getBaseContext(),locToDisplay,Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
 			startActivity(intent);
 		} else {
 			_messageUser.setText("Impossible to create your account, please try with "
 					+ "another username or email address");
 		}
 		
-		*/
+		
 		
 	}
 

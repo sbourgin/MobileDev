@@ -1,6 +1,5 @@
 package com.mmessage.dcu.sylvain.controler.manager;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,8 +19,7 @@ public class ConversationsManager implements ItemManager,
 		Iterator<Conversation>, OnTaskCompleted {
 
 	private List<Conversation> _conversations = new LinkedList<Conversation>();
-	private ListIterator<Conversation> _iterator = null; // TODO chelou d'avoir
-															// besoin du cast
+	private ListIterator<Conversation> _iterator = null; 
 	private String _urlPostUser = "http://message.eventhub.eu/conversations";
 	private OnTaskCompleted _listener;
 
@@ -61,7 +59,6 @@ public class ConversationsManager implements ItemManager,
 	public void onTaskCompleted(Object parObject) {
 
 		boolean isConversationsListSucess = true;
-		List<Conversation> locResult = new ArrayList<Conversation>();
 
 		if (parObject != null) {
 
@@ -106,7 +103,7 @@ public class ConversationsManager implements ItemManager,
 				_listener.onTaskCompleted(Boolean.valueOf(true));
 
 			} else {
-
+				_listener.onTaskCompleted(Boolean.valueOf(false));
 			}
 
 		} else {

@@ -13,23 +13,24 @@ import org.json.simple.parser.ParseException;
 import com.mmessage.dcu.sylvain.interfaces.ItemManager;
 import com.mmessage.dcu.sylvain.interfaces.Iterator;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
-import com.mmessage.dcu.sylvain.model.Contact;
 import com.mmessage.dcu.sylvain.model.Conversation;
+import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
-public class ContactsManager implements ItemManager, Iterator<Contact>,
-		OnTaskCompleted {
+public class ConversationManager implements ItemManager, Iterator<Message>, OnTaskCompleted{
 
-	private List<Contact> _contacts = new LinkedList<Contact>();
-	private ListIterator<Contact> _iterator = null; 
-	private String _urlPostUser = "http://message.eventhub.eu/users";
+	private List<Message> _messages = new LinkedList<Message>();
+	private ListIterator<Message> _iterator = null; 
+	private String _urlPostUser = "http://message.eventhub.eu/conversations/%d/messages";
 	private OnTaskCompleted _listener;
-	
+
 	// TODO attention si on fait un refresh data, l'itérator merde
 	
-	public ContactsManager(OnTaskCompleted parListener) {
+	public ConversationManager(OnTaskCompleted parListener, Long parConversationId) {
 		_listener = parListener;
+		_urlPostUser = String.format(_urlPostUser, parConversationId);
 	}
+
 	
 	@Override
 	public boolean hasNext() {
@@ -42,12 +43,12 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 	}
 
 	@Override
-	public Contact next() {
+	public Message next() {
 		return _iterator.next();
 	}
 
 	@Override
-	public Contact previous() {
+	public Message previous() {
 		return _iterator.previous();
 	}
 
@@ -60,58 +61,64 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 	@Override
 	public void onTaskCompleted(Object parObject) {
 		
-		boolean isContactsListSucess = true;
+		
+		// TODO Analyser les données et les filer à la vue qui va les afficher
+		
+		/*
+		 * 		boolean isConversationsListSucess = true;
 
 		if (parObject != null) {
 
 			String locStringFromServer = (String) parObject;
 
 			JSONParser locParser = new JSONParser();
-			JSONArray locContactsJSONArray = null;
+			JSONArray locConversationsJSONArray = null;
 
 			try {
 				JSONObject locAnswerJSON = (JSONObject) locParser
 						.parse(locStringFromServer);
-				locContactsJSONArray = (JSONArray) locAnswerJSON
-						.get("users");
+				locConversationsJSONArray = (JSONArray) locAnswerJSON
+						.get("conversations");
 			} catch (ParseException e) {
-				isContactsListSucess = false;
+				isConversationsListSucess = false;
 			}
 
-			if (isContactsListSucess) {
+			if (isConversationsListSucess) {
 
-				for (int i = 0; i < locContactsJSONArray.size(); i++) {
+				for (int i = 0; i < locConversationsJSONArray.size(); i++) {
 
-					Contact locContact = null;
+					Conversation locConversation = null;
 
-					boolean isContactValid = true;
+					boolean isConversationValid = true;
 					try {
-						JSONObject locContactJSON = (JSONObject) locContactsJSONArray
+						JSONObject locConversationJSON = (JSONObject) locConversationsJSONArray
 								.get(i);
-						locContact = new Contact();
-						locContact.fillStates(locContactJSON);
+						locConversation = new Conversation();
+						locConversation.fillStates(locConversationJSON);
 					} catch (Exception e) {
-						isContactValid = false;
+						isConversationValid = false;
 					}
 
-					if (isContactValid) {
-						_contacts.add(locContact);
+					if (isConversationValid) {
+						_conversations.add(locConversation);
 
 					}
 
 				}
 
-				_iterator = _contacts.listIterator();
+				_iterator = _conversations.listIterator();
 				_listener.onTaskCompleted(Boolean.valueOf(true));
 
 			} else {
-				_listener.onTaskCompleted(Boolean.valueOf(false));
+_listener.onTaskCompleted(Boolean.valueOf(false));
 			}
 
 		} else {
 			_listener.onTaskCompleted(Boolean.valueOf(false));
 		}
-	
+	}
+		 */
+		
 	}
 
 }

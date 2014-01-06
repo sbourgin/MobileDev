@@ -1,7 +1,12 @@
 package com.mmessage.dcu.sylvain.controler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.tasks.PostRESTTask;
@@ -19,19 +24,33 @@ public class CreateAccountController implements OnTaskCompleted{
 	
 	public void createNewUser(String parUserName, String parPassword, String parEmailAddress) {
 		
-		Map<String, String> locParameters = new HashMap<String, String>();
-		
-		locParameters.put("username", parUserName);
-		locParameters.put("password", parPassword);
-		locParameters.put("email", parEmailAddress);
-		
-		new PostRESTTask(this, locParameters).execute(_urlPostUser);
+        List<NameValuePair> locNameValuePairs = new ArrayList<NameValuePair>(3);
+	    locNameValuePairs.add(new BasicNameValuePair("username", "Sylvain49"));
+	    locNameValuePairs.add(new BasicNameValuePair("password", "Sylvain49"));
+	    locNameValuePairs.add(new BasicNameValuePair("email", "sylvain49@sylvain.com"));
+/*
+	    //TODO à remettre et tester bien sûr
+	    locNameValuePairs.add(new BasicNameValuePair("username", parUserName));
+	    locNameValuePairs.add(new BasicNameValuePair("password", parPassword));
+	    locNameValuePairs.add(new BasicNameValuePair("email", parEmailAddress));
+*/	
+		new PostRESTTask(this, locNameValuePairs).execute(_urlPostUser);
 	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
 	//TODO lire et traiter l'objet reçu pour envoyer boolean à view
-		_listener.onTaskCompleted(parObject);
+		
+		String locHttpCode = (String) parObject;
+		Boolean isCreatingAccountASuccess;
+				
+		if(locHttpCode.equals("200")) {
+			isCreatingAccountASuccess = Boolean.valueOf(true);
+		} else {
+			isCreatingAccountASuccess = Boolean.valueOf(false);
+		}
+		
+		_listener.onTaskCompleted(isCreatingAccountASuccess);
 		
 	}
 	
