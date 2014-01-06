@@ -287,6 +287,8 @@
 
                 message.sendAsync().then(
                     function complete(returnObject) {
+                        messageHTML.value = '';
+
                         self._fetchMessages();
                     }
                 );
@@ -334,12 +336,16 @@
 
             this._messagesList = document.getElementById("messagesList");
             this._messagesList.winControl.itemDataSource = this._messagesArray.dataSource;
-            this._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(this._userLogged.name);
+            this._messagesList.winControl.itemTemplate = Utils.Template.messageTemplate(this._userLogged.name, this._messageRemove.bind(this));
 
             var self = this;
             this._messagesCollection.fetchAsync(this._userSelected.name).then(
                 function complete(returnObject) {
-                    returnObject.collection.readAllMessagesFrom(self._userSelected.name);
+                    returnObject.collection.readAllMessagesFrom(self._userSelected.getNormalisedName());
+
+                    var subtitle = self._usersList.querySelectorAll(".item-subtitle")[self._itemSelectionIndex];
+                    subtitle.innerText = self._userSelected.description;
+                    WinJS.Utilities.removeClass(subtitle, "unreadMessages");
 
                     /*self._messagesList.addEventListener("loadingstatechanged", function () {
                         console.log(self._messagesList.winControl.loadingState);
@@ -351,6 +357,14 @@
                     });*/
                 }
             );
+        },
+
+        _messageRemove: function (item) {
+            var index = this._messagesArray.indexOfKey(item.key);
+
+            this._messagesArray.splice(index, 1);
+
+            this._messagesList.winControl.forceLayout();
         },
     });
 })();

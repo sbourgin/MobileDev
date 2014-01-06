@@ -56,6 +56,58 @@
                         }
                     }
                 },
+
+                getNbNewMessagesFromAsync: function(userName){
+                    var self = this;
+
+                    var parameters = {
+                        sent: 0,
+                        name: userName,
+                        status: 0,
+                        action: 0,
+                    };
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("list", parameters).then(
+                            function complete(result) {
+
+                                onSuccess({
+                                    collection: self,
+                                    count: result.count,
+                                });
+                            }
+                        );
+                    });
+                },
+
+                refreshAsync: function (userName) {
+                    var self = this;
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        WinJS.Promise.timeout(5000).then(
+                            function (complete) {
+                                if (! self._stopRefresh) {
+                                    return self.getNbNewMessagesFromAsync(userName);
+                                }
+                            }
+                        ).then(
+                            function complete(returnObject) {
+                                if (returnObject) {
+                                    console.log("refresh for " + userName + "! count: " + returnObject.count);
+
+                                    if (returnObject.count > 0) {
+                                        onSuccess({
+                                            collection: self,
+                                        });
+                                    }
+
+
+                                    self.refreshAsync(userName);
+                                }
+                            }
+                        );
+                    });
+                },
             },
 
             //static methods

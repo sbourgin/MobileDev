@@ -26,6 +26,7 @@
                     "logon": "user",
                     "users": "users",
                     "conversation": "result",
+                    "list": "result",
                 },
 
                 //private methods to do get request

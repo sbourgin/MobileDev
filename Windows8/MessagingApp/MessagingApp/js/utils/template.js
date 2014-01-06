@@ -66,7 +66,17 @@
 
                             var h6 = document.createElement("h6");
                             h6.className = "item-subtitle win-type-ellipsis";
-                            h6.textContent = item.data.description;
+                            item.data.getUnreadMessagesAsync().then(
+                                function complete(){
+                                    if (item.data.unreadMessages) {
+                                        h6.className += " unreadMessages";
+                                        h6.textContent = "Unread messages: " + item.data.unreadMessages;
+                                    }
+                                    else {
+                                        h6.textContent = item.data.description;
+                                    }
+                                }
+                            );
 
                             itemInfo.appendChild(h6);
 
@@ -75,7 +85,7 @@
                     };
                 },
 
-                messageTemplate: function (userLogged) {
+                messageTemplate: function (userLogged, onMessageRemove) {
                     return function (itemPromise) {
 
                         return itemPromise.then(function (item) {
@@ -124,19 +134,21 @@
                             if (properties.from == userLogged) {
                                 WinJS.Utilities.addClass(divBuble, "bubleRight");
 
-                                /*var remove = document.createElement("a");
-                                remove.className = "removeMessage";
-                                remove.innerText = 'x';
+                                if (properties.status == 1) {
+                                    var remove = document.createElement("a");
+                                    remove.className = "removeMessage";
+                                    remove.innerText = 'x';
 
-                                remove.addEventListener("click", function () {
-                                    item.data.removeAsync().then(
-                                        function complete() {
-                                            console.log("remove");
-                                        }
-                                    );
-                                })
+                                    remove.addEventListener("click", function () {
+                                        item.data.removeAsync().then(
+                                            function complete() {
+                                                onMessageRemove(item);
+                                            }
+                                        );
+                                    });
 
-                                divBuble.appendChild(remove);*/
+                                    divBuble.appendChild(remove);
+                                }                                
                             }
                             else {
                                 WinJS.Utilities.addClass(divBuble, "bubleLeft");

@@ -47,6 +47,10 @@
     width: 60px;
 }
 
+.unreadMessages {
+    color: red;
+}
+
 .removeMessage {
     position: absolute;
     right: 8px;
