@@ -34,7 +34,7 @@ public class CreateAccountController implements OnTaskCompleted{
 	    locNameValuePairs.add(new BasicNameValuePair("password", parPassword));
 	    locNameValuePairs.add(new BasicNameValuePair("email", parEmailAddress));
 */	
-		new PostRESTTask(this, locNameValuePairs).execute(_urlPostUser);
+		new PostRESTTask(this, false, locNameValuePairs).execute(_urlPostUser);
 	}
 
 	@Override

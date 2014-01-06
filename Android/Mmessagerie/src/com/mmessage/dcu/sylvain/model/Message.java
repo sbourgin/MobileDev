@@ -14,6 +14,8 @@ public class Message implements Displayable{
 	private String _subject;
 	private String _text;
 	
+	
+	
 	@Override
 	public String getTitleToDisplay() {
 		return _subject;

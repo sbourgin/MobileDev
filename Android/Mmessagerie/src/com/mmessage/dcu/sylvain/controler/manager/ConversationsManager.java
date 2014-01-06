@@ -54,6 +54,11 @@ public class ConversationsManager implements ItemManager,
 		new GetRESTTask(this).execute(_urlPostUser);
 
 	}
+	
+	public Integer findConversation(List<Long> parParticipantId) {
+		//TODO 
+		return null;
+	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {

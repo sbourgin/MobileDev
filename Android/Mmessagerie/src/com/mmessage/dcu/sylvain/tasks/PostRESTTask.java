@@ -24,10 +24,12 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted _listener = null;
 	private List<NameValuePair> _parameters;
+	private boolean _isAuthentificationNeeded;
 
-	public PostRESTTask(OnTaskCompleted parOnTaskCompleted, List<NameValuePair> parNameValuePairs) {
+	public PostRESTTask(OnTaskCompleted parOnTaskCompleted, boolean parIsAuthentificationNeeded, List<NameValuePair> parNameValuePairs) {
 		_listener = parOnTaskCompleted;
 		_parameters = parNameValuePairs;
+		_isAuthentificationNeeded = parIsAuthentificationNeeded;
 	}
 
 	@Override
@@ -39,6 +41,9 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 		HttpClient httpclient = new DefaultHttpClient();
     	HttpPost httppost = new HttpPost(locUrl);
     	httppost.addHeader("Accept", "application/json");
+    	if(_isAuthentificationNeeded) {
+    		httppost.addHeader("Authorization", "Basic " + MainActivityController.getAuthentification());
+    	}
 	    try {
 	    	//TODO mettre en dynamique avec la map des attributs
 
