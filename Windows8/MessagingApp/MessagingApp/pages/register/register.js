@@ -54,7 +54,11 @@
 
             user.registerAsync().then(
                 function complete(returnObject) {
-                    nav.navigate("/pages/login/login.html");
+                    user.logonAsync().then(
+                        function complete(returnObject) {
+                            nav.navigate("/pages/split/split.html", { user: user });
+                        }
+                    );
                 },
                 function error(errorMessage) {
                     document.getElementById("error_message").innerText = errorMessage;
