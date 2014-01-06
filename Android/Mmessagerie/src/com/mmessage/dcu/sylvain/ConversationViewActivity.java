@@ -13,7 +13,7 @@ public class ConversationViewActivity extends Activity implements OnTaskComplete
 	private LinearLayout _layout = null;
 	private ConversationViewController _controller = null;
 	
-	//locBundle.putLong("conversationID", idConversation);
+	
 	
 	
 	@Override
@@ -26,15 +26,10 @@ public class ConversationViewActivity extends Activity implements OnTaskComplete
 		_layout = (LinearLayout) LinearLayout.inflate(this,
 				R.layout.activity_conversation_view, null);
 		setContentView(_layout);
+
+		
 		
 		_controller = new ConversationViewController(ConversationViewActivity.this, locConversationId);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.conversation_view, menu);
-		return true;
 	}
 
 	@Override

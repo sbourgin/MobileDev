@@ -94,7 +94,7 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 						JSONObject locContactJSON = (JSONObject) locContactsJSONArray
 								.get(i);
 						locContact = new Contact();
-						locContact.fillStates(locContactJSON);
+						isContactValid = locContact.fillStates(locContactJSON);
 					} catch (Exception e) {
 						isContactValid = false;
 					}

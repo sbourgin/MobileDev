@@ -25,11 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:ems="10" /><TextView
+        android:ems="10" />
+    
+    <TextView
         android:id="@+id/mainTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UserName : " />
+        android:text="Password : " />
 
     <EditText
         android:id="@+id/mainPassword"
