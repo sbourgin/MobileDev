@@ -40,5 +40,10 @@ public class Contact implements Displayable {
 	public long getIdOfItem() {
 		return _id;
 	}
+	
+	@Override
+	public String toString() {
+		return _name;
+	}
 
 }
