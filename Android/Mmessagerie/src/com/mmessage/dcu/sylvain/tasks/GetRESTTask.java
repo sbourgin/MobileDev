@@ -6,24 +6,27 @@ import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
 
-import com.mmessage.dcu.sylvain.MainActivity;
 import com.mmessage.dcu.sylvain.controler.MainActivityController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class GetRESTTask extends AsyncTask<String, Void, String> {
 
 	private OnTaskCompleted _listener = null;
+	private Commands _command;
+	private int _httpCode = 0;
 
-	public GetRESTTask(OnTaskCompleted parOnTaskCompleted) {
+	public GetRESTTask(OnTaskCompleted parOnTaskCompleted,
+			Commands parCommandType) {
 		_listener = parOnTaskCompleted;
+		_command = parCommandType;
 	}
 
 	@Override
@@ -43,9 +46,11 @@ public class GetRESTTask extends AsyncTask<String, Void, String> {
 			HttpGet get = new HttpGet(locUrl.toString());
 			get.addHeader("Accept", "application/json");
 
-			get.addHeader("Authorization", "Basic " + MainActivityController.getAuthentification());
+			get.addHeader("Authorization",
+					"Basic " + MainActivityController.getAuthentification());
 			locHttpResponse = locHttpclient.execute(get);
 			StatusLine locStatusLine = locHttpResponse.getStatusLine();
+			_httpCode = locStatusLine.getStatusCode();
 			if (locStatusLine.getStatusCode() == HttpStatus.SC_OK) {
 				ByteArrayOutputStream locOut = new ByteArrayOutputStream();
 				locHttpResponse.getEntity().writeTo(locOut);
@@ -66,7 +71,8 @@ public class GetRESTTask extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected void onPostExecute(String parString) {
-		_listener.onTaskCompleted(parString);
+		TaskMessage locTaskMessage = new TaskMessage(_command,_httpCode, parString);
+		_listener.onTaskCompleted(locTaskMessage);
 
 	}
 

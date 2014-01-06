@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.mmessage.dcu.sylvain.controler.manager.ContactsManager;
 import com.mmessage.dcu.sylvain.controler.manager.ConversationsManager;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Contact;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
@@ -55,7 +56,7 @@ public class CreateConversationController implements OnTaskCompleted {
 	    	locNameValuePairs.add(new BasicNameValuePair("user_id", String.valueOf(locContact.getIdOfItem())));
 	    }
 	   	    
-	    new PostRESTTask(this, true, locNameValuePairs).execute(_urlConversation);
+	    new PostRESTTask(this, true, Commands.CREATE_CONVERSATION, locNameValuePairs).execute(_urlConversation);
 	    
 	}
 	

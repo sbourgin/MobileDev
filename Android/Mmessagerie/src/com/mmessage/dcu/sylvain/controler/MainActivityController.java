@@ -1,8 +1,12 @@
 package com.mmessage.dcu.sylvain.controler;
 
+import org.apache.http.HttpStatus;
+
 import android.util.Base64;
 
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 
 public class MainActivityController implements OnTaskCompleted {
@@ -24,16 +28,19 @@ public class MainActivityController implements OnTaskCompleted {
 		String encoding = Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
 		_authentication = encoding;
 		
-		new GetRESTTask(this).execute(_urlPostUser);
+		new GetRESTTask(this, Commands.GET_ALL_USERS).execute(_urlPostUser);
 	}
 	
 	
 	@Override
 	public void onTaskCompleted(Object parObject) {
-		if(parObject==null) {
-			_listener.onTaskCompleted(Boolean.valueOf(false));
-		} else {
+
+		TaskMessage locTaskMessage = (TaskMessage) parObject;
+		
+		if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
 			_listener.onTaskCompleted(Boolean.valueOf(true));
+		} else {
+			_listener.onTaskCompleted(Boolean.valueOf(false));
 		}
 	}
 	
