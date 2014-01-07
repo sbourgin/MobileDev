@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import android.R;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,13 +73,23 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 
 		locHolder._mainText.setText(locItemToDisplay.getTitleToDisplay());
 		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
-
 		
-		//TODO rajouter couleur de fond spéciale ?
+		if(locItemToDisplay.getGravity() == Gravity.RIGHT) {
+			locHolder._mainText.setBackgroundColor(Color.LTGRAY);
+		} else if (locItemToDisplay.getGravity() == Gravity.LEFT) {
+			locHolder._mainText.setBackgroundColor(Color.YELLOW);
+		}
+		
 		
 		if (_ressource == 17367047) { // simple_expandable_list_item_2 
 			locHolder._subtitle.setText(locItemToDisplay.getFullTextToDisplay());
 			locHolder._subtitle.setGravity(locItemToDisplay.getGravity());
+			
+			if(locItemToDisplay.getGravity() == Gravity.RIGHT) {
+				locHolder._subtitle.setBackgroundColor(Color.LTGRAY);
+			} else if (locItemToDisplay.getGravity() == Gravity.LEFT) {
+				locHolder._subtitle.setBackgroundColor(Color.YELLOW);
+			}
 		}
 		
 
