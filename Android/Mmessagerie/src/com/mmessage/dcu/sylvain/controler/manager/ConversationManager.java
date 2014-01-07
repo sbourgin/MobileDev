@@ -28,8 +28,6 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 	private String _urlPostUser = "http://message.eventhub.eu/conversations/%d/messages";
 	private OnTaskCompleted _listener;
 
-	// TODO attention si on fait un refresh data, l'itérator merde
-
 	public ConversationManager(OnTaskCompleted parListener,
 			Long parConversationId) {
 		_listener = parListener;

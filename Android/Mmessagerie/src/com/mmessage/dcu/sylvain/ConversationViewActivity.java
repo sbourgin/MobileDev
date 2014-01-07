@@ -75,16 +75,6 @@ public class ConversationViewActivity extends Activity implements
 		_listeView.setAdapter(_messagesAdapter);
 
 		
-		_listeView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int parPosition, long id) {
-				//TODO : détail du message ? 
-			}
-
-		});
-		
 		_submitMessage = (Button) _layout
 				.findViewById(R.id.ConversationViewSubmit);
 		_submitMessage.setText("Submit Message");

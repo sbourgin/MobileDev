@@ -26,8 +26,6 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 	private String _urlPostUser = "http://message.eventhub.eu/users";
 	private OnTaskCompleted _listener;
 
-	// TODO attention si on fait un refresh data, l'itérator merde
-
 	public ContactsManager(OnTaskCompleted parListener) {
 		_listener = parListener;
 	}
