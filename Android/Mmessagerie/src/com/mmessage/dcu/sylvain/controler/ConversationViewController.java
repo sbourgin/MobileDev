@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.mmessage.dcu.sylvain.controler.manager.ConversationManager;
 import com.mmessage.dcu.sylvain.controler.manager.ConversationsManager;
@@ -12,6 +14,7 @@ import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
+import com.mmessage.dcu.sylvain.tasks.PostRESTTask;
 
 public class ConversationViewController implements OnTaskCompleted {
 
@@ -19,6 +22,7 @@ public class ConversationViewController implements OnTaskCompleted {
 	private ConversationsManager _conversationsManager = null;
 	private OnTaskCompleted _listener;
 	private Long _conversationId;
+	private String _urlMessages = "http://message.eventhub.eu/conversations/%d/messages";
 
 	public ConversationViewController(OnTaskCompleted parListener,
 			Long parConversationId) {
@@ -43,7 +47,18 @@ public class ConversationViewController implements OnTaskCompleted {
 		return locAllConversations;
 	}
 	
+	public void sendMessage(String parMessage) {
+		String locUrl = String.format(_urlMessages, _conversationId);
+		
+		List<NameValuePair> locNameValuePairs = new ArrayList<NameValuePair>();
+		locNameValuePairs.add(new BasicNameValuePair("content",
+				parMessage));
 
+		new PostRESTTask(this, true, Commands.SEND_MESSAGE,
+				locNameValuePairs).execute(locUrl);
+	}
+	
+	
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
@@ -73,6 +88,18 @@ public class ConversationViewController implements OnTaskCompleted {
 			TaskMessage locTaskMessageToView = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK, locConversation);
 			_listener.onTaskCompleted(locTaskMessageToView);
 		
+		} else if(locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
+			
+			TaskMessage locTaskMessageToView;
+			
+			if (locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_OK, null);
+			} else {
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_BAD_REQUEST, null);
+			}
+			
+			_listener.onTaskCompleted(locTaskMessageToView);
+			
 		}
 	} 
 

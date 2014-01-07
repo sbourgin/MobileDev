@@ -12,7 +12,22 @@
     <TextView
         android:id="@+id/ConversationViewConversationDetails"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- Mettre affichage -->
+
+    <EditText
+        android:id="@+id/ConversationViewMessage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         />
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:lines="4" >
+    </EditText>
+
+    <Button
+        android:id="@+id/ConversationViewSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

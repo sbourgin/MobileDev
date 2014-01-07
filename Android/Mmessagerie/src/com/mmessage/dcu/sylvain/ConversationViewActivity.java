@@ -1,7 +1,14 @@
 package com.mmessage.dcu.sylvain;
 
+import org.apache.http.HttpStatus;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +25,8 @@ public class ConversationViewActivity extends Activity implements
 	private LinearLayout _layout = null;
 	private ConversationViewController _controller = null;
 	private TextView _conversationDetails;
+	private EditText _message;
+	private Button _submitMessage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +40,20 @@ public class ConversationViewActivity extends Activity implements
 
 		_conversationDetails = (TextView) _layout
 				.findViewById(R.id.ConversationViewConversationDetails);
+
+		_message = (EditText) _layout
+				.findViewById(R.id.ConversationViewMessage);
+
+		_submitMessage = (Button) _layout
+				.findViewById(R.id.ConversationViewSubmit);
+		_submitMessage.setText("Submit Message");
+		_submitMessage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendMessage();
+			}
+
+		});
 
 		setContentView(_layout);
 
@@ -65,8 +88,20 @@ public class ConversationViewActivity extends Activity implements
 						Toast.LENGTH_SHORT).show();
 			}
 
+		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
+			if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
+				Toast.makeText(getBaseContext(),"Message sent !",Toast.LENGTH_LONG).show();
+				//TODO ajouter refresh vue, de manière générale ajouter refresh conversation et cette vue
+			} else {
+				 Toast.makeText(getBaseContext(),"Failed to send message",Toast.LENGTH_LONG).show();
+			}
+			
 		}
 
 	}
-
+	
+	private void sendMessage() {
+		_controller.sendMessage(_message.getText().toString());
+		_message.setText("");;
+	}
 }
