@@ -19,8 +19,10 @@ import android.widget.Toast;
 
 import com.mmessage.dcu.sylvain.controler.ConversationsController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
+import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
+import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
@@ -95,20 +97,25 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
-		List<Conversation> locResult = (List<Conversation>) parObject;
+		TaskMessage locTaskMessage = (TaskMessage) parObject;
 
-		if ((parObject == null) || (locResult.isEmpty())) {
-			Toast locToast = Toast.makeText(this,
-					"Error when retrieving conversations", Toast.LENGTH_LONG);
-			locToast.show();
-		} else {
-			_conversationsAdapter.resetData();
-			for (Conversation locConversation : locResult) {
-				_conversationsAdapter.addLast(locConversation);
+		if (locTaskMessage.getCommand().equals(Commands.GET_ALL_CONVERSATIONS)) {
+
+			List<Conversation> locResult = (List<Conversation>) locTaskMessage
+					.getResult();
+
+			if ((locResult == null)) {
+				Toast locToast = Toast.makeText(this,
+						"Error when retrieving conversations",
+						Toast.LENGTH_LONG);
+				locToast.show();
+			} else {
+				_conversationsAdapter.resetData();
+				for (Conversation locConversation : locResult) {
+					_conversationsAdapter.addLast(locConversation);
+				}
+				_conversationsAdapter.notifyDataSetChanged();
 			}
-
-			_conversationsAdapter.notifyDataSetChanged();
-
 		}
 
 	}

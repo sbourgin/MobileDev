@@ -58,7 +58,21 @@ public class ConversationsManager implements ItemManager,
 
 	}
 	
-
+	public Conversation getConversationById(Long parConversationId) {
+		
+		boolean locConversationFound = false;
+		Conversation locConversation = null;
+		ListIterator<Conversation> locIterator = _conversations.listIterator();
+		
+		while(locIterator.hasNext() || locConversationFound) {
+			locConversation = locIterator.next();
+			if(locConversation.getIdOfItem() == parConversationId) {
+				locConversationFound=true;
+			}
+		}
+		return locConversation;
+	}
+	
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
@@ -113,11 +127,16 @@ public class ConversationsManager implements ItemManager,
 			}
 
 		}
-
-		if (isConversationsListSucess) {
-			_listener.onTaskCompleted(Boolean.valueOf(true));
+		TaskMessage locTaskMessageToController;
+		
+		
+		if (isConversationsListSucess) {			
+			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK, Boolean.valueOf(true));
 		} else {
-			_listener.onTaskCompleted(Boolean.valueOf(false));
+			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_BAD_REQUEST, Boolean.valueOf(false));
 		}
+		
+		_listener.onTaskCompleted(locTaskMessageToController);
 	}
+	
 }
