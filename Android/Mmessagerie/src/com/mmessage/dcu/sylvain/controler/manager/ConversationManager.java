@@ -58,7 +58,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this, Commands.GET_A_CONVERSATION)
+		new GetRESTTask(this, Commands.GET_ALL_MESSAGES)
 				.execute(_urlPostUser);
 
 	}
@@ -121,9 +121,9 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 		TaskMessage locTaskMessageToController;
 		
 		if (isMessagesListSucess) {
-			locTaskMessageToController = new TaskMessage(Commands.GET_A_CONVERSATION, HttpStatus.SC_OK, null);
+			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_MESSAGES, HttpStatus.SC_OK, null);
 		} else {
-			locTaskMessageToController = new TaskMessage(Commands.GET_A_CONVERSATION, HttpStatus.SC_BAD_REQUEST, null);
+			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_MESSAGES, HttpStatus.SC_BAD_REQUEST, null);
 		}
 
 		_listener.onTaskCompleted(locTaskMessageToController);

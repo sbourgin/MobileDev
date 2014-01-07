@@ -64,7 +64,7 @@ public class ConversationsManager implements ItemManager,
 		Conversation locConversation = null;
 		ListIterator<Conversation> locIterator = _conversations.listIterator();
 		
-		while(locIterator.hasNext() || locConversationFound) {
+		while(locIterator.hasNext() && false == locConversationFound) {
 			locConversation = locIterator.next();
 			if(locConversation.getIdOfItem() == parConversationId) {
 				locConversationFound=true;
