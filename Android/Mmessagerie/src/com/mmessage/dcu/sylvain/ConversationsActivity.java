@@ -20,7 +20,6 @@ import com.mmessage.dcu.sylvain.controler.ConversationsController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
-import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
 import com.mmessage.dcu.sylvain.model.SizeLimitedAdapterOriginal;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
