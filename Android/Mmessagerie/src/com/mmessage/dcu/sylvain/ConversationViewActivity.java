@@ -1,5 +1,8 @@
 package com.mmessage.dcu.sylvain;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.http.HttpStatus;
 
 import android.app.Activity;
@@ -7,16 +10,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.mmessage.dcu.sylvain.controler.ConversationViewController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
+import com.mmessage.dcu.sylvain.model.Message;
+import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class ConversationViewActivity extends Activity implements
@@ -28,6 +36,8 @@ public class ConversationViewActivity extends Activity implements
 	private EditText _message;
 	private Button _submitMessage;
 	private Button _refresh;
+	private ListView _listeView;
+	private SizeLimitedAdapter<Message> _messagesAdapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +58,31 @@ public class ConversationViewActivity extends Activity implements
 		_refresh = (Button) _layout
 				.findViewById(R.id.ConversationViewRefresh);
 		_refresh.setText("Refresh");
-		_submitMessage.setOnClickListener(new OnClickListener() {
+		_refresh.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				refresh();
 			}
+		});
+		
+		_listeView = (ListView) _layout.findViewById(R.id.ConversationViewListView);
+		
+		LinkedList<Message> locObjectsList = new LinkedList<Message>();
+
+		_messagesAdapter = new SizeLimitedAdapter<Message>(this, 200,
+				locObjectsList, 17367047);
+
+		_listeView.setAdapter(_messagesAdapter);
+
+		
+		_listeView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int parPosition, long id) {
+				//TODO : détail du message ? 
+			}
+
 		});
 		
 		_submitMessage = (Button) _layout
@@ -77,7 +107,22 @@ public class ConversationViewActivity extends Activity implements
 		TaskMessage locTaskMessage = (TaskMessage) parObject;
 
 		if (locTaskMessage.getCommand().equals(Commands.GET_ALL_MESSAGES)) {
-			// TODO
+			
+			List<Message> locResult = (List<Message>) locTaskMessage
+					.getResult();
+
+			if ((locResult == null)) {
+				Toast locToast = Toast.makeText(this,
+						"Error when retrieving messages",
+						Toast.LENGTH_LONG);
+				locToast.show();
+			} else {
+				_messagesAdapter.resetData();
+				for (Message locMessage : locResult) {
+					_messagesAdapter.addLast(locMessage);
+				}
+				_messagesAdapter.notifyDataSetChanged();
+			}
 		} else if (locTaskMessage.getCommand().equals(
 				Commands.GET_ALL_CONVERSATIONS)) {
 
