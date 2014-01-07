@@ -16,7 +16,7 @@ public class Message implements Displayable {
 	
 	@Override
 	public String getTitleToDisplay() {
-		return _text; //TODO tester avec de longs messages ce que ça donne
+		return _text;
 	}
 
 	@Override

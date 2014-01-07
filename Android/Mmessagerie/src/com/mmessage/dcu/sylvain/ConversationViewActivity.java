@@ -122,6 +122,7 @@ public class ConversationViewActivity extends Activity implements
 					_messagesAdapter.addLast(locMessage);
 				}
 				_messagesAdapter.notifyDataSetChanged();
+				_listeView.setSelection(_messagesAdapter.getCount()-1);
 			}
 		} else if (locTaskMessage.getCommand().equals(
 				Commands.GET_ALL_CONVERSATIONS)) {
@@ -162,9 +163,6 @@ public class ConversationViewActivity extends Activity implements
 	}
 	
 	private void refresh() {
-		// TODO demander controller nouveaux messages et rafraichir vue dans onTaskCompleted
-		//TODO metre curseur à la fin ?
 		_controller.initData();
-		
 	}
 }
