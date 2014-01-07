@@ -2,16 +2,22 @@ package com.mmessage.dcu.sylvain.model;
 
 import java.util.LinkedList;
 
-import android.R;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
@@ -25,9 +31,12 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 	private final int MAX_SIZE;
 	private LinkedList<E> _objectsList = null;
 	private int _ressource;
+	private Context _context;
 
 	public SizeLimitedAdapter(Context parContext, int parMAX_SIZE,
 			LinkedList<E> parObjectsList, int parRessource) {
+		
+		_context = parContext;
 		MAX_SIZE = parMAX_SIZE;
 		_objectsList = parObjectsList;
 		_inflater = LayoutInflater.from(parContext);
@@ -53,15 +62,28 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 	public View getView(int parPosition, View parConvertView,
 			ViewGroup parParent) {
 
+		View locView = null;
+		
 		ViewHolder locHolder;
-		if (parConvertView == null) {
+		if (locView == null) {
 			parConvertView = _inflater.inflate(
 					_ressource, parParent, false);
 			locHolder = new ViewHolder();
-			locHolder._mainText = (TextView) parConvertView
+			
+			LayoutInflater inflater = (LayoutInflater) _context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+			locView = inflater.inflate(R.layout.custom_list_view ,null);
+			
+	//		LayoutInflater inflater = _context.getLayoutInflater();
+			
+//			locView = _inflater.inflate(R., null);
+			locHolder._mainText = (TextView) locView.findViewById(R.id.listViewEditText);
+			
+		/*	locHolder._mainText = (EditText) parConvertView
 					.findViewById(R.id.text1);
-			locHolder._subtitle = (TextView) parConvertView
-					.findViewById(R.id.text2);
+		*/	locHolder._subtitle = (TextView) locView
+					.findViewById(R.id.listViewTextView);
 			
 			parConvertView.setTag(locHolder);
 		} else {
@@ -75,7 +97,7 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 		
 		locHolder._mainText.setText(locItemToDisplay.getTitleToDisplay());
 		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
-		
+/*		
 		if(locItemToDisplay.getGravity() == Gravity.RIGHT) {
 			locHolder._mainText.setBackgroundColor(Color.LTGRAY);
 		} else if (locItemToDisplay.getGravity() == Gravity.LEFT) {
@@ -93,9 +115,9 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 				locHolder._subtitle.setBackgroundColor(Color.YELLOW);
 			}
 		}
-		
+*/		
 
-		return parConvertView;
+		return locView;
 	}
 
 	public void addLast(E parObject) {
