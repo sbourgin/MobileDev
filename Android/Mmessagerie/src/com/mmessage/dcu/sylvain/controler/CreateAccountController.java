@@ -28,15 +28,15 @@ public class CreateAccountController implements OnTaskCompleted{
 	public void createNewUser(String parUserName, String parPassword, String parEmailAddress) {
 		
         List<NameValuePair> locNameValuePairs = new ArrayList<NameValuePair>(3);
-	    locNameValuePairs.add(new BasicNameValuePair("username", "Sylvain49"));
+/*	    locNameValuePairs.add(new BasicNameValuePair("username", "Sylvain49"));
 	    locNameValuePairs.add(new BasicNameValuePair("password", "Sylvain49"));
 	    locNameValuePairs.add(new BasicNameValuePair("email", "sylvain49@sylvain.com"));
-/*
+*/
 	    //TODO à remettre et tester bien sûr
 	    locNameValuePairs.add(new BasicNameValuePair("username", parUserName));
 	    locNameValuePairs.add(new BasicNameValuePair("password", parPassword));
 	    locNameValuePairs.add(new BasicNameValuePair("email", parEmailAddress));
-*/	
+	
 		new PostRESTTask(this, false, Commands.CREATE_A_USER, locNameValuePairs).execute(_urlPostUser);
 	}
 

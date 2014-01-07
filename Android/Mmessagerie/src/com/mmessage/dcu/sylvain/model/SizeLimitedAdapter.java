@@ -81,8 +81,7 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 
 		final Displayable locItemToDisplay = (Displayable) _objectsList
 				.get(parPosition);
-
-		//TODO problème si le texte fait plus de deux lignes 
+ 
 		
 		locHolder._mainText.setText(locItemToDisplay.getTitleToDisplay());
 		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
