@@ -46,7 +46,8 @@ public class ConversationViewController implements OnTaskCompleted {
 		while (_conversationManager.hasNext()) {
 			Message locMessage = _conversationManager.next();
 			
-			if(locMessage.getSender().getTitleToDisplay() == MainActivityController.getUserName()) {
+			
+			if(locMessage.getSender().getTitleToDisplay().equals(MainActivityController.getUserName())) {
 				locMessage.setGravity(Gravity.RIGHT);
 			} else {
 				locMessage.setGravity(Gravity.LEFT);

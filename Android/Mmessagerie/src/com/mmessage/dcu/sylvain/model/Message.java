@@ -7,11 +7,8 @@ import com.mmessage.dcu.sylvain.interfaces.Displayable;
 public class Message implements Displayable {
 
 	
-	//TODO Clean
 	private Long _id;
-	private Integer _status;
 	private String _updatedAt;
-	private String _subject;
 	private String _text;
 	private Contact _sender;
 	private int _gravity;
@@ -19,12 +16,13 @@ public class Message implements Displayable {
 	
 	@Override
 	public String getTitleToDisplay() {
-		return _subject;
+		return _text;
 	}
 
 	@Override
 	public String getFullTextToDisplay() {
-		return _text;
+		String date = _updatedAt.substring(5, 7) + "/" + _updatedAt.substring(8, 10) + " " + _updatedAt.substring(11, 19);
+		return _sender.getTitleToDisplay() + " at " + date;
 	}
 
 	@Override

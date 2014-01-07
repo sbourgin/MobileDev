@@ -74,6 +74,8 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
 
 		
+		//TODO rajouter couleur de fond spéciale ?
+		
 		if (_ressource == 17367047) { // simple_expandable_list_item_2 
 			locHolder._subtitle.setText(locItemToDisplay.getFullTextToDisplay());
 			locHolder._subtitle.setGravity(locItemToDisplay.getGravity());
