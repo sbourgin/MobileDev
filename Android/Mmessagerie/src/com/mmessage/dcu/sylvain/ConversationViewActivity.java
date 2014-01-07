@@ -6,18 +6,16 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.mmessage.dcu.sylvain.controler.ConversationViewController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
@@ -55,8 +53,7 @@ public class ConversationViewActivity extends Activity implements
 		_message = (EditText) _layout
 				.findViewById(R.id.ConversationViewMessage);
 
-		_refresh = (Button) _layout
-				.findViewById(R.id.ConversationViewRefresh);
+		_refresh = (Button) _layout.findViewById(R.id.ConversationViewRefresh);
 		_refresh.setText("Refresh");
 		_refresh.setOnClickListener(new OnClickListener() {
 			@Override
@@ -64,9 +61,10 @@ public class ConversationViewActivity extends Activity implements
 				refresh();
 			}
 		});
-		
-		_listeView = (ListView) _layout.findViewById(R.id.ConversationViewListView);
-		
+
+		_listeView = (ListView) _layout
+				.findViewById(R.id.ConversationViewListView);
+
 		LinkedList<Message> locObjectsList = new LinkedList<Message>();
 
 		_messagesAdapter = new SizeLimitedAdapter<Message>(this, 200,
@@ -74,7 +72,6 @@ public class ConversationViewActivity extends Activity implements
 
 		_listeView.setAdapter(_messagesAdapter);
 
-		
 		_submitMessage = (Button) _layout
 				.findViewById(R.id.ConversationViewSubmit);
 		_submitMessage.setText("Submit Message");
@@ -85,6 +82,9 @@ public class ConversationViewActivity extends Activity implements
 			}
 
 		});
+		//Clear focus
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		setContentView(_layout);
 
@@ -97,14 +97,13 @@ public class ConversationViewActivity extends Activity implements
 		TaskMessage locTaskMessage = (TaskMessage) parObject;
 
 		if (locTaskMessage.getCommand().equals(Commands.GET_ALL_MESSAGES)) {
-			
+
 			List<Message> locResult = (List<Message>) locTaskMessage
 					.getResult();
 
 			if ((locResult == null)) {
 				Toast locToast = Toast.makeText(this,
-						"Error when retrieving messages",
-						Toast.LENGTH_LONG);
+						"Error when retrieving messages", Toast.LENGTH_LONG);
 				locToast.show();
 			} else {
 				_messagesAdapter.resetData();
@@ -112,7 +111,7 @@ public class ConversationViewActivity extends Activity implements
 					_messagesAdapter.addLast(locMessage);
 				}
 				_messagesAdapter.notifyDataSetChanged();
-				_listeView.setSelection(_messagesAdapter.getCount()-1);
+				_listeView.setSelection(_messagesAdapter.getCount() - 1);
 			}
 		} else if (locTaskMessage.getCommand().equals(
 				Commands.GET_ALL_CONVERSATIONS)) {
@@ -136,22 +135,25 @@ public class ConversationViewActivity extends Activity implements
 			}
 
 		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
-			if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
-				Toast.makeText(getBaseContext(),"Message sent !",Toast.LENGTH_LONG).show();
+			if (locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
+				Toast.makeText(getBaseContext(), "Message sent !",
+						Toast.LENGTH_LONG).show();
 				refresh();
 			} else {
-				 Toast.makeText(getBaseContext(),"Failed to send message",Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Failed to send message",
+						Toast.LENGTH_LONG).show();
 			}
-			
+
 		}
 
 	}
-	
+
 	private void sendMessage() {
 		_controller.sendMessage(_message.getText().toString());
-		_message.setText("");;
+		_message.setText("");
+		;
 	}
-	
+
 	private void refresh() {
 		_controller.initData();
 	}
