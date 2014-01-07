@@ -7,6 +7,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.view.Gravity;
+
 import com.mmessage.dcu.sylvain.controler.manager.ConversationManager;
 import com.mmessage.dcu.sylvain.controler.manager.ConversationsManager;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
@@ -40,11 +42,18 @@ public class ConversationViewController implements OnTaskCompleted {
 
 	private List<Message> getAllMessages() {
 
-		List<Message> locAllConversations = new ArrayList<Message>();
+		List<Message> locAllMessages = new ArrayList<Message>();
 		while (_conversationManager.hasNext()) {
-			locAllConversations.add(_conversationManager.next());
+			Message locMessage = _conversationManager.next();
+			
+			if(locMessage.getSender().getTitleToDisplay() == MainActivityController.getUserName()) {
+				locMessage.setGravity(Gravity.RIGHT);
+			} else {
+				locMessage.setGravity(Gravity.LEFT);
+			}
+			locAllMessages.add(locMessage);
 		}
-		return locAllConversations;
+		return locAllMessages;
 	}
 	
 	public void sendMessage(String parMessage) {

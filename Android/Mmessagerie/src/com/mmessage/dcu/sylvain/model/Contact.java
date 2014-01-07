@@ -2,6 +2,8 @@ package com.mmessage.dcu.sylvain.model;
 
 import org.json.simple.JSONObject;
 
+import android.view.Gravity;
+
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Contact implements Displayable {
@@ -9,6 +11,7 @@ public class Contact implements Displayable {
 	private Long _id;
 	private String _name;
 	private String _email;
+	private int _gravity = Gravity.CENTER;
 
 	public Contact() {
 	}
@@ -44,6 +47,11 @@ public class Contact implements Displayable {
 	@Override
 	public String toString() {
 		return _name;
+	}
+
+	@Override
+	public int getGravity() {
+		return _gravity;
 	}
 
 

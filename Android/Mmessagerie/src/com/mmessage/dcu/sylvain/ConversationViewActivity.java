@@ -27,6 +27,7 @@ public class ConversationViewActivity extends Activity implements
 	private TextView _conversationDetails;
 	private EditText _message;
 	private Button _submitMessage;
+	private Button _refresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,16 @@ public class ConversationViewActivity extends Activity implements
 		_message = (EditText) _layout
 				.findViewById(R.id.ConversationViewMessage);
 
+		_refresh = (Button) _layout
+				.findViewById(R.id.ConversationViewRefresh);
+		_refresh.setText("Refresh");
+		_submitMessage.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				refresh();
+			}
+		});
+		
 		_submitMessage = (Button) _layout
 				.findViewById(R.id.ConversationViewSubmit);
 		_submitMessage.setText("Submit Message");
@@ -91,7 +102,7 @@ public class ConversationViewActivity extends Activity implements
 		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
 			if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
 				Toast.makeText(getBaseContext(),"Message sent !",Toast.LENGTH_LONG).show();
-				//TODO ajouter refresh vue, de manière générale ajouter refresh conversation et cette vue
+				//TODO ajouter refresh vue
 			} else {
 				 Toast.makeText(getBaseContext(),"Failed to send message",Toast.LENGTH_LONG).show();
 			}
@@ -103,5 +114,10 @@ public class ConversationViewActivity extends Activity implements
 	private void sendMessage() {
 		_controller.sendMessage(_message.getText().toString());
 		_message.setText("");;
+	}
+	
+	private void refresh() {
+		// TODO demander controller nouveaux messages et rafraichir vue dans onTaskCompleted
+		
 	}
 }

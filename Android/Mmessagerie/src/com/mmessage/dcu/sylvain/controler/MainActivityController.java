@@ -12,6 +12,7 @@ import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
 public class MainActivityController implements OnTaskCompleted {
 	
 	private static String _authentication = "";
+	private static String _userName ="";
 	
 	private String _urlPostUser = "http://message.eventhub.eu/users";
 	private OnTaskCompleted _listener;
@@ -27,6 +28,7 @@ public class MainActivityController implements OnTaskCompleted {
 //		String authentification = parUserName + ":" + parPassword;	
 		String encoding = Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
 		_authentication = encoding;
+		_userName = parUserName;
 		
 		new GetRESTTask(this, Commands.GET_ALL_USERS).execute(_urlPostUser);
 	}
@@ -46,6 +48,10 @@ public class MainActivityController implements OnTaskCompleted {
 	
 	public static String getAuthentification() {
 		return _authentication;
+	}
+	
+	public static String getUserName() {
+		return _userName;
 	}
 
 }

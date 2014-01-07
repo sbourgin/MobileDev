@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import android.R;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 					.findViewById(R.id.text1);
 			locHolder._subtitle = (TextView) parConvertView
 					.findViewById(R.id.text2);
+			
 			parConvertView.setTag(locHolder);
 		} else {
 			locHolder = (ViewHolder) parConvertView.getTag();
@@ -69,9 +71,12 @@ public class SizeLimitedAdapter<E extends Displayable> extends BaseAdapter {
 				.get(parPosition);
 
 		locHolder._mainText.setText(locItemToDisplay.getTitleToDisplay());
+		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
 
+		
 		if (_ressource == 17367047) { // simple_expandable_list_item_2 
 			locHolder._subtitle.setText(locItemToDisplay.getFullTextToDisplay());
+			locHolder._subtitle.setGravity(locItemToDisplay.getGravity());
 		}
 		
 

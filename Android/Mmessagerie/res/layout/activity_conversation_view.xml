@@ -16,6 +16,12 @@
 
     <!-- Mettre affichage -->
 
+    <Button
+        android:id="@+id/ConversationViewRefresh"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/ConversationViewMessage"
         android:layout_width="match_parent"

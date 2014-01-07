@@ -6,12 +6,16 @@ import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Message implements Displayable {
 
+	
+	//TODO Clean
 	private Long _id;
 	private Integer _status;
 	private String _updatedAt;
 	private String _subject;
 	private String _text;
 	private Contact _sender;
+	private int _gravity;
+	
 	
 	@Override
 	public String getTitleToDisplay() {
@@ -45,4 +49,16 @@ public class Message implements Displayable {
 		return isSenderValid;
 	}
 
+	@Override
+	public int getGravity() {
+		return _gravity;
+	}
+
+	public void setGravity(int parGravity) {
+		_gravity = parGravity;
+	}
+	
+	public Contact getSender() {
+		return _sender;
+	}
 }

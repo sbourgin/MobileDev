@@ -6,6 +6,8 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import android.view.Gravity;
+
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Conversation implements Displayable {
@@ -13,7 +15,8 @@ public class Conversation implements Displayable {
 	private long _id = -1;
 	private String _name = null;
 	private List<Contact> _addresseeList = new ArrayList<Contact>();
-
+	private int _gravity = Gravity.CENTER;
+	
 	public Conversation() {
 		
 	}
@@ -82,6 +85,13 @@ public class Conversation implements Displayable {
 
 	public List<Contact> getAddresseeList() {
 		return _addresseeList;
+	}
+
+
+
+	@Override
+	public int getGravity() {
+		return _gravity;
 	}
 
 	
