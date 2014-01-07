@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,13 +21,14 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
+import com.mmessage.dcu.sylvain.model.SizeLimitedAdapterOriginal;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 	private LinearLayout _layout = null;
 	private ListView _listeView = null;
-	private SizeLimitedAdapter<Conversation> _conversationsAdapter = null;
+	private SizeLimitedAdapterOriginal<Conversation> _conversationsAdapter = null;
 	private Button _conversationsPlus = null;
 	private ConversationsController _controller = null;
 
@@ -42,7 +42,7 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 		LinkedList<Conversation> locObjectsList = new LinkedList<Conversation>();
 
-		_conversationsAdapter = new SizeLimitedAdapter<Conversation>(this, 200,
+		_conversationsAdapter = new SizeLimitedAdapterOriginal<Conversation>(this, 200,
 				locObjectsList, 17367047);
 
 		_listeView.setAdapter(_conversationsAdapter);
