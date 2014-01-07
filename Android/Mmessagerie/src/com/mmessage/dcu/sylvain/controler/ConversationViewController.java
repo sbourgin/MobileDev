@@ -32,10 +32,13 @@ public class ConversationViewController implements OnTaskCompleted {
 		_listener = parListener;
 		_conversationManager = new ConversationManager(
 				ConversationViewController.this, parConversationId);
-		_conversationManager.initData();
-
 		_conversationsManager = new ConversationsManager(
 				ConversationViewController.this);
+		initData();
+	}
+	
+	public void initData() {
+		_conversationManager.initData();
 		_conversationsManager.initData();
 
 	}
@@ -44,8 +47,7 @@ public class ConversationViewController implements OnTaskCompleted {
 
 		List<Message> locAllMessages = new ArrayList<Message>();
 		while (_conversationManager.hasNext()) {
-			Message locMessage = _conversationManager.next();
-			
+			Message locMessage = _conversationManager.next();	
 			
 			if(locMessage.getSender().getTitleToDisplay().equals(MainActivityController.getUserName())) {
 				locMessage.setGravity(Gravity.RIGHT);

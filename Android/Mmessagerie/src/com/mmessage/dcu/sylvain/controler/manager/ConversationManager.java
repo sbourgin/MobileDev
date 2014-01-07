@@ -92,6 +92,8 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 
 			if (isMessagesListSucess) {
 
+				_messages.clear();
+				
 				for (int i = 0; i < locMessagesJSONArray.size(); i++) {
 
 					Message locMessage = null;

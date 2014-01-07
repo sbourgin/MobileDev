@@ -147,7 +147,7 @@ public class ConversationViewActivity extends Activity implements
 		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
 			if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
 				Toast.makeText(getBaseContext(),"Message sent !",Toast.LENGTH_LONG).show();
-				//TODO ajouter refresh vue
+				refresh();
 			} else {
 				 Toast.makeText(getBaseContext(),"Failed to send message",Toast.LENGTH_LONG).show();
 			}
@@ -163,6 +163,8 @@ public class ConversationViewActivity extends Activity implements
 	
 	private void refresh() {
 		// TODO demander controller nouveaux messages et rafraichir vue dans onTaskCompleted
+		//TODO metre curseur à la fin ?
+		_controller.initData();
 		
 	}
 }
