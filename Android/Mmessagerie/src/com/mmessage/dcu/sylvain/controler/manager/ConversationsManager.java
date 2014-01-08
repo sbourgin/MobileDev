@@ -100,6 +100,8 @@ public class ConversationsManager implements ItemManager,
 
 			if (isConversationsListSucess) {
 
+				_conversations.clear();
+				
 				for (int i = 0; i < locConversationsJSONArray.size(); i++) {
 
 					Conversation locConversation = null;

@@ -9,15 +9,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CreateConversationActivity" >
 
-    <TextView
-        android:id="@+id/CreateConversationContactName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/CreateConversationChangeContactButton"
+        <TextView
+            android:id="@+id/CreateConversationContactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/CreateConversationChangeContactButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/CreateConversationConversationNameTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Choose a name for the conversation : " />
 
     <EditText
         android:id="@+id/CreateConversationConversationName"
@@ -25,6 +38,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:lines="1" />
+
+    <TextView
+        android:id="@+id/CreateConversationConversationMessageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Write your first message in this conversation : " />
 
     <EditText
         android:id="@+id/CreateConversationMessage"
