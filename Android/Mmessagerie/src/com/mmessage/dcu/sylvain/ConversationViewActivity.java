@@ -22,7 +22,7 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
-import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
+import com.mmessage.dcu.sylvain.model.GravityAdapter;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class ConversationViewActivity extends Activity implements
@@ -35,7 +35,7 @@ public class ConversationViewActivity extends Activity implements
 	private Button _submitMessage;
 	private Button _refresh;
 	private ListView _listeView;
-	private SizeLimitedAdapter<Message> _messagesAdapter = null;
+	private GravityAdapter<Message> _messagesAdapter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class ConversationViewActivity extends Activity implements
 
 		LinkedList<Message> locObjectsList = new LinkedList<Message>();
 
-		_messagesAdapter = new SizeLimitedAdapter<Message>(this, 200,
+		_messagesAdapter = new GravityAdapter<Message>(this, 200,
 				locObjectsList, 17367047);
 
 		_listeView.setAdapter(_messagesAdapter);

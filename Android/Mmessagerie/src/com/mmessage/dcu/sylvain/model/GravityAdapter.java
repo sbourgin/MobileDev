@@ -2,7 +2,6 @@ package com.mmessage.dcu.sylvain.model;
 
 import java.util.LinkedList;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -12,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
-public class SizeLimitedAdapterOriginal<E extends Displayable> extends BaseAdapter {
+public class GravityAdapter<E extends Displayable> extends BaseAdapter {
 
 	/*
 	 * http://www.vogella.com/articles/AndroidListView/article.html#
@@ -26,8 +26,9 @@ public class SizeLimitedAdapterOriginal<E extends Displayable> extends BaseAdapt
 	private LinkedList<E> _objectsList = null;
 	private int _ressource;
 
-	public SizeLimitedAdapterOriginal(Context parContext, int parMAX_SIZE,
+	public GravityAdapter(Context parContext, int parMAX_SIZE,
 			LinkedList<E> parObjectsList, int parRessource) {
+		
 		MAX_SIZE = parMAX_SIZE;
 		_objectsList = parObjectsList;
 		_inflater = LayoutInflater.from(parContext);
@@ -53,47 +54,44 @@ public class SizeLimitedAdapterOriginal<E extends Displayable> extends BaseAdapt
 	public View getView(int parPosition, View parConvertView,
 			ViewGroup parParent) {
 
+		
 		ViewHolder locHolder;
 		if (parConvertView == null) {
-			parConvertView = _inflater.inflate(
-					_ressource, parParent, false);
+			
+			parConvertView = _inflater.inflate(R.layout.custom_list_view ,null);
+			
 			locHolder = new ViewHolder();
-			locHolder._mainText = (TextView) parConvertView
-					.findViewById(R.id.text1);
+			
+				
+			locHolder._mainText = (TextView) parConvertView.findViewById(R.id.listViewEditText);
+						
 			locHolder._subtitle = (TextView) parConvertView
-					.findViewById(R.id.text2);
+					.findViewById(R.id.listViewTextView);
 			
 			parConvertView.setTag(locHolder);
 		} else {
 			locHolder = (ViewHolder) parConvertView.getTag();
 		}
 
-		Displayable locItemToDisplay = (Displayable) _objectsList
+		final Displayable locItemToDisplay = (Displayable) _objectsList
 				.get(parPosition);
  
 		
 		locHolder._mainText.setText(locItemToDisplay.getTitleToDisplay());
 		locHolder._mainText.setGravity(locItemToDisplay.getGravity());
+
 		
 		if(locItemToDisplay.getGravity() == Gravity.RIGHT) {
-			locHolder._mainText.setBackgroundColor(Color.LTGRAY);
+			parConvertView.setBackgroundColor(Color.LTGRAY);
 		} else if (locItemToDisplay.getGravity() == Gravity.LEFT) {
-			locHolder._mainText.setBackgroundColor(Color.YELLOW);
+			parConvertView.setBackgroundColor(Color.YELLOW);
 		}
-		
 		
 		if (_ressource == 17367047) { // simple_expandable_list_item_2 
 			locHolder._subtitle.setText(locItemToDisplay.getFullTextToDisplay());
 			locHolder._subtitle.setGravity(locItemToDisplay.getGravity());
-			
-			if(locItemToDisplay.getGravity() == Gravity.RIGHT) {
-				locHolder._subtitle.setBackgroundColor(Color.LTGRAY);
-			} else if (locItemToDisplay.getGravity() == Gravity.LEFT) {
-				locHolder._subtitle.setBackgroundColor(Color.YELLOW);
-			}
 		}
-		
-
+				
 		return parConvertView;
 	}
 
