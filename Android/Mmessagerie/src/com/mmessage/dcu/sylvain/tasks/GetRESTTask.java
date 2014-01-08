@@ -71,7 +71,8 @@ public class GetRESTTask extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected void onPostExecute(String parString) {
-		TaskMessage locTaskMessage = new TaskMessage(_command,_httpCode, parString);
+		TaskMessage locTaskMessage = new TaskMessage(_command, _httpCode,
+				parString);
 		_listener.onTaskCompleted(locTaskMessage);
 
 	}

@@ -16,61 +16,56 @@ public class Conversation implements Displayable {
 	private String _name = null;
 	private List<Contact> _addresseeList = new ArrayList<Contact>();
 	private int _gravity = Gravity.CENTER;
-	
+
 	public Conversation() {
-		
+
 	}
-	
-	
-	
+
 	public Conversation(String parName, List<Contact> parAddresseeList) {
 		this._name = parName;
 		this._addresseeList = parAddresseeList;
 	}
 
-
-
 	public boolean fillStates(JSONObject parJSon) {
 		try {
-			
-			this._id =  (Long) parJSon.get("id");
+
+			this._id = (Long) parJSon.get("id");
 			this._name = (String) parJSon.get("name");
 
 			JSONArray locContactsJSONArray = (JSONArray) parJSon.get("users");
-			
+
 			for (int i = 0; i < locContactsJSONArray.size(); i++) {
 				JSONObject locContactJSON = (JSONObject) locContactsJSONArray
 						.get(i);
 				Contact locContact = new Contact();
 				boolean isContactValid = locContact.fillStates(locContactJSON);
-				
-				if(isContactValid) {
+
+				if (isContactValid) {
 					_addresseeList.add(locContact);
 				}
-				
-			} 
-			
+
+			}
+
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
-		
-		
+
 	}
-	
 
 	@Override
 	public String getTitleToDisplay() {
-		
+
 		StringBuilder locListAddresse = new StringBuilder();
-		
-		for(int i=0; i<_addresseeList.size()-1;i++) {
+
+		for (int i = 0; i < _addresseeList.size() - 1; i++) {
 			locListAddresse.append(_addresseeList.get(i).getTitleToDisplay());
 			locListAddresse.append(", ");
 		}
-		locListAddresse.append(_addresseeList.get(_addresseeList.size()-1).getTitleToDisplay());
+		locListAddresse.append(_addresseeList.get(_addresseeList.size() - 1)
+				.getTitleToDisplay());
 		return locListAddresse.toString();
-		
+
 	}
 
 	@Override
@@ -87,13 +82,9 @@ public class Conversation implements Displayable {
 		return _addresseeList;
 	}
 
-
-
 	@Override
 	public int getGravity() {
 		return _gravity;
 	}
 
-	
-	
 }

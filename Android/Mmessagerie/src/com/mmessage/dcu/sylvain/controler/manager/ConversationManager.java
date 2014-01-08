@@ -1,6 +1,5 @@
 package com.mmessage.dcu.sylvain.controler.manager;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -9,13 +8,11 @@ import org.apache.http.HttpStatus;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.mmessage.dcu.sylvain.interfaces.ItemManager;
 import com.mmessage.dcu.sylvain.interfaces.Iterator;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
-import com.mmessage.dcu.sylvain.model.Conversation;
 import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.GetRESTTask;
@@ -56,8 +53,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this, Commands.GET_ALL_MESSAGES)
-				.execute(_urlPostUser);
+		new GetRESTTask(this, Commands.GET_ALL_MESSAGES).execute(_urlPostUser);
 
 	}
 
@@ -91,7 +87,7 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 			if (isMessagesListSucess) {
 
 				_messages.clear();
-				
+
 				for (int i = 0; i < locMessagesJSONArray.size(); i++) {
 
 					Message locMessage = null;
@@ -119,15 +115,17 @@ public class ConversationManager implements ItemManager, Iterator<Message>,
 		}
 
 		TaskMessage locTaskMessageToController;
-		
+
 		if (isMessagesListSucess) {
-			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_MESSAGES, HttpStatus.SC_OK, null);
+			locTaskMessageToController = new TaskMessage(
+					Commands.GET_ALL_MESSAGES, HttpStatus.SC_OK, null);
 		} else {
-			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_MESSAGES, HttpStatus.SC_BAD_REQUEST, null);
+			locTaskMessageToController = new TaskMessage(
+					Commands.GET_ALL_MESSAGES, HttpStatus.SC_BAD_REQUEST, null);
 		}
 
 		_listener.onTaskCompleted(locTaskMessageToController);
-		
+
 	}
 
 }

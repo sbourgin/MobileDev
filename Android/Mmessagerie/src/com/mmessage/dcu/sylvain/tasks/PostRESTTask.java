@@ -56,7 +56,7 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 			// Execute HTTP Post Request
 			HttpResponse locHttpResponse = httpclient.execute(httppost);
 			_httpCode = locHttpResponse.getStatusLine().getStatusCode();
-			
+
 			if (_httpCode == HttpStatus.SC_OK) {
 				ByteArrayOutputStream locOut = new ByteArrayOutputStream();
 				locHttpResponse.getEntity().writeTo(locOut);
@@ -65,7 +65,8 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 			} else {
 				// Closes the connection.
 				locHttpResponse.getEntity().getContent().close();
-				throw new IOException(locHttpResponse.getStatusLine().getReasonPhrase());
+				throw new IOException(locHttpResponse.getStatusLine()
+						.getReasonPhrase());
 			}
 
 		} catch (ClientProtocolException e) {

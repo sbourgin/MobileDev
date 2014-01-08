@@ -22,7 +22,7 @@ public class ConversationsManager implements ItemManager,
 		Iterator<Conversation>, OnTaskCompleted {
 
 	private List<Conversation> _conversations = new LinkedList<Conversation>();
-	private ListIterator<Conversation> _iterator = null; 
+	private ListIterator<Conversation> _iterator = null;
 	private String _urlPostUser = "http://message.eventhub.eu/conversations";
 	private OnTaskCompleted _listener;
 
@@ -52,36 +52,37 @@ public class ConversationsManager implements ItemManager,
 
 	@Override
 	public void initData() {
-		new GetRESTTask(this, Commands.GET_ALL_CONVERSATIONS).execute(_urlPostUser);
+		new GetRESTTask(this, Commands.GET_ALL_CONVERSATIONS)
+				.execute(_urlPostUser);
 
 	}
-	
+
 	public Conversation getConversationById(Long parConversationId) {
-		
+
 		boolean locConversationFound = false;
 		Conversation locConversation = null;
 		ListIterator<Conversation> locIterator = _conversations.listIterator();
-		
-		while(locIterator.hasNext() && false == locConversationFound) {
+
+		while (locIterator.hasNext() && false == locConversationFound) {
 			locConversation = locIterator.next();
-			if(locConversation.getIdOfItem() == parConversationId) {
-				locConversationFound=true;
+			if (locConversation.getIdOfItem() == parConversationId) {
+				locConversationFound = true;
 			}
 		}
 		return locConversation;
 	}
-	
+
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
 		TaskMessage locTaskMessage = (TaskMessage) parObject;
-		
+
 		boolean isConversationsListSucess = true;
 
 		if (locTaskMessage.getHttpCode() != HttpStatus.SC_OK) {
 			isConversationsListSucess = false;
 		}
-		
+
 		if (locTaskMessage.getResult() != null && isConversationsListSucess) {
 
 			String locStringFromServer = (String) locTaskMessage.getResult();
@@ -101,7 +102,7 @@ public class ConversationsManager implements ItemManager,
 			if (isConversationsListSucess) {
 
 				_conversations.clear();
-				
+
 				for (int i = 0; i < locConversationsJSONArray.size(); i++) {
 
 					Conversation locConversation = null;
@@ -111,7 +112,8 @@ public class ConversationsManager implements ItemManager,
 						JSONObject locConversationJSON = (JSONObject) locConversationsJSONArray
 								.get(i);
 						locConversation = new Conversation();
-						isConversationValid = locConversation.fillStates(locConversationJSON);
+						isConversationValid = locConversation
+								.fillStates(locConversationJSON);
 					} catch (Exception e) {
 						isConversationValid = false;
 					}
@@ -128,15 +130,18 @@ public class ConversationsManager implements ItemManager,
 
 		}
 		TaskMessage locTaskMessageToController;
-		
-		
-		if (isConversationsListSucess) {			
-			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK, Boolean.valueOf(true));
+
+		if (isConversationsListSucess) {
+			locTaskMessageToController = new TaskMessage(
+					Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK,
+					Boolean.valueOf(true));
 		} else {
-			locTaskMessageToController = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_BAD_REQUEST, Boolean.valueOf(false));
+			locTaskMessageToController = new TaskMessage(
+					Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_BAD_REQUEST,
+					Boolean.valueOf(false));
 		}
-		
+
 		_listener.onTaskCompleted(locTaskMessageToController);
 	}
-	
+
 }

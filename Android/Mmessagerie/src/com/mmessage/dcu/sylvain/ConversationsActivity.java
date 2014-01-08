@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -42,8 +41,8 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 		LinkedList<Conversation> locObjectsList = new LinkedList<Conversation>();
 
-		_conversationsAdapter = new SizeLimitedAdapterOriginal<Conversation>(this, 200,
-				locObjectsList, 17367047);
+		_conversationsAdapter = new SizeLimitedAdapterOriginal<Conversation>(
+				this, 200, locObjectsList, 17367047);
 
 		_listeView.setAdapter(_conversationsAdapter);
 
@@ -81,8 +80,7 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 			}
 
 		});
-		
-		
+
 		_refresh = (Button) _layout
 				.findViewById(R.id.conversationsRefreshButton);
 		_refresh.setText("Refresh");
@@ -93,14 +91,12 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 				_controller.refresh();
 			}
 		});
-		
 
 		setContentView(_layout);
 
 		_controller = new ConversationsController(ConversationsActivity.this);
 
 	}
-
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
@@ -128,5 +124,4 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 	}
 
-	
 }

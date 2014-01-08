@@ -19,7 +19,7 @@ public class Contact implements Displayable {
 	public boolean fillStates(JSONObject parJSon) {
 
 		try {
-			this._id = (Long) parJSon.get("id");;
+			this._id = (Long) parJSon.get("id");
 			this._name = (String) parJSon.get("username");
 			this._email = (String) parJSon.get("email");
 
@@ -43,7 +43,7 @@ public class Contact implements Displayable {
 	public long getIdOfItem() {
 		return _id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return _name;
@@ -53,6 +53,5 @@ public class Contact implements Displayable {
 	public int getGravity() {
 		return _gravity;
 	}
-
 
 }

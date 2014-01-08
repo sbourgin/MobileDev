@@ -82,7 +82,7 @@ public class ConversationViewActivity extends Activity implements
 			}
 
 		});
-		//Clear focus
+		// Clear focus
 		this.getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

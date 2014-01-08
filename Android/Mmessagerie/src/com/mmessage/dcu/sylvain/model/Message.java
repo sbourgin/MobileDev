@@ -6,14 +6,12 @@ import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
 public class Message implements Displayable {
 
-	
 	private Long _id;
 	private String _updatedAt;
 	private String _text;
 	private Contact _sender;
 	private int _gravity;
-	
-	
+
 	@Override
 	public String getTitleToDisplay() {
 		return _text;
@@ -21,7 +19,9 @@ public class Message implements Displayable {
 
 	@Override
 	public String getFullTextToDisplay() {
-		String date = _updatedAt.substring(5, 7) + "/" + _updatedAt.substring(8, 10) + " " + _updatedAt.substring(11, 19);
+		String date = _updatedAt.substring(5, 7) + "/"
+				+ _updatedAt.substring(8, 10) + " "
+				+ _updatedAt.substring(11, 19);
 		return _sender.getTitleToDisplay() + " at " + date;
 	}
 
@@ -31,15 +31,16 @@ public class Message implements Displayable {
 	}
 
 	public boolean fillStates(JSONObject parJSon) {
-	
+
 		boolean isSenderValid = true;
-		
+
 		try {
 			_id = (Long) parJSon.get("id");
 			_text = (String) parJSon.get("content");
 			_updatedAt = (String) parJSon.get("updated_at");
 			_sender = new Contact();
-			isSenderValid =  _sender.fillStates((JSONObject) parJSon.get("user"));
+			isSenderValid = _sender
+					.fillStates((JSONObject) parJSon.get("user"));
 
 		} catch (Exception e) {
 			return false;
@@ -55,7 +56,7 @@ public class Message implements Displayable {
 	public void setGravity(int parGravity) {
 		_gravity = parGravity;
 	}
-	
+
 	public Contact getSender() {
 		return _sender;
 	}

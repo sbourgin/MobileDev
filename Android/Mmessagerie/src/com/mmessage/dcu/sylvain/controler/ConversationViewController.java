@@ -36,7 +36,7 @@ public class ConversationViewController implements OnTaskCompleted {
 				ConversationViewController.this);
 		initData();
 	}
-	
+
 	public void initData() {
 		_conversationManager.initData();
 		_conversationsManager.initData();
@@ -47,9 +47,10 @@ public class ConversationViewController implements OnTaskCompleted {
 
 		List<Message> locAllMessages = new ArrayList<Message>();
 		while (_conversationManager.hasNext()) {
-			Message locMessage = _conversationManager.next();	
-			
-			if(locMessage.getSender().getTitleToDisplay().equals(MainActivityController.getUserName())) {
+			Message locMessage = _conversationManager.next();
+
+			if (locMessage.getSender().getTitleToDisplay()
+					.equals(MainActivityController.getUserName())) {
 				locMessage.setGravity(Gravity.RIGHT);
 			} else {
 				locMessage.setGravity(Gravity.LEFT);
@@ -58,19 +59,17 @@ public class ConversationViewController implements OnTaskCompleted {
 		}
 		return locAllMessages;
 	}
-	
+
 	public void sendMessage(String parMessage) {
 		String locUrl = String.format(_urlMessages, _conversationId);
-		
-		List<NameValuePair> locNameValuePairs = new ArrayList<NameValuePair>();
-		locNameValuePairs.add(new BasicNameValuePair("content",
-				parMessage));
 
-		new PostRESTTask(this, true, Commands.SEND_MESSAGE,
-				locNameValuePairs).execute(locUrl);
+		List<NameValuePair> locNameValuePairs = new ArrayList<NameValuePair>();
+		locNameValuePairs.add(new BasicNameValuePair("content", parMessage));
+
+		new PostRESTTask(this, true, Commands.SEND_MESSAGE, locNameValuePairs)
+				.execute(locUrl);
 	}
-	
-	
+
 	@Override
 	public void onTaskCompleted(Object parObject) {
 
@@ -94,25 +93,31 @@ public class ConversationViewController implements OnTaskCompleted {
 			_listener.onTaskCompleted(locTaskMessageToView);
 
 		} else if (locTaskMessage.getCommand().equals(
-				Commands.GET_ALL_CONVERSATIONS) && locTaskMessage.getResult().equals(Boolean.valueOf(true))) {
-			Conversation locConversation = _conversationsManager.getConversationById(_conversationId);
-			
-			TaskMessage locTaskMessageToView = new TaskMessage(Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK, locConversation);
+				Commands.GET_ALL_CONVERSATIONS)
+				&& locTaskMessage.getResult().equals(Boolean.valueOf(true))) {
+			Conversation locConversation = _conversationsManager
+					.getConversationById(_conversationId);
+
+			TaskMessage locTaskMessageToView = new TaskMessage(
+					Commands.GET_ALL_CONVERSATIONS, HttpStatus.SC_OK,
+					locConversation);
 			_listener.onTaskCompleted(locTaskMessageToView);
-		
-		} else if(locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
-			
+
+		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
+
 			TaskMessage locTaskMessageToView;
-			
+
 			if (locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
-				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_OK, null);
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE,
+						HttpStatus.SC_OK, null);
 			} else {
-				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_BAD_REQUEST, null);
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE,
+						HttpStatus.SC_BAD_REQUEST, null);
 			}
-			
+
 			_listener.onTaskCompleted(locTaskMessageToView);
-			
+
 		}
-	} 
+	}
 
 }
