@@ -24,10 +24,10 @@ public class MainActivityController implements OnTaskCompleted {
 	
 	
 	public void logInUser(String parUserName, String parPassword) {
-//		_userName = "cil";//TODO change
-//		String authentication = "cil:cil"; //TODO change
-		String authentication = parUserName + ":" + parPassword;	
-		_userName = parUserName;
+		_userName = "cil";//TODO change
+		String authentication = "cil:cil"; //TODO change
+//		String authentication = parUserName + ":" + parPassword;	
+//		_userName = parUserName;
 		
 		String encoding = Base64.encodeToString(authentication.getBytes(), Base64.NO_WRAP);
 		_authentication = encoding;

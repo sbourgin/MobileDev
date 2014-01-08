@@ -55,6 +55,7 @@ public class CreateAccountActivity extends Activity implements OnTaskCompleted{
 			}
 		});
 		
+		
 		setContentView(_layout);
 		
 	}
