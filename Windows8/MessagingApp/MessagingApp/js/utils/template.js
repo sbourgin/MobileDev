@@ -66,14 +66,13 @@
 
                             var h6 = document.createElement("h6");
                             h6.className = "item-subtitle win-type-ellipsis";
+                            h6.textContent = item.data.description;
+
                             item.data.getUnreadMessagesAsync().then(
                                 function complete(){
                                     if (item.data.unreadMessages) {
                                         h6.className += " unreadMessages";
                                         h6.textContent = "Unread messages: " + item.data.unreadMessages;
-                                    }
-                                    else {
-                                        h6.textContent = item.data.description;
                                     }
                                 }
                             );

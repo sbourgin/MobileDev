@@ -17,12 +17,15 @@
             //properties of the class
             {
                 _items: [],
+                _unreadMessagesTotal: 0,
 
                 items: {
                     get: function () {
                         return this._items;
                     }
                 },
+
+                
 
                 fetchAsync: function (onSuccess) {
                     var self = this;
@@ -37,6 +40,9 @@
                                 onSuccess({
                                     collection: self,
                                 });
+                            },
+                            function error() {
+                                console.log("Error fetching users collection");
                             }
                         );
                     });

@@ -12,7 +12,6 @@
         _wasSingleColumn: false,
 
         _userLogged: null,
-        _userSelected: null,
 
         _usersCollection: null,
         _usersArray: null,
@@ -35,6 +34,9 @@
             this._usersCollection = new Models.UsersCollection({
                 items: this._usersArray,
             });
+
+            //listen on custom event in order to refresh UI when new messages recerived
+            this._userLogged.addEventListener("newMessages", this._refresh.bind(this));
 
             this.selectionChanged = ui.eventHandler(this._selectionChanged.bind(this));
         },
@@ -93,7 +95,7 @@
         },
 
         unload: function () {
-            if(this._citiesArray) this._citiesArray.dispose();
+
         },
 
         updateLayout: function (element) {
@@ -267,11 +269,12 @@
 
         _sendMessage: function(){
             var messageHTML = document.getElementById("messageText");
+            var userSelected = this._usersCollection.items.getAt(this._itemSelectionIndex);
 
             if (messageHTML.value) {
                 var parameters = {
                     from: this._userLogged.name,
-                    to: this._userSelected.name,
+                    to: userSelected.name,
                     subject: "",
                     text: messageHTML.value,
                 };
@@ -330,13 +333,13 @@
         },
 
         _fetchMessages: function () {
-            this._userSelected = this._usersCollection.items.getAt(this._itemSelectionIndex);
+            var userSelected = this._usersCollection.items.getAt(this._itemSelectionIndex);
 
             this._messagesArray = new binding.List();
 
             this._messagesCollection = new Models.MessagesCollection({
                 items: this._messagesArray,
-                receiver: this._userSelected.getNormalisedName(),
+                receiver: userSelected.getNormalisedName(),
             });
 
             this._messagesList = document.getElementById("messagesList");
@@ -355,13 +358,16 @@
                     );
 
                     //make all messages read
-                    returnObject.collection.readAllMessagesFrom(self._userSelected.getNormalisedName());
+                    returnObject.collection.readAllMessagesFrom(userSelected.getNormalisedName());
                     
                     //remove notification
-                    if (self._userSelected.unreadMessages) {
+                    if (userSelected.unreadMessages) {
                         var subtitle = self._usersList.querySelectorAll(".item-subtitle")[self._itemSelectionIndex];
-                        subtitle.innerText = self._userSelected.description;
-                        WinJS.Utilities.removeClass(subtitle, "unreadMessages");
+
+                        if (subtitle) {
+                            subtitle.innerText = userSelected.description;
+                            WinJS.Utilities.removeClass(subtitle, "unreadMessages");
+                        }
                     }
                 }
             );
@@ -373,6 +379,28 @@
             this._messagesArray.splice(index, 1);
 
             this._messagesList.winControl.forceLayout();
+        },
+
+        _refresh: function () {
+            console.log("refresh");
+
+            var usersList = document.getElementById("usersList");
+
+            if (usersList) {
+                usersList.winControl.forceLayout();
+            }
+
+            var self = this;
+
+            if (this._messagesCollection) {
+                this._messagesCollection.getNbMessagesAsync().then(
+                    function complete(returnObject) {
+                        if (returnObject.nbMessages != self._messagesCollection.items.length) {
+                            self._fetchMessages();
+                        }
+                    }
+                )
+            }
         },
     });
 })();

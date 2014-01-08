@@ -68,6 +68,9 @@
                                 onSuccess({
                                     model: self,
                                 });
+                            },
+                            function error() {
+                                console.log("Error sending message");
                             }
                         );
                     });
@@ -90,6 +93,9 @@
                                 onSuccess({
                                     model: self,
                                 });
+                            },
+                            function error() {
+                                console.log("Error reading message");
                             }
                         );
                     });
@@ -112,6 +118,9 @@
                                 onSuccess({
                                     model: self,
                                 });
+                            },
+                            function error() {
+                                console.log("Error removing message");
                             }
                         );
                     });
@@ -139,6 +148,9 @@
                                     onSuccess({
                                         model: self,
                                     });
+                                },
+                                function error() {
+                                    console.log("Error getting message image");
                                 }
                             );
                         });

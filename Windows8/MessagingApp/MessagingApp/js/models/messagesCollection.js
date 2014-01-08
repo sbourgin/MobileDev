@@ -50,6 +50,33 @@
                                 onSuccess({
                                     collection: self,
                                 });
+                            },
+                            function error() {
+                                console.log("Error fetching messages collection");
+                            }
+                        );
+                    });
+                },
+
+                getNbMessagesAsync: function(){
+                    var self = this;
+
+                    var parameters = {
+                        name: this._receiver,
+                        action: 0,
+                    };
+
+                    return new WinJS.Promise(function (onSuccess) {
+                        Utils.MessageAPI.getAsync("conversation", parameters).then(
+                            function complete(result) {
+
+                                onSuccess({
+                                    collection: self,
+                                    nbMessages: result.count,
+                                });
+                            },
+                            function error() {
+                                console.log("Error counting messages collection");
                             }
                         );
                     });
@@ -63,58 +90,6 @@
                             message.readAsync();
                         }
                     }
-                },
-
-                getNbNewMessagesFromAsync: function(){
-                    var self = this;
-
-                    var parameters = {
-                        sent: 0,
-                        name: this._receiver,
-                        status: 0,
-                        action: 0,
-                    };
-
-                    return new WinJS.Promise(function (onSuccess) {
-                        Utils.MessageAPI.getAsync("list", parameters).then(
-                            function complete(result) {
-
-                                onSuccess({
-                                    collection: self,
-                                    count: result.count,
-                                });
-                            }
-                        );
-                    });
-                },
-
-                refreshAsync: function () {
-                    var self = this;
-
-                    return new WinJS.Promise(function (onSuccess) {
-                        WinJS.Promise.timeout(5000).then(
-                            function (complete) {
-                                if (! self._stopRefresh) {
-                                    return self.getNbNewMessagesFromAsync();
-                                }
-                            }
-                        ).then(
-                            function complete(returnObject) {
-                                if (returnObject) {
-                                    console.log("refresh for " + self_receiver + "! count: " + returnObject.count);
-
-                                    if (returnObject.count > 0) {
-                                        onSuccess({
-                                            collection: self,
-                                        });
-                                    }
-
-
-                                    self.refreshAsync();
-                                }
-                            }
-                        );
-                    });
                 },
             },
 
