@@ -26,7 +26,6 @@ import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Contact;
 import com.mmessage.dcu.sylvain.model.Conversation;
-import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
 public class CreateConversationActivity extends Activity implements
@@ -53,7 +52,6 @@ public class CreateConversationActivity extends Activity implements
 
 		_conversationName = (EditText) _layout
 				.findViewById(R.id.CreateConversationConversationName);
-		_conversationName.setText("Conversation Name");
 
 		_changeContact = (Button) _layout
 				.findViewById(R.id.CreateConversationChangeContactButton);
@@ -82,7 +80,7 @@ public class CreateConversationActivity extends Activity implements
 
 		_submitMessage = (Button) _layout
 				.findViewById(R.id.CreateConversationSubmit);
-		_submitMessage.setText("Submit Message");
+		_submitMessage.setText("Create conversation");
 		_submitMessage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,13 +92,6 @@ public class CreateConversationActivity extends Activity implements
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.create_conversation, menu);
-		return true;
-	}
-
-	@Override
 	public void onTaskCompleted(Object parObject) {
 
 		TaskMessage locTaskMessage = (TaskMessage) parObject;
@@ -109,16 +100,18 @@ public class CreateConversationActivity extends Activity implements
 				&& locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
 			_allContacts = (List<Displayable>) locTaskMessage.getResult();
 		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
-			if(locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
-				Toast.makeText(getBaseContext(),"Message sent !",Toast.LENGTH_LONG).show();
+			if (locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
+				Toast.makeText(getBaseContext(), "Message sent !",
+						Toast.LENGTH_LONG).show();
 				Intent locIntent = new Intent(CreateConversationActivity.this,
 						ConversationsActivity.class);
 				startActivity(locIntent);
-				
+
 			} else {
-				 Toast.makeText(getBaseContext(),"Failed to send message",Toast.LENGTH_LONG).show();
+				Toast.makeText(getBaseContext(), "Failed to send message",
+						Toast.LENGTH_LONG).show();
 			}
-			
+
 		}
 
 	}
@@ -150,12 +143,20 @@ public class CreateConversationActivity extends Activity implements
 	}
 
 	public void sendMessage() {
-		List<Contact> locAdressee = new ArrayList<Contact>();
-		locAdressee.add(_selectedContact);
-		Conversation locConversation = new Conversation(_conversationName
-				.getText().toString(), locAdressee);
 
-		_controller.sendMessage(locConversation, _message.getText().toString());
+		if (_selectedContact == null) {
+			Toast.makeText(getBaseContext(), "Please select an addresse",
+					Toast.LENGTH_LONG).show();
+		} else {
+
+			List<Contact> locAdressee = new ArrayList<Contact>();
+			locAdressee.add(_selectedContact);
+			Conversation locConversation = new Conversation(_conversationName
+					.getText().toString(), locAdressee);
+
+			_controller.sendMessage(locConversation, _message.getText()
+					.toString());
+		}
 	}
 
 }

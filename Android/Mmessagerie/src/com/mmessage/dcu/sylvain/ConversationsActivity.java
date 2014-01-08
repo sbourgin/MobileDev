@@ -20,7 +20,6 @@ import com.mmessage.dcu.sylvain.controler.ConversationsController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Conversation;
-import com.mmessage.dcu.sylvain.model.SizeLimitedAdapter;
 import com.mmessage.dcu.sylvain.model.SizeLimitedAdapterOriginal;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 
@@ -31,6 +30,7 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 	private SizeLimitedAdapterOriginal<Conversation> _conversationsAdapter = null;
 	private Button _conversationsPlus = null;
 	private ConversationsController _controller = null;
+	private Button _refresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,19 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 			}
 
 		});
+		
+		
+		_refresh = (Button) _layout
+				.findViewById(R.id.conversationsRefreshButton);
+		_refresh.setText("Refresh");
+		_refresh.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				_controller.refresh();
+			}
+		});
+		
 
 		setContentView(_layout);
 
@@ -88,11 +101,6 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.conversations, menu);
-		return true;
-	}
 
 	@Override
 	public void onTaskCompleted(Object parObject) {
@@ -120,4 +128,5 @@ public class ConversationsActivity extends Activity implements OnTaskCompleted {
 
 	}
 
+	
 }

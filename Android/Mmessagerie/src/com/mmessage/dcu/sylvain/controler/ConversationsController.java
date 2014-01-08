@@ -57,4 +57,8 @@ public class ConversationsController implements OnTaskCompleted {
 
 	}
 
+	public void refresh() {
+		_conversationsManager.initData();
+	}
+
 }
