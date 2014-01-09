@@ -1,12 +1,8 @@
 package com.mmessage.dcu.sylvain;
 
-import com.mmessage.dcu.sylvain.controler.MainActivityController;
-import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mmessage.dcu.sylvain.controler.MainActivityController;
+import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
 public class MainActivity extends Activity implements OnTaskCompleted {
 
@@ -79,6 +78,7 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 			_messageUser.setText("Authentication failed");
 			Toast locToast = Toast.makeText(this,
 					"Authentication failed", Toast.LENGTH_LONG);
+			locToast.show();
 		}
 		
 	}

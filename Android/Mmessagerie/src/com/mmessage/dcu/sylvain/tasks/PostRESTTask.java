@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 import android.os.AsyncTask;
 
@@ -51,12 +52,11 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 					+ MainActivityController.getAuthentification());
 		}
 		try {
-			httppost.setEntity(new UrlEncodedFormEntity(_parameters));
-
+			httppost.setEntity(new UrlEncodedFormEntity(_parameters, HTTP.UTF_8));
 			// Execute HTTP Post Request
 			HttpResponse locHttpResponse = httpclient.execute(httppost);
 			_httpCode = locHttpResponse.getStatusLine().getStatusCode();
-			
+
 			if (_httpCode == HttpStatus.SC_OK) {
 				ByteArrayOutputStream locOut = new ByteArrayOutputStream();
 				locHttpResponse.getEntity().writeTo(locOut);
@@ -65,7 +65,8 @@ public class PostRESTTask extends AsyncTask<String, Void, String> {
 			} else {
 				// Closes the connection.
 				locHttpResponse.getEntity().getContent().close();
-				throw new IOException(locHttpResponse.getStatusLine().getReasonPhrase());
+				throw new IOException(locHttpResponse.getStatusLine()
+						.getReasonPhrase());
 			}
 
 		} catch (ClientProtocolException e) {

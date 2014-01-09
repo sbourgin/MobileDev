@@ -110,16 +110,16 @@ public class ContactsManager implements ItemManager, Iterator<Contact>,
 		}
 
 		TaskMessage locTaskMessageToListener;
-		
+
 		if (isContactsListSucess) {
 			locTaskMessageToListener = new TaskMessage(Commands.GET_ALL_USERS,
 					HttpStatus.SC_OK, null);
-			
+
 		} else {
 			locTaskMessageToListener = new TaskMessage(Commands.GET_ALL_USERS,
 					HttpStatus.SC_BAD_REQUEST, null);
 		}
-		
+
 		_listener.onTaskCompleted(locTaskMessageToListener);
 	}
 }

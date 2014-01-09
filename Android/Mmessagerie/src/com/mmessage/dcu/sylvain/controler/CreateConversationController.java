@@ -6,26 +6,20 @@ import java.util.List;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.mmessage.dcu.sylvain.controler.manager.ContactsManager;
-import com.mmessage.dcu.sylvain.controler.manager.ConversationsManager;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
 import com.mmessage.dcu.sylvain.model.Contact;
 import com.mmessage.dcu.sylvain.model.Conversation;
-import com.mmessage.dcu.sylvain.model.Message;
 import com.mmessage.dcu.sylvain.model.TaskMessage;
 import com.mmessage.dcu.sylvain.tasks.PostRESTTask;
 
 public class CreateConversationController implements OnTaskCompleted {
 
 	private ContactsManager _contactsManager = new ContactsManager(
-			CreateConversationController.this);
-	private ConversationsManager _conversationsManager = new ConversationsManager(
 			CreateConversationController.this);
 	private String _urlConversation = "http://message.eventhub.eu/conversations";
 	private String _urlMessages = "http://message.eventhub.eu/conversations/%d/messages";
@@ -126,18 +120,20 @@ public class CreateConversationController implements OnTaskCompleted {
 
 			}
 
-		} else if(locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
-			
+		} else if (locTaskMessage.getCommand().equals(Commands.SEND_MESSAGE)) {
+
 			TaskMessage locTaskMessageToView;
-			
+
 			if (locTaskMessage.getHttpCode() == HttpStatus.SC_OK) {
-				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_OK, null);
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE,
+						HttpStatus.SC_OK, null);
 			} else {
-				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE, HttpStatus.SC_BAD_REQUEST, null);
+				locTaskMessageToView = new TaskMessage(Commands.SEND_MESSAGE,
+						HttpStatus.SC_BAD_REQUEST, null);
 			}
-			
+
 			_listener.onTaskCompleted(locTaskMessageToView);
-			
+
 		}
 
 	}
