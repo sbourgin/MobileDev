@@ -82,7 +82,7 @@
                     });
                 },
 
-                readAllMessagesFrom: function () {
+                readAllMessages: function () {
                     for (var i = 0 ; i < this.items.length ; i++) {
                         var message = this.items.getAt(i);
 

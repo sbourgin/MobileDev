@@ -91,7 +91,7 @@
                                 self._description = user.description;
                                 self._logged = true;
 
-                                //initialize all unread messages field
+                                //initialize all received messages field
                                 return self.getAllReceivedMessagesAsync();
                             },
                             onError
@@ -101,6 +101,7 @@
                                 onSuccess({
                                     model: self,
                                 });
+                                //start refresh automatic process
                                 self.refresh();
                             }
                         );
@@ -263,7 +264,7 @@
                                 });
                             },
                             function error() {
-                                console.log("Error getting all unread messages");
+                                console.log("Error getting all received messages");
                             }
                         );
                     });

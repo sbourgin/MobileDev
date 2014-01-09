@@ -4,7 +4,7 @@
     //creation of namespace    
     WinJS.Namespace.define('Models', {
 
-        //creation of the class to manage a empty message object
+        //creation of the class to manage an empty message object
         EmptyMessage: WinJS.Class.derive(Models.Message,
 
             //constructor

@@ -157,7 +157,7 @@
                     }
                 },
 
-                //abstract method that should be implemented in subclasses
+                //abstract methods that should be implemented in subclasses
                 getSendParameters: function(){
                     return {
                         from:       this._from,

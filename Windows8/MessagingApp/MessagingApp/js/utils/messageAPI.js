@@ -29,7 +29,7 @@
                     "list": "result",
                 },
 
-                //private methods to do get request
+                //method to do get request
                 getAsync: function (endUrl, parameters) {
                     var options = {};
                     var queryParameters = [];
@@ -86,6 +86,7 @@
                     });
                 },
 
+                //method to do post requests
                 postAsync: function (endUrl, formData) {
                     var options = {
                         url: Utils.MessageAPI._baseUrl + endUrl,

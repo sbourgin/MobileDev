@@ -35,7 +35,7 @@
                 items: this._usersArray,
             });
 
-            //listen on custom event in order to refresh UI when new messages recerived
+            //listen on custom event in order to refresh UI when new messages received
             this._userLogged.addEventListener("newMessages", this._refresh.bind(this));
 
             this.selectionChanged = ui.eventHandler(this._selectionChanged.bind(this));
@@ -358,7 +358,7 @@
                     );
 
                     //make all messages read
-                    returnObject.collection.readAllMessagesFrom(userSelected.getNormalisedName());
+                    returnObject.collection.readAllMessages();
                     
                     //remove notification
                     if (userSelected.unreadMessages) {
