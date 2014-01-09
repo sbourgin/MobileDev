@@ -271,13 +271,16 @@
             var messageHTML = document.getElementById("messageText");
             var userSelected = this._usersCollection.items.getAt(this._itemSelectionIndex);
 
-            if (messageHTML.value) {
+            if (messageHTML.value || (this._imageName && this._imageFile)) {
                 var parameters = {
                     from: this._userLogged.name,
                     to: userSelected.name,
                     subject: "",
-                    text: messageHTML.value,
                 };
+
+                if (messageHTML.value) {
+                    parameters['text'] = messageHTML.value;
+                }
 
                 if (this._imageName && this._imageFile) {
                     parameters["imageName"] = this._imageName;
