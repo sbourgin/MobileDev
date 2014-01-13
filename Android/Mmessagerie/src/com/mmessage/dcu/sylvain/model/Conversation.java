@@ -1,5 +1,6 @@
 package com.mmessage.dcu.sylvain.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,12 @@ import android.view.Gravity;
 
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 
-public class Conversation implements Displayable {
+public class Conversation implements Displayable, Cloneable, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8484442511014429151L;
 	private long _id = -1;
 	private String _name = null;
 	private List<Contact> _addresseeList = new ArrayList<Contact>();
@@ -87,4 +92,41 @@ public class Conversation implements Displayable {
 		return _gravity;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((_addresseeList == null) ? 0 : _addresseeList.hashCode());
+		result = prime * result + _gravity;
+		result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Conversation other = (Conversation) obj;
+		if (_addresseeList == null) {
+			if (other._addresseeList != null)
+				return false;
+		} else if (!_addresseeList.equals(other._addresseeList))
+			return false;
+		if (_gravity != other._gravity)
+			return false;
+		if (_name == null) {
+			if (other._name != null)
+				return false;
+		} else if (!_name.equals(other._name))
+			return false;
+		return true;
+	}
+
+	
+	
 }
