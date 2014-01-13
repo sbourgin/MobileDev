@@ -1,4 +1,4 @@
-package com.mmessage.dcu.sylvain;
+package com.mmessage.dcu.sylvain.view;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.controler.ConversationsController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;

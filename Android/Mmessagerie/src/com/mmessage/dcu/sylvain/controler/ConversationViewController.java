@@ -34,7 +34,6 @@ public class ConversationViewController implements OnTaskCompleted {
 				ConversationViewController.this, parConversationId);
 		_conversationsManager = new ConversationsManager(
 				ConversationViewController.this);
-		initData();
 	}
 
 	public void initData() {

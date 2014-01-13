@@ -1,4 +1,4 @@
-package com.mmessage.dcu.sylvain;
+package com.mmessage.dcu.sylvain.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.controler.MainActivityController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
@@ -23,12 +24,13 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 	private Button _createAccount = null;
 	private Button _signIn = null;
 	private TextView _messageUser;
-	
+	private MainActivityController _controller;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		_controller = new MainActivityController(MainActivity.this);
 		
 		_layout = (LinearLayout) RelativeLayout.inflate(this,
 				R.layout.activity_main, null);
@@ -58,9 +60,8 @@ public class MainActivity extends Activity implements OnTaskCompleted {
 		_signIn.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
-				MainActivityController controller = new MainActivityController(MainActivity.this);
-				controller.logInUser(_userName.getText().toString(), _password.getText().toString());
+			public void onClick(View v) {	
+				_controller.logInUser(_userName.getText().toString(), _password.getText().toString());
 			}
 		});
 		

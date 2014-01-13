@@ -1,4 +1,4 @@
-package com.mmessage.dcu.sylvain;
+package com.mmessage.dcu.sylvain.view;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.controler.ConversationViewController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 import com.mmessage.dcu.sylvain.model.Commands;
@@ -90,6 +91,8 @@ public class ConversationViewActivity extends Activity implements
 
 		_controller = new ConversationViewController(
 				ConversationViewActivity.this, locConversationId);
+		
+		_controller.initData();
 	}
 
 	@Override

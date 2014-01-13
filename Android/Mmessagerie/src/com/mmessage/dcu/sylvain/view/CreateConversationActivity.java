@@ -1,4 +1,4 @@
-package com.mmessage.dcu.sylvain;
+package com.mmessage.dcu.sylvain.view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.controler.CreateConversationController;
 import com.mmessage.dcu.sylvain.interfaces.Displayable;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;

@@ -1,4 +1,4 @@
-package com.mmessage.dcu.sylvain;
+package com.mmessage.dcu.sylvain.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mmessage.dcu.sylvain.R;
 import com.mmessage.dcu.sylvain.controler.CreateAccountController;
 import com.mmessage.dcu.sylvain.interfaces.OnTaskCompleted;
 
